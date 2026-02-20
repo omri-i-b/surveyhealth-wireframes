@@ -898,36 +898,18 @@
           <div class="h-px flex-1 bg-gray-200"></div>
         </div>
 
-        <!-- Patient Concerns -->
-        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
-          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Patient Concerns</h4>
-          </div>
-          <div class="p-3">
-            <div class="text-xs text-gray-600 mb-2">Note any concerns or questions raised by the patient:</div>
-            <textarea
-              id="patientConcerns"
-              class="w-full h-16 px-2 py-1.5 text-xs border border-gray-200 rounded resize-none focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
-              placeholder="e.g., worried about side effects, has questions about the program..."
-            ></textarea>
-          </div>
-        </div>
-
-        <!-- Internal Notes -->
-        <div class="border border-gray-200 rounded">
-          <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Internal Notes</h4>
+        <!-- Notes (optional) -->
+        <div class="border border-gray-200 rounded bg-white">
+          <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Notes</h4>
+            <span class="text-[10px] text-gray-400 font-medium">Optional</span>
           </div>
           <div class="p-3">
             <textarea
-              class="w-full h-16 px-2 py-1.5 text-xs border border-gray-200 rounded resize-none focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="Add a note about this interaction..."
+              id="callNotes"
+              class="w-full h-20 px-2 py-1.5 text-xs border border-gray-200 rounded resize-none focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Patient concerns, questions, or internal notes about this interaction..."
             ></textarea>
-            <div class="flex justify-end mt-2">
-              <button class="px-3 py-1 bg-gray-900 text-white text-xs font-medium rounded hover:bg-gray-800">
-                Submit Note
-              </button>
-            </div>
           </div>
         </div>
 
