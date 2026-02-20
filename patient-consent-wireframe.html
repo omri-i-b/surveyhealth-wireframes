@@ -314,9 +314,13 @@
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
             <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Consent Script Checklist</h4>
-            <span id="checklistStatus" class="text-[10px] text-orange-600 font-medium">⚠ 0/10 Complete</span>
+            <span id="checklistStatus" class="text-[10px] text-orange-600 font-medium">⚠ 0/12 Complete</span>
           </div>
           <div class="p-3 space-y-2">
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+              <span class="text-xs text-gray-700">Call recording started.</span>
+            </label>
             <label class="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
               <span class="text-xs text-gray-700">Patient identity verified via full name and date of birth.</span>
@@ -357,6 +361,27 @@
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
               <span class="text-xs text-gray-700">Patient verbalized understanding and provided verbal consent to enroll in APCM and RPM.</span>
             </label>
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+              <span class="text-xs text-gray-700">Patient asked to save contact number and provided with provider contact info.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Outreach Letter -->
+        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
+          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Outreach Letter</h4>
+            <span class="text-[10px] text-orange-600 font-medium">⚠ Required</span>
+          </div>
+          <div class="p-3">
+            <div class="text-xs text-gray-600 mb-2">Did the patient receive the letter?</div>
+            <div class="flex gap-1.5">
+              <button onclick="selectLetter('yes', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+              <button onclick="selectLetter('no', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              <button onclick="selectLetter('not_received', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Didn't receive</button>
+            </div>
+            <input type="hidden" id="letterStatus" value="">
           </div>
         </div>
 
@@ -1050,6 +1075,17 @@
       checkResolveRequirements();
     }
 
+    function selectLetter(value, btn) {
+      document.getElementById('letterStatus').value = value;
+      document.querySelectorAll('.letter-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+      checkResolveRequirements();
+    }
+
     function selectFollowup(value, btn) {
       document.getElementById('followupPreference').value = value;
       document.querySelectorAll('.followup-btn').forEach(b => {
@@ -1064,10 +1100,11 @@
     function checkResolveRequirements() {
       const checks = document.querySelectorAll('.consent-check');
       const allChecked = document.querySelectorAll('.consent-check:checked').length === checks.length;
+      const letterSelected = document.getElementById('letterStatus').value;
       const enrollmentSelected = document.getElementById('enrollmentSelected').value;
       const followupSelected = document.getElementById('followupPreference').value;
       const vitalsCompleted = document.getElementById('vitalsStatus').value === 'completed';
-      const canResolve = allChecked && enrollmentSelected && followupSelected && vitalsCompleted;
+      const canResolve = allChecked && letterSelected && enrollmentSelected && followupSelected && vitalsCompleted;
       updateResolveButton(canResolve);
     }
 
