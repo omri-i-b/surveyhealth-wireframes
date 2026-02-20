@@ -358,20 +358,7 @@
               </div>
             </div>
 
-            <!-- DOB Verification (hidden until patient confirmed) -->
-            <div id="step1DOB" class="hidden">
-              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
-                <p>"Great, and just to confirm I'm speaking with the right person, can you verify your date of birth?"</p>
-                <p class="text-slate-500 italic text-[11px] mt-1">Expected: <strong>April 22, 1962</strong></p>
-              </div>
-              <div class="text-xs text-gray-600 mb-2">DOB verified?</div>
-              <div class="flex gap-1.5">
-                <button onclick="selectStep1DOB('yes', this)" class="step1-dob-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectStep1DOB('no', this)" class="step1-dob-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
-              </div>
-            </div>
-
-            <!-- Available to talk (hidden until DOB verified) -->
+            <!-- Available to talk (hidden until patient confirmed) -->
             <div id="step1Talk" class="hidden space-y-2">
               <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
                 <p>"<strong>Dr. Dashing</strong> asked me to call you to discuss ways you can better connect with him/her and stay healthy. Do you have a few minutes to talk?"</p>
@@ -1272,10 +1259,9 @@
 
       if (value === 'yes') {
         document.getElementById('step1PatientAvailable').classList.add('hidden');
-        document.getElementById('step1DOB').classList.remove('hidden');
+        document.getElementById('step1Talk').classList.remove('hidden');
       } else {
         document.getElementById('step1PatientAvailable').classList.remove('hidden');
-        document.getElementById('step1DOB').classList.add('hidden');
         document.getElementById('step1Talk').classList.add('hidden');
       }
     }
@@ -1289,26 +1275,11 @@
       btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
 
       if (value === 'yes') {
-        document.getElementById('step1DOB').classList.remove('hidden');
+        document.getElementById('step1Talk').classList.remove('hidden');
         document.getElementById('step1AvailableResolution').classList.add('hidden');
       } else {
         document.getElementById('step1AvailableResolution').classList.remove('hidden');
         setDefaultCallbackDate();
-      }
-    }
-
-    function selectStep1DOB(value, btn) {
-      document.querySelectorAll('.step1-dob-btn').forEach(b => {
-        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
-        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
-      });
-      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
-      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
-
-      if (value === 'yes') {
-        document.getElementById('step1Talk').classList.remove('hidden');
-      } else {
-        document.getElementById('step1Talk').classList.add('hidden');
       }
     }
 
