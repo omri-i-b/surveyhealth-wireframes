@@ -345,6 +345,7 @@
                 <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
                 <div class="flex flex-wrap gap-1.5">
                   <button onclick="showInlineCallback('step1AvailableCallback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
+                  <button onclick="resolveAs('wrong_number')" class="px-2 py-1 text-[11px] font-medium bg-yellow-100 text-yellow-700 border border-yellow-200 rounded hover:bg-yellow-200">Wrong Number</button>
                   <button onclick="resolveAs('not_reached')" class="px-2 py-1 text-[11px] font-medium bg-red-100 text-red-700 border border-red-200 rounded hover:bg-red-200">Not Reached</button>
                 </div>
                 <div id="step1AvailableCallback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
@@ -428,7 +429,23 @@
               <div class="text-xs text-gray-600 mb-2">Patient identity verified?</div>
               <div class="flex gap-1.5">
                 <button onclick="selectVerified('yes', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectVerified('no', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No → End Call</button>
+                <button onclick="selectVerified('no', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+            <!-- Inline resolution picker for No -->
+            <div id="step3Resolution" class="hidden p-2 bg-amber-50 border border-amber-200 rounded">
+              <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
+              <div class="flex flex-wrap gap-1.5">
+                <button onclick="resolveAs('wrong_number')" class="px-2 py-1 text-[11px] font-medium bg-yellow-100 text-yellow-700 border border-yellow-200 rounded hover:bg-yellow-200">Wrong Number</button>
+                <button onclick="showInlineCallback('step3Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
+              </div>
+              <div id="step3Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
+                <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
+                <div class="flex gap-1.5">
+                  <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                  <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
+                </div>
+                <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
               </div>
             </div>
           </div>
@@ -1307,6 +1324,13 @@
       });
       btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
       btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      if (value === 'yes') {
+        document.getElementById('step3Resolution').classList.add('hidden');
+      } else {
+        document.getElementById('step3Resolution').classList.remove('hidden');
+        setDefaultCallbackDate();
+      }
     }
 
     // Step 9: Close call
