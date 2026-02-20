@@ -749,7 +749,7 @@
               </div>
               <div class="flex gap-2">
                 <input type="tel" id="altCellNumber" placeholder="(555) 555-5555" class="flex-1 px-2 py-1.5 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
-                <button onclick="addAltCell()" class="px-2.5 py-1.5 text-[11px] font-medium bg-blue-600 text-white rounded hover:bg-blue-700">Add Cell</button>
+                <button onclick="addAltCell()" class="px-2.5 py-1.5 text-[11px] font-medium bg-blue-600 text-white rounded hover:bg-blue-700">Add & Set Primary</button>
               </div>
             </div>
 
@@ -1659,7 +1659,7 @@
     function addAltCell() {
       const number = document.getElementById('altCellNumber').value;
       if (number) {
-        alert('Added ' + number + ' as alternate cell');
+        alert('Added ' + number + ' as primary cell');
         document.getElementById('altCellNumber').value = '';
       }
     }
