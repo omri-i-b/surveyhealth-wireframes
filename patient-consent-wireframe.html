@@ -526,17 +526,30 @@
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
               <p class="mb-2">"There are two programs that <strong>Dr. Dashing</strong> recommended for you.</p>
-              <p class="mb-2">The first one is <strong>APCM</strong> or Advanced Primary Care Management. This program allows Dr. Dashing to check in on you in-between office visits. The check-in will occur by text message or a phone call at least once a week, or more often if needed. The check-ins will only last 1-2 minutes and if there are any issues, your doctor will be informed so that he/she can act right away to address those issues.</p>
-              <p class="mb-2">The second program is <strong>RPM</strong> or remote patient monitoring. This program allows us to take your vital signs—such as your blood pressure, heart rate, and how fast you are breathing—through your phone without any extra equipment. You will just need to take a selfie video for up to 60 seconds. Also, we may ask a few questions to monitor your wellbeing by checking your voice.</p>
-              <p class="mb-2">These programs are not emergency services. They are used to proactively reach out to you to see if you need help before you get any symptoms or your symptoms get worse. All information gathered is secure and HIPAA compliant. Even if you give permission now, you can opt out of either program at any time by texting or saying STOP during one of your interactions.</p>
-              <p class="mb-2 text-slate-500 italic">(For patients without co-pays: "Although your doctor will bill insurance for these programs, you will not have any out-of-pocket costs.")</p>
-              <p class="mb-2 text-slate-500 italic">(For patients with co-pays: "The APCM program will have a co-pay of $X per month. The RPM program will have a co-pay of $X per month only when we need to monitor you more closely.")</p>
+              <p class="mb-2">The first one is <strong>APCM</strong> or Advanced Primary Care Management. This program allows <strong>Dr. Dashing</strong> to check in on you in-between office visits. The check-in will occur by text message or a phone call at least once a week, or more often if needed. The check-ins will only last 1-2 minutes and if there are any issues, your doctor will be informed so that he/she can act right away to address those issues.</p>
+              <p class="mb-3">The second program is <strong>RPM</strong> or remote patient monitoring. This program allows us to take your vital signs—such as your blood pressure, heart rate, and how fast you are breathing—through your phone without any extra equipment. You will just need to take a selfie video for up to 60 seconds. Also, we may ask a few questions to monitor your wellbeing by checking your voice.</p>
+
+              <!-- Conditional: No chronic diseases -->
+              <div class="bg-gray-100 border border-gray-300 rounded p-2 mb-3">
+                <div class="text-[10px] font-semibold text-gray-500 uppercase mb-1">If No Chronic Diseases</div>
+                <p class="text-slate-700">"Even if you are healthy, we may use the RPM program after a hospital stay, a visit to an emergency room, or after a procedure to make sure you are recovering okay."</p>
+              </div>
+
+              <!-- For all patients -->
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1">For All Patients</div>
+              <p class="mb-3">These programs are not emergency services. They are used to proactively reach out to you to see if you need help before you get any symptoms or your symptoms get worse. All information gathered is secure and HIPAA compliant. Even if you give permission now, you can opt out of either program at any time by texting or saying STOP during one of your interactions.</p>
+
+              <!-- Conditional: Co-pays -->
+              <div class="bg-green-50 border border-green-200 rounded p-2 mb-2">
+                <div class="text-[10px] font-semibold text-green-600 uppercase mb-1">If No Co-pays</div>
+                <p class="text-slate-700">"Although your doctor will bill insurance for these programs, you will not have any out-of-pocket costs."</p>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 rounded p-2 mb-3">
+                <div class="text-[10px] font-semibold text-amber-600 uppercase mb-1">If Has Co-pays</div>
+                <p class="text-slate-700">"The APCM program will have a co-pay of $X per month. The RPM program will have a co-pay of $X per month only when we need to monitor you more closely."</p>
+              </div>
+
               <p>Do you have any questions?"</p>
-            </div>
-            <!-- Conditional script for patients without chronic diseases -->
-            <div class="bg-gray-100 border border-gray-300 rounded p-2.5 text-xs">
-              <div class="text-[10px] font-semibold text-gray-500 uppercase mb-1.5">If No Chronic Diseases — Add This</div>
-              <p class="text-slate-700">"Even if you are healthy, we may use the RPM program after a hospital stay, a visit to an emergency room, or after a procedure to make sure you are recovering okay."</p>
             </div>
             <!-- Actions -->
             <div class="space-y-2 pt-1">
