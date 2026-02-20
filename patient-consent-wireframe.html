@@ -322,13 +322,15 @@
               <p class="mb-2">"My name is <strong>Sally</strong> and I am calling on behalf of <strong>Dashing Medical</strong>. Is this <strong>Simon Jacques</strong>?"</p>
               <p class="text-slate-500 italic text-[11px] mb-1">If yes: Continue below</p>
               <p class="text-slate-500 italic text-[11px] mb-2">If no: "Is Simon Jacques available?" If unavailable, schedule callback.</p>
+              <p class="mb-2">"Great, and just to confirm I'm speaking with the right person, can you verify your date of birth?"</p>
+              <p class="text-slate-500 italic text-[11px] mb-2">Expected: <strong>April 22, 1962</strong></p>
               <p>"<strong>Dr. Dashing</strong> asked me to call you to discuss ways you can better connect with him/her and stay healthy. Do you have a few minutes to talk?"</p>
               <p class="text-slate-500 italic text-[11px] mt-1">If no: Schedule callback. If yes: Continue to next step.</p>
             </div>
             <!-- Action -->
             <label class="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Introduced self and confirmed patient is available to talk.</span>
+              <span class="text-xs text-gray-700">Introduced self, verified DOB, and confirmed patient is available to talk.</span>
             </label>
           </div>
         </div>
