@@ -512,8 +512,6 @@
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
               <p>"Did you receive the letter that was sent to you from <strong>Dashing Medical</strong> a few days ago?"</p>
-              <p class="text-slate-500 italic text-[11px] mt-1">If no: "No worries." (Proceed to next step)</p>
-              <p class="text-slate-500 italic text-[11px]">If yes: "Great, I am going over the information in the letter at a high level." (Proceed to next step)</p>
             </div>
             <!-- Action -->
             <div>
@@ -523,6 +521,18 @@
                 <button onclick="selectLetter('no', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
               </div>
               <input type="hidden" id="letterStatus" value="">
+            </div>
+
+            <!-- Response: Yes -->
+            <div id="step4LetterYes" class="hidden bg-green-50 border border-green-200 rounded p-2.5 text-xs text-green-800">
+              <div class="text-[10px] font-semibold text-green-600 uppercase mb-1.5">Script</div>
+              <p>"Great, I am going over the information in the letter at a high level."</p>
+            </div>
+
+            <!-- Response: No -->
+            <div id="step4LetterNo" class="hidden bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"No worries."</p>
             </div>
           </div>
         </div>
@@ -1563,6 +1573,16 @@
       });
       btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
       btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      // Show appropriate response
+      document.getElementById('step4LetterYes').classList.add('hidden');
+      document.getElementById('step4LetterNo').classList.add('hidden');
+      if (value === 'yes') {
+        document.getElementById('step4LetterYes').classList.remove('hidden');
+      } else {
+        document.getElementById('step4LetterNo').classList.remove('hidden');
+      }
+
       checkResolveRequirements();
     }
 
