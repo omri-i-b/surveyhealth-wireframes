@@ -1115,30 +1115,12 @@
         const date = document.getElementById('callbackDate').value;
         const time = document.getElementById('callbackTime').value;
         if (!date || !time) {
-          alert('Please select a date and time for the callback.');
           return;
         }
-        const formatted = new Date(date + 'T' + time).toLocaleString('en-US', {
-          month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
-        });
-        if (confirm(`Schedule callback for ${formatted}?`)) {
-          alert('Callback scheduled for ' + formatted);
-          document.getElementById('resolveDropdown').classList.add('hidden');
-          document.getElementById('callbackPicker').classList.add('hidden');
-        }
-        return;
       }
-
-      const messages = {
-        'not_reached': 'Mark as Not Reached? This will close this ticket and create Attempt #3.',
-        'wrong_number': 'Mark as Wrong Number? This will flag the number for review.',
-        'declined': 'Mark as Patient Declined? This will close the ticket with no further attempts.',
-        'escalate': 'Escalate this ticket? It will be reassigned for supervisor review.'
-      };
-      if (confirm(messages[resolution])) {
-        alert('Ticket resolved as: ' + resolution);
-        document.getElementById('resolveDropdown').classList.add('hidden');
-      }
+      // In real app, would save to backend
+      document.getElementById('resolveDropdown').classList.add('hidden');
+      document.getElementById('callbackPicker')?.classList.add('hidden');
     }
 
     // Close dropdown when clicking outside
