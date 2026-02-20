@@ -876,7 +876,7 @@
             <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"You will receive a text message/phone call starting next week. Sometimes there may be a follow-up call from a nurse depending on your responses. Your doctor will also be informed about your responses. If we feel that you need to see <strong>Dr. Dashing</strong> sooner, we will assist in getting you an appointment. Do you have any questions?"</p>
+              <p class="mb-2">"You will receive a <strong id="step9ContactMethod" class="text-blue-700">text message/phone call</strong> starting next week. Sometimes there may be a follow-up call from a nurse depending on your responses. Your doctor will also be informed about your responses. If we feel that you need to see <strong>Dr. Dashing</strong> sooner, we will assist in getting you an appointment. Do you have any questions?"</p>
               <p class="mb-2">"Can you save the phone number I am calling from and the phone number of your text message so that our calls and messages do not get stuck in spam?"</p>
               <p>"Great. If you do have any questions, you can call <strong>Dashing Medical</strong> at <strong>(215) 735-3345</strong>. Thanks."</p>
             </div>
@@ -1571,6 +1571,15 @@
       });
       btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
       btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      // Update Step 9 script based on preference
+      const step9Method = document.getElementById('step9ContactMethod');
+      if (value === 'sms') {
+        step9Method.textContent = 'text message';
+      } else if (value === 'voice') {
+        step9Method.textContent = 'phone call';
+      }
+
       checkResolveRequirements();
     }
 
