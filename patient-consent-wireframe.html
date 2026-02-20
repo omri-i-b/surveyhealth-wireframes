@@ -432,11 +432,24 @@
             <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 3: Verify Name and DOB</h4>
           </div>
           <div class="p-3 space-y-3">
+            <!-- Inline patient info for verification -->
+            <div class="bg-blue-50 border border-blue-200 rounded p-2.5">
+              <div class="text-[10px] font-semibold text-blue-600 uppercase mb-1.5">Verify Against</div>
+              <div class="flex gap-6 text-sm">
+                <div>
+                  <span class="text-gray-500 text-xs">Name:</span>
+                  <span class="font-semibold text-gray-900 ml-1">Simon Jacques</span>
+                </div>
+                <div>
+                  <span class="text-gray-500 text-xs">DOB:</span>
+                  <span class="font-semibold text-gray-900 ml-1">04/22/1962</span>
+                </div>
+              </div>
+            </div>
             <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
               <p>"Can you state your full name and verify your date of birth for me?"</p>
-              <p class="text-slate-500 italic text-[11px] mt-1">If not verified: "It seems that the information you provided does not match our records. Let me touch base with Dr. Dashing and call you back later."</p>
             </div>
             <!-- Action -->
             <div>
@@ -447,19 +460,26 @@
               </div>
             </div>
             <!-- Inline resolution picker for No -->
-            <div id="step3Resolution" class="hidden p-2 bg-amber-50 border border-amber-200 rounded">
-              <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
-              <div class="flex flex-wrap gap-1.5">
-                <button onclick="resolveAs('wrong_number')" class="px-2 py-1 text-[11px] font-medium bg-yellow-100 text-yellow-700 border border-yellow-200 rounded hover:bg-yellow-200">Wrong Number</button>
-                <button onclick="showInlineCallback('step3Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
+            <div id="step3Resolution" class="hidden mt-2 space-y-2">
+              <!-- Not verified script -->
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p>"It seems that the information you provided does not match our records. Let me touch base with <strong>Dashing Medical</strong> and call you back later."</p>
               </div>
-              <div id="step3Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
-                <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
-                <div class="flex gap-1.5">
-                  <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
-                  <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
+              <div class="p-2 bg-amber-50 border border-amber-200 rounded">
+                <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <button onclick="resolveAs('wrong_number')" class="px-2 py-1 text-[11px] font-medium bg-yellow-100 text-yellow-700 border border-yellow-200 rounded hover:bg-yellow-200">Wrong Number</button>
+                  <button onclick="showInlineCallback('step3Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
                 </div>
-                <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
+                <div id="step3Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
+                  <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
+                  <div class="flex gap-1.5">
+                    <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                    <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
+                  </div>
+                  <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
+                </div>
               </div>
             </div>
           </div>
