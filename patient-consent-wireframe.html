@@ -580,32 +580,35 @@
             </div>
             <!-- Actions -->
             <div class="space-y-2 pt-1">
+              <div class="flex justify-end mb-1">
+                <button onclick="checkAllStep5()" class="text-[11px] text-blue-600 hover:text-blue-800 hover:underline">Check all</button>
+              </div>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Explained APCM program (check-ins between visits, 1-2 min calls/texts weekly).</span>
               </label>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Explained RPM program (vital signs via phone selfie video, voice monitoring).</span>
               </label>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Clarified these are not emergency services (call 911 for emergencies).</span>
               </label>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Explained data is secure and HIPAA compliant.</span>
               </label>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Informed patient they can opt out at any time.</span>
               </label>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Explained cost/coverage (Medicare Part B, co-pays if applicable).</span>
               </label>
               <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
                 <span class="text-xs text-gray-700">Asked if patient has any questions and answered them.</span>
               </label>
             </div>
@@ -1454,6 +1457,13 @@
 
     function updateChecklist() {
       checkResolveRequirements();
+    }
+
+    function checkAllStep5() {
+      document.querySelectorAll('.step5-check').forEach(cb => {
+        cb.checked = true;
+      });
+      updateChecklist();
     }
 
     function selectRecording(value, btn) {
