@@ -320,16 +320,10 @@
             <span class="text-[10px] text-orange-600 font-medium">⚠ Required</span>
           </div>
           <div class="p-3">
-            <div class="text-xs text-gray-600 mb-2">Which programs is the patient enrolling in?</div>
-            <div class="flex gap-4">
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="enrollApcm" class="w-4 h-4 text-blue-600 rounded" onchange="checkEnrollment()">
-                <span class="text-xs font-medium text-gray-900">APCM</span>
-              </label>
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" id="enrollRpm" class="w-4 h-4 text-blue-600 rounded" onchange="checkEnrollment()">
-                <span class="text-xs font-medium text-gray-900">RPM</span>
-              </label>
+            <div class="text-xs text-gray-600 mb-2">Does the patient consent to APCM and RPM program enrollment?</div>
+            <div class="flex gap-1.5">
+              <button onclick="selectEnrollment('yes', this)" class="enrollment-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+              <button onclick="selectEnrollment('no', this)" class="enrollment-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
             </div>
             <input type="hidden" id="enrollmentSelected" value="">
           </div>
@@ -974,11 +968,14 @@
       }
     });
 
-    function checkEnrollment() {
-      const apcm = document.getElementById('enrollApcm').checked;
-      const rpm = document.getElementById('enrollRpm').checked;
-      // At least one must be selected, or explicitly mark as "selected" once user interacts
-      document.getElementById('enrollmentSelected').value = (apcm || rpm) ? 'yes' : 'no';
+    function selectEnrollment(value, btn) {
+      document.getElementById('enrollmentSelected').value = value;
+      document.querySelectorAll('.enrollment-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
       checkResolveRequirements();
     }
 
