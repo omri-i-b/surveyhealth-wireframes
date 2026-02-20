@@ -829,12 +829,17 @@
 
             <!-- Initial State: Not Sent -->
             <div id="vitalsSendSection">
-              <button onclick="sendVitalsLink()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                </svg>
-                Send Vitals Link
-              </button>
+              <div class="flex gap-2">
+                <button onclick="sendVitalsLink()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                  </svg>
+                  Send Vitals Link
+                </button>
+                <button onclick="declineVitals()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-gray-600 border border-gray-300 text-xs font-medium rounded hover:bg-gray-50">
+                  Patient Declined
+                </button>
+              </div>
             </div>
 
             <!-- Sent State: Waiting for Results -->
@@ -883,6 +888,16 @@
                   <div class="text-gray-500 text-[10px]">RR</div>
                   <div class="font-semibold text-gray-900">16</div>
                 </div>
+              </div>
+            </div>
+
+            <!-- Declined State -->
+            <div id="vitalsDeclinedSection" class="hidden">
+              <div class="flex items-center gap-2 p-2 bg-amber-50 border border-amber-200 rounded">
+                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <span class="text-xs text-amber-800">Patient declined vitals scan</span>
               </div>
             </div>
 
@@ -1670,8 +1685,9 @@
       const letterSelected = document.getElementById('letterStatus').value;
       const enrollmentSelected = document.getElementById('enrollmentSelected').value;
       const followupSelected = document.getElementById('followupPreference').value;
-      const vitalsCompleted = document.getElementById('vitalsStatus').value === 'completed';
-      const canResolve = allChecked && letterSelected && enrollmentSelected && followupSelected && vitalsCompleted;
+      const vitalsStatus = document.getElementById('vitalsStatus').value;
+      const vitalsAnswered = vitalsStatus === 'completed' || vitalsStatus === 'declined';
+      const canResolve = allChecked && letterSelected && enrollmentSelected && followupSelected && vitalsAnswered;
       updateResolveButton(canResolve);
     }
 
@@ -1680,6 +1696,13 @@
       document.getElementById('vitalsSendSection').classList.add('hidden');
       document.getElementById('vitalsWaitingSection').classList.remove('hidden');
       document.getElementById('vitalsStatus').value = 'waiting';
+    }
+
+    function declineVitals() {
+      document.getElementById('vitalsSendSection').classList.add('hidden');
+      document.getElementById('vitalsDeclinedSection').classList.remove('hidden');
+      document.getElementById('vitalsStatus').value = 'declined';
+      checkResolveRequirements();
     }
 
     function refreshVitals() {
