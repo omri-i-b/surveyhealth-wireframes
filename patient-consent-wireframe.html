@@ -595,20 +595,64 @@
             <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"Great! Do we have your permission to enroll you in both the APCM and RPM programs?"</p>
-              <p class="text-slate-500 italic text-[11px] mb-1">If yes to both: "That is great. I really think you will see the benefits of this program."</p>
-              <p class="text-slate-500 italic text-[11px] mb-1">If no to one/both: "Would you mind sharing with me why you are not comfortable consenting? Is there some information I can relay back to Dr. Dashing?"</p>
-              <p class="text-slate-500 italic text-[11px]">(Document reason. Use Q&A document to address hesitation.)</p>
+              <p>"Great! Do we have your permission to enroll you in both the APCM and RPM programs?"</p>
             </div>
-            <!-- Action -->
+            <!-- Action: APCM Consent -->
             <div>
-              <div class="text-xs text-gray-600 mb-2">Does the patient consent to APCM and RPM program enrollment?</div>
+              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>APCM</strong>?</div>
               <div class="flex gap-1.5">
-                <button onclick="selectEnrollment('yes', this)" class="enrollment-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectEnrollment('no', this)" class="enrollment-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+                <button onclick="selectAPCM('yes', this)" class="apcm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectAPCM('no', this)" class="apcm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
               </div>
-              <input type="hidden" id="enrollmentSelected" value="">
             </div>
+            <!-- Action: RPM Consent -->
+            <div>
+              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>RPM</strong>?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectRPM('yes', this)" class="rpm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectRPM('no', this)" class="rpm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+
+            <!-- Response: Yes to both -->
+            <div id="step6YesBoth" class="hidden bg-green-50 border border-green-200 rounded p-2.5 text-xs text-green-800">
+              <div class="text-[10px] font-semibold text-green-600 uppercase mb-1.5">Script</div>
+              <p>"That is great. I really think you will see the benefits of this program."</p>
+            </div>
+
+            <!-- Response: No to one program -->
+            <div id="step6NoOne" class="hidden bg-amber-50 border border-amber-200 rounded p-2.5 text-xs text-amber-800">
+              <div class="text-[10px] font-semibold text-amber-600 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"Would you mind sharing with me why you are not comfortable consenting for <strong id="declinedProgram">APCM/RPM</strong>? Is there some information I can relay back to <strong>Dr. Dashing</strong>?"</p>
+              <p class="text-amber-600 italic text-[11px]">(Document reason why no consent. Use Q&A document to counter some of patient's hesitation.)</p>
+            </div>
+
+            <!-- Response: No to both -->
+            <div id="step6NoBoth" class="hidden mt-2 space-y-2">
+              <div class="bg-red-50 border border-red-200 rounded p-2.5 text-xs text-red-800">
+                <div class="text-[10px] font-semibold text-red-600 uppercase mb-1.5">Script</div>
+                <p class="mb-2">"I understand your hesitation. Would you mind sharing with me why? Is there some information I can relay back to <strong>Dr. Dashing</strong>?"</p>
+                <p class="text-red-600 italic text-[11px]">(Document reason why no consent. Use Q&A document to counter some of patient's hesitation.)</p>
+              </div>
+              <div class="p-2 bg-amber-50 border border-amber-200 rounded">
+                <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <button onclick="resolveAs('declined')" class="px-2 py-1 text-[11px] font-medium bg-red-100 text-red-700 border border-red-200 rounded hover:bg-red-200">Patient Declined</button>
+                  <button onclick="showInlineCallback('step6Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
+                </div>
+                <div id="step6Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
+                  <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
+                  <div class="flex gap-1.5">
+                    <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                    <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
+                  </div>
+                  <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
+                </div>
+              </div>
+            </div>
+
+            <input type="hidden" id="apcmConsent" value="">
+            <input type="hidden" id="rpmConsent" value="">
           </div>
         </div>
 
@@ -1296,15 +1340,55 @@
       }
     });
 
-    function selectEnrollment(value, btn) {
-      document.getElementById('enrollmentSelected').value = value;
-      document.querySelectorAll('.enrollment-btn').forEach(b => {
+    function selectAPCM(value, btn) {
+      document.getElementById('apcmConsent').value = value;
+      document.querySelectorAll('.apcm-btn').forEach(b => {
         b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
         b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
       });
       btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
       btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+      updateConsentResponse();
       checkResolveRequirements();
+    }
+
+    function selectRPM(value, btn) {
+      document.getElementById('rpmConsent').value = value;
+      document.querySelectorAll('.rpm-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+      updateConsentResponse();
+      checkResolveRequirements();
+    }
+
+    function updateConsentResponse() {
+      const apcm = document.getElementById('apcmConsent').value;
+      const rpm = document.getElementById('rpmConsent').value;
+
+      // Hide all response sections
+      document.getElementById('step6YesBoth').classList.add('hidden');
+      document.getElementById('step6NoOne').classList.add('hidden');
+      document.getElementById('step6NoBoth').classList.add('hidden');
+
+      // Only show response when both are selected
+      if (!apcm || !rpm) return;
+
+      if (apcm === 'yes' && rpm === 'yes') {
+        // Yes to both
+        document.getElementById('step6YesBoth').classList.remove('hidden');
+      } else if (apcm === 'no' && rpm === 'no') {
+        // No to both
+        document.getElementById('step6NoBoth').classList.remove('hidden');
+        setDefaultCallbackDate();
+      } else {
+        // Yes to one, no to the other
+        const declined = apcm === 'no' ? 'APCM' : 'RPM';
+        document.getElementById('declinedProgram').textContent = declined;
+        document.getElementById('step6NoOne').classList.remove('hidden');
+      }
     }
 
     function updateChecklist() {
