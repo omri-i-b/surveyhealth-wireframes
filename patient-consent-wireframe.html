@@ -319,19 +319,53 @@
             <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"My name is <strong>Sally</strong> and I am calling on behalf of <strong>Dashing Medical</strong>. Is this <strong>Simon Jacques</strong>?"</p>
-              <p class="text-slate-500 italic text-[11px] mb-1">If yes: Continue below</p>
-              <p class="text-slate-500 italic text-[11px] mb-2">If no: "Is Simon Jacques available?" If unavailable, schedule callback.</p>
-              <p class="mb-2">"Great, and just to confirm I'm speaking with the right person, can you verify your date of birth?"</p>
-              <p class="text-slate-500 italic text-[11px] mb-2">Expected: <strong>April 22, 1962</strong></p>
-              <p>"<strong>Dr. Dashing</strong> asked me to call you to discuss ways you can better connect with him/her and stay healthy. Do you have a few minutes to talk?"</p>
-              <p class="text-slate-500 italic text-[11px] mt-1">If no: Schedule callback. If yes: Continue to next step.</p>
+              <p>"My name is <strong>Sally</strong> and I am calling on behalf of <strong>Dashing Medical</strong>. Is this <strong>Simon Jacques</strong>?"</p>
             </div>
-            <!-- Action -->
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Introduced self, verified DOB, and confirmed patient is available to talk.</span>
-            </label>
+            <!-- Action: Is this the patient? -->
+            <div>
+              <div class="text-xs text-gray-600 mb-2">Is this <strong>Simon Jacques</strong>?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectStep1Patient('yes', this)" class="step1-patient-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectStep1Patient('no', this)" class="step1-patient-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+
+            <!-- If No: Is patient available? (hidden by default) -->
+            <div id="step1PatientAvailable" class="hidden border-l-2 border-amber-300 pl-3">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <p>"Is <strong>Simon Jacques</strong> available?"</p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">Is patient available?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectStep1Available('yes', this)" class="step1-available-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectStep1Available('no', this)" class="step1-available-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No → Schedule Callback</button>
+              </div>
+            </div>
+
+            <!-- DOB Verification (hidden until patient confirmed) -->
+            <div id="step1DOB" class="hidden">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <p>"Great, and just to confirm I'm speaking with the right person, can you verify your date of birth?"</p>
+                <p class="text-slate-500 italic text-[11px] mt-1">Expected: <strong>April 22, 1962</strong></p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">DOB verified?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectStep1DOB('yes', this)" class="step1-dob-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectStep1DOB('no', this)" class="step1-dob-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+
+            <!-- Available to talk (hidden until DOB verified) -->
+            <div id="step1Talk" class="hidden">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <p>"<strong>Dr. Dashing</strong> asked me to call you to discuss ways you can better connect with him/her and stay healthy. Do you have a few minutes to talk?"</p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">Patient available to talk?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectStep1Talk('yes', this)" class="step1-talk-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectStep1Talk('no', this)" class="step1-talk-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No → Schedule Callback</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -368,14 +402,16 @@
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
               <p>"Can you state your full name and verify your date of birth for me?"</p>
-              <p class="text-slate-500 italic text-[11px] mt-1">If verified: Proceed to next step.</p>
-              <p class="text-slate-500 italic text-[11px]">If not verified: "It seems that the information you provided does not match our records. Let me touch base with Dr. Dashing and call you back later."</p>
+              <p class="text-slate-500 italic text-[11px] mt-1">If not verified: "It seems that the information you provided does not match our records. Let me touch base with Dr. Dashing and call you back later."</p>
             </div>
             <!-- Action -->
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient identity verified via full name and date of birth.</span>
-            </label>
+            <div>
+              <div class="text-xs text-gray-600 mb-2">Patient identity verified?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectVerified('yes', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectVerified('no', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No → End Call</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -654,10 +690,13 @@
               <p>"Great. If you do have any questions, you can call <strong>Dashing Medical</strong> at <strong>(215) 735-3345</strong>. Thanks."</p>
             </div>
             <!-- Action -->
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient asked to save contact number and provided with provider contact info.</span>
-            </label>
+            <div>
+              <div class="text-xs text-gray-600 mb-2">Patient asked to save contact number?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectCloseCall('yes', this)" class="close-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectCloseCall('no', this)" class="close-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1183,6 +1222,89 @@
 
     function selectRecording(value, btn) {
       document.querySelectorAll('.recording-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+    }
+
+    // Step 1 branching logic
+    function selectStep1Patient(value, btn) {
+      document.querySelectorAll('.step1-patient-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      if (value === 'yes') {
+        document.getElementById('step1PatientAvailable').classList.add('hidden');
+        document.getElementById('step1DOB').classList.remove('hidden');
+      } else {
+        document.getElementById('step1PatientAvailable').classList.remove('hidden');
+        document.getElementById('step1DOB').classList.add('hidden');
+        document.getElementById('step1Talk').classList.add('hidden');
+      }
+    }
+
+    function selectStep1Available(value, btn) {
+      document.querySelectorAll('.step1-available-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      if (value === 'yes') {
+        document.getElementById('step1DOB').classList.remove('hidden');
+      } else {
+        // Show callback picker
+        showCallbackPicker();
+      }
+    }
+
+    function selectStep1DOB(value, btn) {
+      document.querySelectorAll('.step1-dob-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      if (value === 'yes') {
+        document.getElementById('step1Talk').classList.remove('hidden');
+      } else {
+        document.getElementById('step1Talk').classList.add('hidden');
+      }
+    }
+
+    function selectStep1Talk(value, btn) {
+      document.querySelectorAll('.step1-talk-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+
+      if (value === 'no') {
+        showCallbackPicker();
+      }
+    }
+
+    // Step 3: Identity verification
+    function selectVerified(value, btn) {
+      document.querySelectorAll('.verified-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+    }
+
+    // Step 9: Close call
+    function selectCloseCall(value, btn) {
+      document.querySelectorAll('.close-btn').forEach(b => {
         b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
         b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
       });
