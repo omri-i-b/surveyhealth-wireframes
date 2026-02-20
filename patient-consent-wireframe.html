@@ -449,6 +449,14 @@
                   <input type="text" placeholder="Enter name" class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
                 </div>
                 <div>
+                  <label class="text-[10px] text-gray-500 block mb-1">Relationship</label>
+                  <div class="flex gap-1.5">
+                    <button onclick="selectRelationship('family', this)" class="relationship-btn px-2 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Family</button>
+                    <button onclick="selectRelationship('friend', this)" class="relationship-btn px-2 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Friend</button>
+                    <button onclick="selectRelationship('other', this)" class="relationship-btn px-2 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Other</button>
+                  </div>
+                </div>
+                <div>
                   <label class="text-[10px] text-gray-500 block mb-1">Phone Number</label>
                   <input type="tel" placeholder="(555) 555-5555" class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
                 </div>
@@ -1043,6 +1051,15 @@
       } else {
         fields.classList.add('hidden');
       }
+    }
+
+    function selectRelationship(value, btn) {
+      document.querySelectorAll('.relationship-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
     }
 
     function updateResolveButton(canResolve) {
