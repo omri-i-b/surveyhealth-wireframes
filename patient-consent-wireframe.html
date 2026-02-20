@@ -348,10 +348,13 @@
               <p class="text-slate-500 italic text-[11px] mt-1">(Turn on scribe AI and recording device)</p>
             </div>
             <!-- Action -->
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Call recording started.</span>
-            </label>
+            <div>
+              <div class="text-xs text-gray-600 mb-2">Is this call being recorded?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectRecording('yes', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectRecording('no', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1176,6 +1179,15 @@
 
     function updateChecklist() {
       checkResolveRequirements();
+    }
+
+    function selectRecording(value, btn) {
+      document.querySelectorAll('.recording-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
     }
 
     function selectLetter(value, btn) {
