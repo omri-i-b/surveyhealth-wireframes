@@ -1686,11 +1686,13 @@
       const checks = document.querySelectorAll('.consent-check');
       const allChecked = document.querySelectorAll('.consent-check:checked').length === checks.length;
       const letterSelected = document.getElementById('letterStatus').value;
-      const enrollmentSelected = document.getElementById('enrollmentSelected').value;
+      const apcmSelected = document.getElementById('apcmConsent').value;
+      const rpmSelected = document.getElementById('rpmConsent').value;
+      const enrollmentAnswered = apcmSelected && rpmSelected;
       const followupSelected = document.getElementById('followupPreference').value;
       const vitalsStatus = document.getElementById('vitalsStatus').value;
       const vitalsAnswered = vitalsStatus === 'completed' || vitalsStatus === 'declined';
-      const canResolve = allChecked && letterSelected && enrollmentSelected && followupSelected && vitalsAnswered;
+      const canResolve = allChecked && letterSelected && enrollmentAnswered && followupSelected && vitalsAnswered;
       updateResolveButton(canResolve);
     }
 
