@@ -315,10 +315,20 @@
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
             <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 1: Introduce SurveyHealth and <strong class="text-gray-700">Dashing Medical</strong></h4>
           </div>
-          <div class="p-3">
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"My name is <strong>Sally</strong> and I am calling on behalf of <strong>Dashing Medical</strong>. Is this <strong>Simon Jacques</strong>?"</p>
+              <p class="text-slate-500 italic text-[11px] mb-1">If yes: Continue below</p>
+              <p class="text-slate-500 italic text-[11px] mb-2">If no: "Is Simon Jacques available?" If unavailable, schedule callback.</p>
+              <p>"<strong>Dr. Dashing</strong> asked me to call you to discuss ways you can better connect with him/her and stay healthy. Do you have a few minutes to talk?"</p>
+              <p class="text-slate-500 italic text-[11px] mt-1">If no: Schedule callback. If yes: Continue to next step.</p>
+            </div>
+            <!-- Action -->
             <label class="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Introduced self as calling from SurveyHealth on behalf of <strong>Dashing Medical</strong>.</span>
+              <span class="text-xs text-gray-700">Introduced self and confirmed patient is available to talk.</span>
             </label>
           </div>
         </div>
@@ -326,12 +336,19 @@
         <!-- Step 2: Call Recording -->
         <div class="border border-gray-200 rounded bg-white">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 2: Call Recording</h4>
+            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 2: State Call Recording</h4>
           </div>
-          <div class="p-3">
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"I am going to begin recording this call for quality and training purposes."</p>
+              <p class="text-slate-500 italic text-[11px] mt-1">(Turn on scribe AI and recording device)</p>
+            </div>
+            <!-- Action -->
             <label class="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Call recording started for quality and training purposes.</span>
+              <span class="text-xs text-gray-700">Call recording started.</span>
             </label>
           </div>
         </div>
@@ -339,9 +356,17 @@
         <!-- Step 3: Verify Identity -->
         <div class="border border-gray-200 rounded bg-white">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 3: Verify Identity</h4>
+            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 3: Verify Name and DOB</h4>
           </div>
-          <div class="p-3">
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"Can you state your full name and verify your date of birth for me?"</p>
+              <p class="text-slate-500 italic text-[11px] mt-1">If verified: Proceed to next step.</p>
+              <p class="text-slate-500 italic text-[11px]">If not verified: "It seems that the information you provided does not match our records. Let me touch base with Dr. Dashing and call you back later."</p>
+            </div>
+            <!-- Action -->
             <label class="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
               <span class="text-xs text-gray-700">Patient identity verified via full name and date of birth.</span>
@@ -352,68 +377,98 @@
         <!-- Step 4: Outreach Letter -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 4: Outreach Letter</h4>
-            <span class="text-[10px] text-orange-600 font-medium">⚠ Required</span>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 4: Ask About Letter</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
-          <div class="p-3">
-            <div class="text-xs text-gray-600 mb-2">Did the patient receive the letter?</div>
-            <div class="flex gap-1.5">
-              <button onclick="selectLetter('yes', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-              <button onclick="selectLetter('no', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
-              <button onclick="selectLetter('not_received', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Didn't receive</button>
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"Did you receive the letter that was sent to you from <strong>Dashing Medical</strong> a few days ago?"</p>
+              <p class="text-slate-500 italic text-[11px] mt-1">If no: "No worries." (Proceed to next step)</p>
+              <p class="text-slate-500 italic text-[11px]">If yes: "Great, I am going over the information in the letter at a high level." (Proceed to next step)</p>
             </div>
-            <input type="hidden" id="letterStatus" value="">
+            <!-- Action -->
+            <div>
+              <div class="text-xs text-gray-600 mb-2">Did the patient receive the letter?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectLetter('yes', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectLetter('no', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+                <button onclick="selectLetter('not_received', this)" class="letter-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Didn't receive</button>
+              </div>
+              <input type="hidden" id="letterStatus" value="">
+            </div>
           </div>
         </div>
 
         <!-- Step 5: Explain Programs -->
         <div class="border border-gray-200 rounded bg-white">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 5: Explain Programs</h4>
+            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 5: Explain RPM and APCM Programs</h4>
           </div>
-          <div class="p-3 space-y-2">
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient informed that APCM and RPM services are part of their treatment plan ordered by <strong>Dashing Medical</strong>.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">APCM and RPM services explained, including remote collection of health data, care coordination, and communication via phone and text.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient informed that only the patient may use the remote monitoring link provided.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient informed that services are not emergency services and instructed to call 911 for emergencies.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient advised that APCM and RPM services may only be received from one provider per month.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Medicare Part B coverage and potential cost sharing explained.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Secure transmission and sharing of health information and vital data with ordering provider reviewed.</span>
-            </label>
-            <label class="flex items-start gap-2 cursor-pointer">
-              <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-              <span class="text-xs text-gray-700">Patient informed of right to opt out at any time.</span>
-            </label>
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed max-h-48 overflow-y-auto">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"There are two programs that <strong>Dr. Dashing</strong> recommended for you.</p>
+              <p class="mb-2">The first one is <strong>APCM</strong> or Advanced Primary Care Management. This program allows Dr. Dashing to check in on you in-between office visits. The check-in will occur by text message or a phone call at least once a week, or more often if needed. The check-ins will only last 1-2 minutes and if there are any issues, your doctor will be informed so that he/she can act right away to address those issues.</p>
+              <p class="mb-2">The second program is <strong>RPM</strong> or remote patient monitoring. This program allows us to take your vital signs—such as your blood pressure, heart rate, and how fast you are breathing—through your phone without any extra equipment. You will just need to take a selfie video for up to 60 seconds. Also, we may ask a few questions to monitor your wellbeing by checking your voice.</p>
+              <p class="mb-2 text-slate-500 italic">(For patients without chronic diseases: "Even if you are healthy, we may use the RPM program after a hospital stay, a visit to an emergency room, or after a procedure to make sure you are recovering okay.")</p>
+              <p class="mb-2">These programs are not emergency services. They are used to proactively reach out to you to see if you need help before you get any symptoms or your symptoms get worse. All information gathered is secure and HIPAA compliant. Even if you give permission now, you can opt out of either program at any time by texting or saying STOP during one of your interactions.</p>
+              <p class="mb-2 text-slate-500 italic">(For patients without co-pays: "Although your doctor will bill insurance for these programs, you will not have any out-of-pocket costs.")</p>
+              <p class="mb-2 text-slate-500 italic">(For patients with co-pays: "The APCM program will have a co-pay of $X per month. The RPM program will have a co-pay of $X per month only when we need to monitor you more closely.")</p>
+              <p>Do you have any questions?"</p>
+            </div>
+            <!-- Actions -->
+            <div class="space-y-2 pt-1">
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Explained APCM program (check-ins between visits, 1-2 min calls/texts weekly).</span>
+              </label>
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Explained RPM program (vital signs via phone selfie video, voice monitoring).</span>
+              </label>
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Clarified these are not emergency services (call 911 for emergencies).</span>
+              </label>
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Explained data is secure and HIPAA compliant.</span>
+              </label>
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Informed patient they can opt out at any time.</span>
+              </label>
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Explained cost/coverage (Medicare Part B, co-pays if applicable).</span>
+              </label>
+              <label class="flex items-start gap-2 cursor-pointer">
+                <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
+                <span class="text-xs text-gray-700">Asked if patient has any questions and answered them.</span>
+              </label>
+            </div>
           </div>
         </div>
 
         <!-- Step 6: Program Enrollment -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 6: Program Enrollment</h4>
-            <span class="text-[10px] text-orange-600 font-medium">⚠ Required</span>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 6: Consent for APCM and RPM</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
           <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"Great! Do we have your permission to enroll you in both the APCM and RPM programs?"</p>
+              <p class="text-slate-500 italic text-[11px] mb-1">If yes to both: "That is great. I really think you will see the benefits of this program."</p>
+              <p class="text-slate-500 italic text-[11px] mb-1">If no to one/both: "Would you mind sharing with me why you are not comfortable consenting? Is there some information I can relay back to Dr. Dashing?"</p>
+              <p class="text-slate-500 italic text-[11px]">(Document reason. Use Q&A document to address hesitation.)</p>
+            </div>
+            <!-- Action -->
             <div>
               <div class="text-xs text-gray-600 mb-2">Does the patient consent to APCM and RPM program enrollment?</div>
               <div class="flex gap-1.5">
@@ -425,7 +480,7 @@
             <div class="border-t border-blue-200 pt-3">
               <label class="flex items-start gap-2 cursor-pointer">
                 <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Patient verbalized understanding and provided verbal consent to enroll in APCM and RPM.</span>
+                <span class="text-xs text-gray-700">Patient verbalized understanding and provided verbal consent.</span>
               </label>
             </div>
           </div>
@@ -434,10 +489,20 @@
         <!-- Step 7: Communication Preferences -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 7: Communication Preferences</h4>
-            <span class="text-[10px] text-orange-600 font-medium">⚠ Required</span>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 7: Confirm Phone and Communication</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
           <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"Is this the cell phone number we can contact you with?"</p>
+              <p class="text-slate-500 italic text-[11px] mb-2">If no: "Can you provide the cell phone number you would like to use?"</p>
+              <p class="mb-2">"Do you prefer to check in by text or call?"</p>
+              <p class="mb-2">"Do you have a caretaker or someone that helps you out?"</p>
+              <p class="text-slate-500 italic text-[11px]">If yes: "Can you provide me with your caretaker's cell phone number?"</p>
+            </div>
+            <!-- Actions -->
             <div>
               <div class="text-xs text-gray-600 mb-2">How does the patient prefer to check in?</div>
               <div class="flex gap-1.5">
@@ -498,10 +563,19 @@
         <!-- Step 8: Baseline Vitals -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 8: Baseline Vitals</h4>
-            <span class="text-[10px] text-orange-600 font-medium">⚠ Required</span>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 8: Get Baseline Vital Signs</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
-          <div class="p-3">
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"Would it be okay for me to check your vital signs by phone now?"</p>
+              <p class="text-slate-500 italic text-[11px] mb-2">If no: "This will allow you to better understand how we will take your vital signs without any equipment except for your phone."</p>
+              <p>"I will send you a text to your cell phone. Follow the instructions by clicking on the hyperlink in the text and then pressing the start button. We will then be able to take your vitals. I will stay on while you take your vitals. You will need to remain silent for 60 seconds while your vitals are being taken."</p>
+              <p class="text-slate-500 italic text-[11px] mt-1">(Help patient with taking their vitals if there are any issues)</p>
+            </div>
+            <!-- Action -->
             <div id="vitalsNotSent" class="text-xs text-gray-600 mb-2">Send vitals link to capture baseline readings during the call.</div>
 
             <!-- Initial State: Not Sent -->
@@ -570,9 +644,17 @@
         <!-- Step 9: Close Call -->
         <div class="border border-gray-200 rounded bg-white">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 9: Close Call</h4>
+            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Step 9: Close and Provide Contact Info</h4>
           </div>
-          <div class="p-3">
+          <div class="p-3 space-y-3">
+            <!-- Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"You will receive a text message/phone call starting next week. Sometimes there may be a follow-up call from a nurse depending on your responses. Your doctor will also be informed about your responses. If we feel that you need to see <strong>Dr. Dashing</strong> sooner, we will assist in getting you an appointment. Do you have any questions?"</p>
+              <p class="mb-2">"Can you save the phone number I am calling from and the phone number of your text message so that our calls and messages do not get stuck in spam?"</p>
+              <p>"Great. If you do have any questions, you can call <strong>Dashing Medical</strong> at <strong>(215) 735-3345</strong>. Thanks."</p>
+            </div>
+            <!-- Action -->
             <label class="flex items-start gap-2 cursor-pointer">
               <input type="checkbox" class="consent-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
               <span class="text-xs text-gray-700">Patient asked to save contact number and provided with provider contact info.</span>
@@ -1097,18 +1179,6 @@
     }
 
     function updateChecklist() {
-      const checks = document.querySelectorAll('.consent-check');
-      const checked = document.querySelectorAll('.consent-check:checked').length;
-      const total = checks.length;
-      const statusEl = document.getElementById('checklistStatus');
-
-      if (checked === total) {
-        statusEl.textContent = '✓ Complete';
-        statusEl.className = 'text-[10px] text-green-600 font-medium';
-      } else {
-        statusEl.textContent = `⚠ ${checked}/${total} Complete`;
-        statusEl.className = 'text-[10px] text-orange-600 font-medium';
-      }
       checkResolveRequirements();
     }
 
