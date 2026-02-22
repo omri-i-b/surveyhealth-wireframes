@@ -627,7 +627,7 @@
             <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p>"Great! Do we have your permission to enroll you in both the APCM and RPM programs?"</p>
+              <p>"Great! Do we have your permission to enroll you in both these programs?"</p>
             </div>
             <!-- Action: APCM Consent -->
             <div>
@@ -644,6 +644,20 @@
                 <button onclick="selectRPM('yes', this)" class="rpm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
                 <button onclick="selectRPM('no', this)" class="rpm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
               </div>
+            </div>
+
+            <!-- Action: SMS Consent -->
+            <div class="border-t border-blue-200 pt-3">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p>"Can we send you text messages to make communication easier? Just so you know, regular text messages aren't encrypted, so if someone else has access to your phone, they could potentially see them."</p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>SMS messages</strong>?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectSMS('yes', this)" class="sms-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectSMS('no', this)" class="sms-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+              <input type="hidden" id="smsConsent" value="">
             </div>
 
             <!-- Response: Yes to both -->
@@ -1445,6 +1459,17 @@
       btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
       btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
       updateConsentResponse();
+      checkResolveRequirements();
+    }
+
+    function selectSMS(value, btn) {
+      document.getElementById('smsConsent').value = value;
+      document.querySelectorAll('.sms-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
       checkResolveRequirements();
     }
 
