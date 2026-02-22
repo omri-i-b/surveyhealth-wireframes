@@ -200,6 +200,38 @@
           </button>
         </div>
 
+        <!-- Related Records Banner (shows when other tickets share same contact phone) -->
+        <div id="relatedRecordsBanner" class="bg-fuchsia-100 border-2 border-fuchsia-400 rounded-lg px-4 py-3">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 bg-fuchsia-200 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-fuchsia-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-sm font-bold text-fuchsia-900">Related Records Found</span>
+                <span class="px-2 py-0.5 bg-fuchsia-300 text-fuchsia-900 text-[10px] font-bold rounded-full">2 OTHER TICKETS</span>
+              </div>
+              <p class="text-xs text-fuchsia-800 mb-2">These consent tickets share the same contact phone number:</p>
+              <div class="space-y-1">
+                <a href="patient-consent-workflow.html" class="flex items-center gap-2 text-xs text-fuchsia-700 hover:text-fuchsia-900 hover:underline font-medium">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  #8 — Robert Johnson (Spouse) — Pending
+                </a>
+                <a href="patient-consent-workflow.html" class="flex items-center gap-2 text-xs text-fuchsia-700 hover:text-fuchsia-900 hover:underline font-medium">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  #3 — Dorothy Johnson (Same Patient) — Completed
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Ticket Info (Universal) -->
         <div class="border border-gray-200 rounded">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
