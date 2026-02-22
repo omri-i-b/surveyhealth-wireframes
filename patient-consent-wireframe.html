@@ -822,6 +822,21 @@
                   <input type="tel" id="caretakerPhone" placeholder="(555) 555-5555" class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
                 </div>
               </div>
+              <!-- Caretaker Consent -->
+              <div class="border-t border-blue-200 pt-3 mt-3">
+                <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                  <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                  <p class="text-orange-600 italic">[Placeholder - Ashok to send copy]</p>
+                  <p>"Do you consent to allowing your caretaker to answer questions on your behalf when we contact them?"</p>
+                </div>
+                <div class="text-xs text-gray-600 mb-2">Does the patient consent to caretaker answering on their behalf?</div>
+                <div class="flex gap-1.5">
+                  <button onclick="selectCaretakerConsent('yes', this)" class="caretaker-consent-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                  <button onclick="selectCaretakerConsent('no', this)" class="caretaker-consent-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+                </div>
+                <input type="hidden" id="caretakerConsent" value="">
+                <p class="text-[10px] text-gray-400 mt-2 italic">Dev note: When caretaker is added, create a new user record for caretaker</p>
+              </div>
             </div>
 
           </div>
@@ -1693,6 +1708,18 @@
       } else {
         document.getElementById('caretakerFields').classList.add('hidden');
       }
+      checkResolveRequirements();
+    }
+
+    function selectCaretakerConsent(value, btn) {
+      document.getElementById('caretakerConsent').value = value;
+      document.querySelectorAll('.caretaker-consent-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+      checkResolveRequirements();
     }
 
     function addNewCell() {
