@@ -297,25 +297,44 @@
                     </svg>
                   </button>
                 </div>
-                <div id="resolveDropdown" class="hidden absolute right-0 mt-1 w-56 bg-white border border-gray-200 rounded shadow-lg z-10">
-                  <button onclick="showCallbackPicker()" class="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center gap-2">
+                <div id="resolveDropdown" class="hidden absolute right-0 mt-1 w-72 bg-white border border-gray-200 rounded shadow-lg z-10" style="top: 100%;">
+                  <!-- Call again: left message -->
+                  <button onclick="showCallbackPicker('leftMessage')" class="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center gap-2">
                     <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                    Call Again Later
+                    Call again: left message
                   </button>
-                  <div id="callbackPicker" class="hidden px-3 py-2 border-t border-gray-100 bg-gray-50">
+                  <div id="callbackPickerLeftMessage" class="hidden px-3 py-2 border-t border-gray-100 bg-gray-50">
                     <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
-                    <div class="flex gap-1.5">
-                      <input type="date" id="callbackDate" class="flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
-                      <input type="time" id="callbackTime" class="w-20 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                    <div class="flex gap-1.5 mb-2">
+                      <input type="date" id="callbackDateLeftMessage" class="flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                      <input type="time" id="callbackTimeLeftMessage" class="w-20 px-2 py-1 text-[11px] border border-gray-200 rounded">
                     </div>
-                    <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">
+                    <label class="text-[10px] text-gray-500 block mb-1">Patient requested time (optional)</label>
+                    <input type="text" id="patientRequestedTimeLeftMessage" placeholder="e.g., After 6pm, Mornings only" class="w-full px-2 py-1 text-[11px] border border-gray-200 rounded mb-2">
+                    <button onclick="resolveAs('callback_left_message')" class="w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">
                       Schedule
                     </button>
                   </div>
-                  <button onclick="resolveAs('not_reached')" class="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-                    Not Reached
+
+                  <!-- Call again: no message left -->
+                  <button onclick="showCallbackPicker('noMessage')" class="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                    Call again: no message left
                   </button>
+                  <div id="callbackPickerNoMessage" class="hidden px-3 py-2 border-t border-gray-100 bg-gray-50">
+                    <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
+                    <div class="flex gap-1.5 mb-2">
+                      <input type="date" id="callbackDateNoMessage" class="flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                      <input type="time" id="callbackTimeNoMessage" class="w-20 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                    </div>
+                    <label class="text-[10px] text-gray-500 block mb-1">Patient requested time (optional)</label>
+                    <input type="text" id="patientRequestedTimeNoMessage" placeholder="e.g., After 6pm, Mornings only" class="w-full px-2 py-1 text-[11px] border border-gray-200 rounded mb-2">
+                    <button onclick="resolveAs('callback_no_message')" class="w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">
+                      Schedule
+                    </button>
+                  </div>
+
+                  <div class="border-t border-gray-100"></div>
                   <button onclick="resolveAs('wrong_number')" class="w-full px-3 py-2 text-left text-xs hover:bg-gray-50 flex items-center gap-2">
                     <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
                     Wrong Number
@@ -436,111 +455,10 @@
           </div>
         </div>
 
-        <!-- Step 2: Call Recording -->
+        <!-- Step 2: Ask About Letter -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 2: State Call Recording</h4>
-            <span class="text-[10px] text-orange-600 font-medium">Required</span>
-          </div>
-          <div class="p-3 space-y-3">
-            <!-- Script -->
-            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
-              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p>"This call is being recorded for quality and training purposes."</p>
-              <p class="text-slate-500 italic text-[11px] mt-1">(Turn on scribe AI and recording device)</p>
-            </div>
-            <!-- Action -->
-            <div>
-              <div class="text-xs text-gray-600 mb-2">Did patient accept call recording?</div>
-              <div class="flex gap-1.5">
-                <button onclick="selectRecording('yes', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectRecording('no', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No, Patient Refused</button>
-              </div>
-            </div>
-
-            <!-- Reminder when patient refuses -->
-            <div id="step2NoRecordingReminder" class="hidden bg-red-50 border border-red-300 rounded p-2.5">
-              <div class="flex items-start gap-2">
-                <svg class="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                </svg>
-                <div>
-                  <div class="text-[10px] font-semibold text-red-700 uppercase mb-1">Action Required</div>
-                  <p class="text-xs text-red-800 mb-2">Patient refused recording. <strong>Turn off recording now</strong> in Quo/OpenPhone before continuing.</p>
-                  <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" id="recordingTurnedOff" class="w-4 h-4 text-red-600 rounded">
-                    <span class="text-xs text-red-800 font-medium">I have turned off recording</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 3: Verify Identity -->
-        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
-          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 3: Verify Name and DOB</h4>
-            <span class="text-[10px] text-orange-600 font-medium">Required</span>
-          </div>
-          <div class="p-3 space-y-3">
-            <!-- Inline patient info for verification -->
-            <div class="bg-blue-50 border border-blue-200 rounded p-2.5">
-              <div class="text-[10px] font-semibold text-blue-600 uppercase mb-1.5">Verify Against</div>
-              <div class="flex gap-6 text-sm">
-                <div>
-                  <span class="text-gray-500 text-xs">Name:</span>
-                  <span class="font-semibold text-gray-900 ml-1">Simon Jacques</span>
-                </div>
-                <div>
-                  <span class="text-gray-500 text-xs">DOB:</span>
-                  <span class="font-semibold text-gray-900 ml-1">04/22/1962</span>
-                </div>
-              </div>
-            </div>
-            <!-- Script -->
-            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
-              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p>"Can you state your full name and verify your date of birth for me?"</p>
-            </div>
-            <!-- Action -->
-            <div>
-              <div class="text-xs text-gray-600 mb-2">Patient identity verified?</div>
-              <div class="flex gap-1.5">
-                <button onclick="selectVerified('yes', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectVerified('no', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
-              </div>
-            </div>
-            <!-- Inline resolution picker for No -->
-            <div id="step3Resolution" class="hidden mt-2 space-y-2">
-              <!-- Not verified script -->
-              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
-                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-                <p>"It seems that the information you provided does not match our records. Let me touch base with <strong>Dashing Medical</strong> and call you back later."</p>
-              </div>
-              <div class="p-2 bg-amber-50 border border-amber-200 rounded">
-                <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <button onclick="resolveAs('escalate')" class="px-2 py-1 text-[11px] font-medium bg-orange-100 text-orange-700 border border-orange-200 rounded hover:bg-orange-200">Escalate</button>
-                  <button onclick="showInlineCallback('step3Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
-                </div>
-                <div id="step3Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
-                  <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
-                  <div class="flex gap-1.5">
-                    <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
-                    <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
-                  </div>
-                  <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 4: Outreach Letter -->
-        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
-          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 4: Ask About Letter</h4>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 2: Ask About Letter</h4>
             <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
           <div class="p-3 space-y-3">
@@ -573,169 +491,36 @@
           </div>
         </div>
 
-        <!-- Step 5: Explain Programs -->
+        <!-- Step 3: Explain RPM and APCM Programs -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 5: Explain RPM and APCM Programs</h4>
-            <span class="text-[10px] text-orange-600 font-medium">Required</span>
-          </div>
-          <div class="p-3 space-y-3">
-            <!-- Inline patient diagnoses -->
-            <div class="bg-purple-50 border border-purple-200 rounded p-2.5">
-              <div class="text-[10px] font-semibold text-purple-600 uppercase mb-1.5">Patient Diagnoses</div>
-              <div class="text-sm font-semibold text-gray-900">Hypertension, Diabetes</div>
-            </div>
-            <!-- Script -->
-            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
-              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"There are two programs that <strong>Dr. Dashing</strong> recommended for you.</p>
-              <p class="mb-2">The first one is <strong>APCM</strong> or Advanced Primary Care Management. This program allows <strong>Dr. Dashing</strong> to check in on you in-between office visits. The check-in will occur by text message or a phone call at least once a week, or more often if needed. The check-ins will only last 1-2 minutes and if there are any issues, your doctor will be informed so that he/she can act right away to address those issues.</p>
-              <p class="mb-3">The second program is <strong>RPM</strong> or remote patient monitoring. This program allows us to take your vital signs—such as your blood pressure, heart rate, and how fast you are breathing—through your phone without any extra equipment. You will just need to take a selfie video for up to 60 seconds. Also, we may ask a few questions to monitor your wellbeing by checking your voice.</p>
-
-              <!-- Conditional: No chronic diseases -->
-              <div class="bg-gray-100 border border-gray-300 rounded p-2 mb-3">
-                <div class="text-[10px] font-semibold text-gray-500 uppercase mb-1">If No Chronic Diseases</div>
-                <p class="text-slate-700">"Even if you are healthy, we may use the RPM program after a hospital stay, a visit to an emergency room, or after a procedure to make sure you are recovering okay."</p>
-              </div>
-
-              <!-- For all patients -->
-              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1">For All Patients</div>
-              <p class="mb-3">These programs are not emergency services. They are used to proactively reach out to you to see if you need help before you get any symptoms or your symptoms get worse. All information gathered is secure and HIPAA compliant. Even if you give permission now, you can opt out of either program at any time by texting or saying STOP during one of your interactions.</p>
-
-              <!-- Co-pays (for all patients) -->
-              <p class="mb-3">There is a potential for a co-pay with the programs. It should be minimal.</p>
-
-              <p>Do you have any questions?"</p>
-            </div>
-            <!-- Actions -->
-            <div class="space-y-2 pt-1">
-              <button onclick="checkAllStep5()" class="text-[11px] text-blue-600 hover:text-blue-800 hover:underline mb-1">Check all</button>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Explained APCM program (check-ins between visits, 1-2 min calls/texts weekly).</span>
-              </label>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Explained RPM program (vital signs via phone selfie video, voice monitoring).</span>
-              </label>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Clarified these are not emergency services (call 911 for emergencies).</span>
-              </label>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Explained data is secure and HIPAA compliant.</span>
-              </label>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Informed patient they can opt out at any time.</span>
-              </label>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Explained cost/coverage (Medicare Part B, co-pays if applicable).</span>
-              </label>
-              <label class="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" class="consent-check step5-check mt-0.5 w-4 h-4 text-blue-600 rounded" onchange="updateChecklist()">
-                <span class="text-xs text-gray-700">Asked if patient has any questions and answered them.</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 6: Program Enrollment -->
-        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
-          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 6: Consent for APCM and RPM</h4>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 3: Explain RPM and APCM Programs</h4>
             <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
           <div class="p-3 space-y-3">
             <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p>"Great! Do we have your permission to enroll you in both these programs?"</p>
+              <p class="mb-2">"Two programs are recommended for you.</p>
+              <p class="mb-2">The first one is <strong>APCM</strong> or Advanced Primary Care Management. This program allows us to check in on you in-between office visits.</p>
+              <p>The second program is <strong>RPM</strong> or remote patient monitoring. This program allows us to take your vital signs—such as your blood pressure, heart rate, and breathing rate—through your phone without any extra equipment. If there are any issues, your doctor will be informed to act right away to address them."</p>
             </div>
-            <!-- Action: APCM Consent -->
+            <!-- Action -->
             <div>
-              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>APCM</strong>?</div>
-              <div class="flex gap-1.5">
-                <button onclick="selectAPCM('yes', this)" class="apcm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectAPCM('no', this)" class="apcm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
-              </div>
+              <button onclick="selectProgramsExplained(this)" id="programsExplainedBtn" class="px-3 py-1.5 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">
+                Explained APCM and RPM programs
+              </button>
             </div>
-            <!-- Action: RPM Consent -->
-            <div>
-              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>RPM</strong>?</div>
-              <div class="flex gap-1.5">
-                <button onclick="selectRPM('yes', this)" class="rpm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectRPM('no', this)" class="rpm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
-              </div>
-            </div>
-
-            <!-- Action: SMS Consent -->
-            <div class="border-t border-blue-200 pt-3">
-              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
-                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-                <p>"Can we send you text messages to make communication easier? Just so you know, regular text messages aren't encrypted, so if someone else has access to your phone, they could potentially see them."</p>
-              </div>
-              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>SMS messages</strong>?</div>
-              <div class="flex gap-1.5">
-                <button onclick="selectSMS('yes', this)" class="sms-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                <button onclick="selectSMS('no', this)" class="sms-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
-              </div>
-              <input type="hidden" id="smsConsent" value="">
-            </div>
-
-            <!-- Response: Yes to both -->
-            <div id="step6YesBoth" class="hidden bg-green-50 border border-green-200 rounded p-2.5 text-xs text-green-800">
-              <div class="text-[10px] font-semibold text-green-600 uppercase mb-1.5">Script</div>
-              <p>"That is great. I really think you will see the benefits of this program."</p>
-            </div>
-
-            <!-- Response: No to one program -->
-            <div id="step6NoOne" class="hidden bg-amber-50 border border-amber-200 rounded p-2.5 text-xs text-amber-800">
-              <div class="text-[10px] font-semibold text-amber-600 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"Would you mind sharing with me why you are not comfortable consenting for <strong id="declinedProgram">APCM/RPM</strong>? Is there some information I can relay back to <strong>Dr. Dashing</strong>?"</p>
-              <p class="text-amber-600 italic text-[11px]">(Document reason why no consent. Use Q&A document to counter some of patient's hesitation.)</p>
-            </div>
-
-            <!-- Response: No to both -->
-            <div id="step6NoBoth" class="hidden mt-2 space-y-2">
-              <div class="bg-red-50 border border-red-200 rounded p-2.5 text-xs text-red-800">
-                <div class="text-[10px] font-semibold text-red-600 uppercase mb-1.5">Script</div>
-                <p class="mb-2">"I understand your hesitation. Would you mind sharing with me why? Is there some information I can relay back to <strong>Dr. Dashing</strong>?"</p>
-                <p class="text-red-600 italic text-[11px]">(Document reason why no consent. Use Q&A document to counter some of patient's hesitation.)</p>
-              </div>
-              <div class="p-2 bg-amber-50 border border-amber-200 rounded">
-                <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
-                <div class="flex flex-wrap gap-1.5">
-                  <button onclick="resolveAs('declined')" class="px-2 py-1 text-[11px] font-medium bg-red-100 text-red-700 border border-red-200 rounded hover:bg-red-200">Patient Declined</button>
-                  <button onclick="showInlineCallback('step6Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
-                </div>
-                <div id="step6Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
-                  <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
-                  <div class="flex gap-1.5">
-                    <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
-                    <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
-                  </div>
-                  <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
-                </div>
-              </div>
-            </div>
-
-            <input type="hidden" id="apcmConsent" value="">
-            <input type="hidden" id="rpmConsent" value="">
           </div>
         </div>
 
-        <!-- Step 7: Communication Preferences -->
+        <!-- Step 4: Confirm Phone -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 7: Confirm Phone and Communication</h4>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 4: Confirm Phone</h4>
             <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
           <div class="p-3 space-y-3">
-
-            <!-- Part 1: Cell Phone Confirmation -->
             <div class="bg-blue-50 border border-blue-200 rounded p-2.5">
               <div class="text-[10px] font-semibold text-blue-600 uppercase mb-1.5">Patient Phone Numbers</div>
               <div class="space-y-1.5">
@@ -757,12 +542,10 @@
                 <button onclick="openPhoneModal('add')" class="text-[10px] text-blue-600 hover:underline">+ Add number</button>
               </div>
             </div>
-
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
               <p>"Is this the cell phone number we can contact you with?"</p>
             </div>
-
             <div>
               <div class="text-xs text-gray-600 mb-2">Is this the correct cell phone?</div>
               <div class="flex gap-1.5">
@@ -771,9 +554,7 @@
                 <button onclick="selectCellConfirm('no_cell', this)" class="cell-confirm-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No Cell Phone</button>
               </div>
             </div>
-
-            <!-- If No: Ask for new number -->
-            <div id="step7NewNumber" class="hidden">
+            <div id="step4NewNumber" class="hidden">
               <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
                 <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
                 <p>"Can you provide the cell phone number you would like to use?"</p>
@@ -783,9 +564,7 @@
                 <button onclick="addNewCell()" class="px-2.5 py-1.5 text-[11px] font-medium bg-blue-600 text-white rounded hover:bg-blue-700">Add & Set Primary</button>
               </div>
             </div>
-
-            <!-- If No Cell Phone -->
-            <div id="step7NoCell" class="hidden">
+            <div id="step4NoCell" class="hidden">
               <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
                 <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
                 <p>"Is there a cell phone you can use for these check-ins?"</p>
@@ -795,22 +574,204 @@
                 <button onclick="addAltCell()" class="px-2.5 py-1.5 text-[11px] font-medium bg-blue-600 text-white rounded hover:bg-blue-700">Add & Set Primary</button>
               </div>
             </div>
+          </div>
+        </div>
 
-            <!-- Part 2: Check-in Preference -->
+        <!-- Step 5: Baseline Vitals -->
+        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
+          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 5: Get Baseline Vital Signs</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
+          </div>
+          <div class="p-3 space-y-3">
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p class="mb-2">"To better understand the program's benefits, we will take your vital signs using only your phone. I will send a text to your cell phone. Follow the instructions by clicking the hyperlink in the text and then pressing the start button. I will stay on while you take your vitals. Remain silent for 60 seconds while your vitals are taken."</p>
+              <p class="text-slate-500 italic text-[11px]">(Help the patient take their vitals and address any issues)</p>
+            </div>
+            <div id="vitalsSendSection">
+              <div class="flex gap-2">
+                <button onclick="sendVitalsLink()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                  </svg>
+                  Send Vitals Link
+                </button>
+                <button onclick="declineVitals()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-gray-600 border border-gray-300 text-xs font-medium rounded hover:bg-gray-50">
+                  Patient Declined
+                </button>
+              </div>
+            </div>
+            <div id="vitalsWaitingSection" class="hidden">
+              <div class="flex items-center gap-2 p-2 bg-yellow-50 border border-yellow-200 rounded mb-2">
+                <svg class="w-4 h-4 text-yellow-600 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="text-xs text-yellow-800">Waiting for patient to complete scan...</span>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="refreshVitals()" class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50">Refresh</button>
+                <button onclick="resendVitals()" class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-red-600 border border-red-200 rounded hover:bg-red-50">Resend Link</button>
+              </div>
+            </div>
+            <div id="vitalsCompletedSection" class="hidden">
+              <div class="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded mb-2">
+                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-xs text-green-800">Vitals captured successfully</span>
+              </div>
+              <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="p-2 bg-white border border-gray-200 rounded text-center">
+                  <div class="text-gray-500 text-[10px]">HR</div>
+                  <div class="font-semibold text-gray-900">82</div>
+                </div>
+                <div class="p-2 bg-white border border-gray-200 rounded text-center">
+                  <div class="text-gray-500 text-[10px]">BP</div>
+                  <div class="font-semibold text-gray-900">128/84</div>
+                </div>
+                <div class="p-2 bg-white border border-gray-200 rounded text-center">
+                  <div class="text-gray-500 text-[10px]">RR</div>
+                  <div class="font-semibold text-gray-900">16</div>
+                </div>
+              </div>
+            </div>
+            <div id="vitalsDeclinedSection" class="hidden">
+              <div class="flex items-center justify-between p-2 bg-amber-50 border border-amber-200 rounded">
+                <span class="text-xs text-amber-800">Patient declined vitals scan</span>
+                <button onclick="undoDeclineVitals()" class="text-[11px] text-amber-700 hover:underline">Undo</button>
+              </div>
+            </div>
+            <input type="hidden" id="vitalsStatus" value="">
+          </div>
+        </div>
+
+        <!-- Step 6: Consent -->
+        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
+          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 6: Consent</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
+          </div>
+          <div class="p-3 space-y-3">
+            <!-- Intro Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"These programs are easy ways for your doctor to make sure you are okay. To begin the programs, I will need to go over a few items."</p>
+            </div>
+
+            <!-- Recording Disclosure -->
             <div class="border-t border-blue-200 pt-3">
               <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
                 <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-                <p>"Do you prefer to check in by text or call?"</p>
+                <p>"I am going to begin recording this call for the consent process."</p>
               </div>
-              <div class="text-xs text-gray-600 mb-2">Check-in preference:</div>
+              <div class="text-xs text-gray-600 mb-2">Recording started?</div>
               <div class="flex gap-1.5">
-                <button onclick="selectFollowup('sms', this)" class="followup-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Text</button>
-                <button onclick="selectFollowup('voice', this)" class="followup-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Call</button>
+                <button onclick="selectRecording('yes', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectRecording('no', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Patient Refused</button>
               </div>
-              <input type="hidden" id="followupPreference" value="">
             </div>
 
-            <!-- Part 3: Caretaker -->
+            <!-- Name and DOB Verification -->
+            <div class="border-t border-blue-200 pt-3">
+              <div class="bg-blue-50 border border-blue-200 rounded p-2.5 mb-2">
+                <div class="text-[10px] font-semibold text-blue-600 uppercase mb-1.5">Verify Against</div>
+                <div class="flex gap-6 text-sm">
+                  <div>
+                    <span class="text-gray-500 text-xs">Name:</span>
+                    <span class="font-semibold text-gray-900 ml-1">Simon Jacques</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500 text-xs">DOB:</span>
+                    <span class="font-semibold text-gray-900 ml-1">04/22/1962</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p>"Can you state your full name and verify your date of birth for me?"</p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">Patient identity verified?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectVerified('yes', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectVerified('no', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+
+            <!-- Consent Disclosure -->
+            <div class="border-t border-blue-200 pt-3">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p class="mb-2">"These programs are not emergency services. They proactively reach out to see if you need help before you develop symptoms or your symptoms worsen. All information gathered is secure and HIPAA compliant. Even if you give permission now, you can opt out of either program at any time by texting or saying STOP during one of your interactions."</p>
+                <p class="mb-2">"The programs may involve a co-pay. It should be minimal."</p>
+                <p>"Do we have your permission to enroll you in both the APCM and RPM programs?"</p>
+              </div>
+            </div>
+
+            <!-- Consent Buttons -->
+            <div class="border-t border-blue-200 pt-3">
+              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>APCM and RPM</strong>?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectBothConsent('yes', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes to Both</button>
+                <button onclick="selectBothConsent('apcm_only', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">APCM Only</button>
+                <button onclick="selectBothConsent('rpm_only', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">RPM Only</button>
+                <button onclick="selectBothConsent('no', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+              <input type="hidden" id="programConsent" value="">
+            </div>
+
+            <!-- Response: Yes to both -->
+            <div id="step6ConsentYes" class="hidden bg-green-50 border border-green-200 rounded p-2.5 text-xs text-green-800">
+              <div class="text-[10px] font-semibold text-green-600 uppercase mb-1.5">Script</div>
+              <p>"That is great. I really think you will see the benefits of these programs."</p>
+            </div>
+
+            <!-- Response: Declined -->
+            <div id="step6ConsentNo" class="hidden mt-2 space-y-2">
+              <div class="bg-red-50 border border-red-200 rounded p-2.5 text-xs text-red-800">
+                <div class="text-[10px] font-semibold text-red-600 uppercase mb-1.5">Script</div>
+                <p>"I understand your hesitation. Would you mind sharing with me why? Is there some information I can relay back to <strong>Dr. Dashing</strong>?"</p>
+              </div>
+              <div class="p-2 bg-amber-50 border border-amber-200 rounded">
+                <div class="text-[10px] font-semibold text-amber-700 uppercase mb-2">Resolve as:</div>
+                <div class="flex flex-wrap gap-1.5">
+                  <button onclick="resolveAs('declined')" class="px-2 py-1 text-[11px] font-medium bg-red-100 text-red-700 border border-red-200 rounded hover:bg-red-200">Patient Declined</button>
+                  <button onclick="showInlineCallback('step6Callback')" class="px-2 py-1 text-[11px] font-medium bg-blue-100 text-blue-700 border border-blue-200 rounded hover:bg-blue-200">Call Again Later</button>
+                </div>
+                <div id="step6Callback" class="hidden mt-2 p-2 bg-white border border-gray-200 rounded">
+                  <label class="text-[10px] text-gray-500 block mb-1">Schedule callback</label>
+                  <div class="flex gap-1.5">
+                    <input type="date" class="inline-callback-date flex-1 px-2 py-1 text-[11px] border border-gray-200 rounded">
+                    <input type="time" class="inline-callback-time w-20 px-2 py-1 text-[11px] border border-gray-200 rounded" value="10:00">
+                  </div>
+                  <button onclick="resolveAs('callback')" class="mt-2 w-full px-2 py-1 bg-blue-600 text-white text-[11px] font-medium rounded hover:bg-blue-700">Schedule & Resolve</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 7: Communication Method and Caretaker -->
+        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
+          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 7: Communication Method and Caretaker</h4>
+            <span class="text-[10px] text-orange-600 font-medium">Required</span>
+          </div>
+          <div class="p-3 space-y-3">
+            <!-- Check-in Preference -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"Do you prefer to check in by text or call?"</p>
+            </div>
+            <div class="text-xs text-gray-600 mb-2">Check-in preference:</div>
+            <div class="flex gap-1.5">
+              <button onclick="selectFollowup('sms', this)" class="followup-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Text</button>
+              <button onclick="selectFollowup('voice', this)" class="followup-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Call</button>
+            </div>
+            <input type="hidden" id="followupPreference" value="">
+
+            <!-- Caretaker -->
             <div class="border-t border-blue-200 pt-3">
               <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
                 <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
@@ -847,7 +808,6 @@
                   <input type="tel" id="caretakerPhone" placeholder="(555) 555-5555" class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500">
                 </div>
               </div>
-              <!-- Caretaker Consent -->
               <div class="border-t border-blue-200 pt-3 mt-3">
                 <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
                   <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
@@ -859,127 +819,24 @@
                   <button onclick="selectCaretakerConsent('no', this)" class="caretaker-consent-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
                 </div>
                 <input type="hidden" id="caretakerConsent" value="">
-                <p class="text-[10px] text-gray-400 mt-2 italic">Dev note: When caretaker is added, create a new user record for caretaker</p>
               </div>
             </div>
-
           </div>
         </div>
 
-        <!-- Step 8: Baseline Vitals -->
+        <!-- Step 8: Close and Provide Contact Info -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 8: Get Baseline Vital Signs</h4>
+            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 8: Close and Provide Contact Info</h4>
             <span class="text-[10px] text-orange-600 font-medium">Required</span>
           </div>
           <div class="p-3 space-y-3">
-            <!-- Script -->
             <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
               <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"Would it be okay for me to check your vital signs by phone now?"</p>
-              <p class="text-slate-500 italic text-[11px] mb-2">If no: "This will allow you to better understand how we will take your vital signs without any equipment except for your phone."</p>
-              <p>"I will send you a text to your cell phone. Follow the instructions by clicking on the hyperlink in the text and then pressing the start button. We will then be able to take your vitals. I will stay on while you take your vitals. You will need to remain silent for 60 seconds while your vitals are being taken."</p>
-              <p class="text-slate-500 italic text-[11px] mt-1">(Help patient with taking their vitals if there are any issues)</p>
-            </div>
-            <!-- Action -->
-            <div id="vitalsNotSent" class="text-xs text-gray-600 mb-2">Send vitals link to capture baseline readings during the call.</div>
-
-            <!-- Initial State: Not Sent -->
-            <div id="vitalsSendSection">
-              <div class="flex gap-2">
-                <button onclick="sendVitalsLink()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                  </svg>
-                  Send Vitals Link
-                </button>
-                <button onclick="declineVitals()" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-gray-600 border border-gray-300 text-xs font-medium rounded hover:bg-gray-50">
-                  Patient Declined
-                </button>
-              </div>
-            </div>
-
-            <!-- Sent State: Waiting for Results -->
-            <div id="vitalsWaitingSection" class="hidden">
-              <div class="flex items-center gap-2 p-2 bg-yellow-50 border border-yellow-200 rounded mb-2">
-                <svg class="w-4 h-4 text-yellow-600 animate-spin" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span class="text-xs text-yellow-800">Waiting for patient to complete scan...</span>
-              </div>
-              <div class="flex gap-2">
-                <button onclick="refreshVitals()" class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                  </svg>
-                  Refresh
-                </button>
-                <button onclick="resendVitals()" class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-red-600 border border-red-200 rounded hover:bg-red-50">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                  </svg>
-                  Resend Link
-                </button>
-              </div>
-            </div>
-
-            <!-- Completed State: Results Received -->
-            <div id="vitalsCompletedSection" class="hidden">
-              <div class="flex items-center gap-2 p-2 bg-green-50 border border-green-200 rounded mb-2">
-                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span class="text-xs text-green-800">Vitals captured successfully</span>
-              </div>
-              <div class="grid grid-cols-3 gap-2 text-xs">
-                <div class="p-2 bg-white border border-gray-200 rounded text-center">
-                  <div class="text-gray-500 text-[10px]">HR</div>
-                  <div class="font-semibold text-gray-900">82</div>
-                </div>
-                <div class="p-2 bg-white border border-gray-200 rounded text-center">
-                  <div class="text-gray-500 text-[10px]">BP</div>
-                  <div class="font-semibold text-gray-900">128/84</div>
-                </div>
-                <div class="p-2 bg-white border border-gray-200 rounded text-center">
-                  <div class="text-gray-500 text-[10px]">RR</div>
-                  <div class="font-semibold text-gray-900">16</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Declined State -->
-            <div id="vitalsDeclinedSection" class="hidden">
-              <div class="flex items-center justify-between p-2 bg-amber-50 border border-amber-200 rounded">
-                <div class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                  </svg>
-                  <span class="text-xs text-amber-800">Patient declined vitals scan</span>
-                </div>
-                <button onclick="undoDeclineVitals()" class="text-[11px] text-amber-700 hover:text-amber-900 hover:underline">Undo</button>
-              </div>
-            </div>
-
-            <input type="hidden" id="vitalsStatus" value="">
-          </div>
-        </div>
-
-        <!-- Step 9: Close Call -->
-        <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
-          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Step 9: Close and Provide Contact Info</h4>
-            <span class="text-[10px] text-orange-600 font-medium">Required</span>
-          </div>
-          <div class="p-3 space-y-3">
-            <!-- Script -->
-            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
-              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
-              <p class="mb-2">"You will receive a <strong id="step9ContactMethod" class="text-blue-700">text message/phone call</strong> starting next week. Sometimes there may be a follow-up call from a nurse depending on your responses. Your doctor will also be informed about your responses. If we feel that you need to see <strong>Dr. Dashing</strong> sooner, we will assist in getting you an appointment. Do you have any questions?"</p>
+              <p class="mb-2">"You will receive a <strong id="step8ContactMethod" class="text-blue-700">text message/phone call</strong> starting next week. Sometimes there may be a follow-up call from a nurse depending on your responses. Your doctor will also be informed about your responses. If we feel that you need to see <strong>Dr. Dashing</strong> sooner, we will assist in getting you an appointment. Do you have any questions?"</p>
               <p class="mb-2">"Can you save the phone number I am calling from and the phone number of your text message so that our calls and messages do not get stuck in spam?"</p>
               <p>"Great. If you do have any questions, you can call <strong>Dashing Medical</strong> at <strong>(215) 735-3345</strong>. Thanks."</p>
             </div>
-            <!-- Action -->
             <div>
               <div class="text-xs text-gray-600 mb-2">Patient asked to save contact number?</div>
               <div class="flex gap-1.5">
@@ -1512,6 +1369,35 @@
       checkResolveRequirements();
     }
 
+    // Step 3: Programs Explained
+    function selectProgramsExplained(btn) {
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+      btn.classList.add('bg-green-50', 'border-green-300', 'text-green-700');
+      btn.innerHTML = '&#10003; Explained APCM and RPM programs';
+      checkResolveRequirements();
+    }
+
+    // Step 6: Combined Consent
+    function selectBothConsent(value, btn) {
+      document.getElementById('programConsent').value = value;
+      document.querySelectorAll('.consent-both-btn').forEach(b => {
+        b.classList.remove('bg-blue-50', 'border-blue-300', 'text-blue-700', 'bg-green-50', 'border-green-300', 'text-green-700');
+        b.classList.add('bg-white', 'border-gray-200', 'text-gray-700');
+      });
+      btn.classList.remove('bg-white', 'border-gray-200', 'text-gray-700');
+
+      if (value === 'yes' || value === 'apcm_only' || value === 'rpm_only') {
+        btn.classList.add('bg-green-50', 'border-green-300', 'text-green-700');
+        document.getElementById('step6ConsentYes').classList.remove('hidden');
+        document.getElementById('step6ConsentNo').classList.add('hidden');
+      } else {
+        btn.classList.add('bg-blue-50', 'border-blue-300', 'text-blue-700');
+        document.getElementById('step6ConsentYes').classList.add('hidden');
+        document.getElementById('step6ConsentNo').classList.remove('hidden');
+      }
+      checkResolveRequirements();
+    }
+
     function updateConsentResponse() {
       const apcm = document.getElementById('apcmConsent').value;
       const rpm = document.getElementById('rpmConsent').value;
@@ -1845,15 +1731,36 @@
       dropdown.classList.toggle('hidden');
     }
 
-    function showCallbackPicker() {
-      const picker = document.getElementById('callbackPicker');
+    function showCallbackPicker(type) {
+      // Hide all callback pickers first
+      document.querySelectorAll('[id^="callbackPicker"]').forEach(p => p.classList.add('hidden'));
+
+      let pickerId, dateId, timeId;
+      if (type === 'leftMessage') {
+        pickerId = 'callbackPickerLeftMessage';
+        dateId = 'callbackDateLeftMessage';
+        timeId = 'callbackTimeLeftMessage';
+      } else if (type === 'noMessage') {
+        pickerId = 'callbackPickerNoMessage';
+        dateId = 'callbackDateNoMessage';
+        timeId = 'callbackTimeNoMessage';
+      } else {
+        // Legacy support for inline callbacks
+        pickerId = type;
+        dateId = null;
+        timeId = null;
+      }
+
+      const picker = document.getElementById(pickerId);
+      if (!picker) return;
+
       picker.classList.toggle('hidden');
-      if (!picker.classList.contains('hidden')) {
+      if (!picker.classList.contains('hidden') && dateId && timeId) {
         // Set default to tomorrow at 10am
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        document.getElementById('callbackDate').value = tomorrow.toISOString().split('T')[0];
-        document.getElementById('callbackTime').value = '10:00';
+        document.getElementById(dateId).value = tomorrow.toISOString().split('T')[0];
+        document.getElementById(timeId).value = '10:00';
       }
     }
 
