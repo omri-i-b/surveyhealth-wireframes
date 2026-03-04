@@ -140,9 +140,9 @@
       <!-- Scrollable Content -->
       <div class="flex-1 overflow-y-auto p-3 space-y-3">
 
-        <!-- CONSENT STATUS BANNER - NOT CONSENTED (LOUD RED) -->
-        <div id="consentBanner" class="bg-red-600 border-2 border-red-700 rounded-lg px-4 py-3">
-          <div class="flex items-center justify-between">
+        <!-- CONSENT STATUS BANNER - NOT CONSENTED - SHOWS FULL CONSENT FLOW -->
+        <div id="consentBanner" class="bg-red-600 border-2 border-red-700 rounded-lg overflow-hidden">
+          <div class="px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
                 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,12 +151,92 @@
               </div>
               <div>
                 <div class="text-white font-bold text-sm">PATIENT NOT CONSENTED</div>
-                <div class="text-red-100 text-xs">Consent required before billing can begin</div>
+                <div class="text-red-100 text-xs">Complete consent before billing can begin</div>
               </div>
             </div>
-            <button onclick="openConsentFlow()" class="px-4 py-2 bg-white text-red-600 text-xs font-bold rounded hover:bg-red-50 shadow">
-              Consent Now
-            </button>
+          </div>
+
+          <!-- Embedded Step 6 Consent Flow -->
+          <div class="bg-white p-4 space-y-3">
+            <!-- Intro Script -->
+            <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+              <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+              <p>"These programs are easy ways for your doctor to make sure you are okay. To begin the programs, I will need to go over a few items."</p>
+            </div>
+
+            <!-- Recording Disclosure -->
+            <div class="border-t border-gray-200 pt-3">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p>"I am going to begin recording this call for the consent process."</p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">Recording started?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectRecording('yes', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectRecording('no', this)" class="recording-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Patient Refused</button>
+              </div>
+            </div>
+
+            <!-- Name and DOB Verification -->
+            <div class="border-t border-gray-200 pt-3">
+              <div class="bg-blue-50 border border-blue-200 rounded p-2.5 mb-2">
+                <div class="text-[10px] font-semibold text-blue-600 uppercase mb-1.5">Verify Against</div>
+                <div class="flex gap-6 text-sm">
+                  <div>
+                    <span class="text-gray-500 text-xs">Name:</span>
+                    <span class="font-semibold text-gray-900 ml-1">Jonathan Goldsmith</span>
+                  </div>
+                  <div>
+                    <span class="text-gray-500 text-xs">DOB:</span>
+                    <span class="font-semibold text-gray-900 ml-1">04/22/1962</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed mb-2">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p>"Can you state your full name and verify your date of birth for me?"</p>
+              </div>
+              <div class="text-xs text-gray-600 mb-2">Patient identity verified?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectVerified('yes', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
+                <button onclick="selectVerified('no', this)" class="verified-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+
+            <!-- Consent Disclosure -->
+            <div class="border-t border-gray-200 pt-3">
+              <div class="bg-slate-50 border border-slate-200 rounded p-2.5 text-xs text-slate-700 leading-relaxed">
+                <div class="text-[10px] font-semibold text-slate-400 uppercase mb-1.5">Script</div>
+                <p class="mb-2">"These programs are not emergency services. They proactively reach out to see if you need help before you develop symptoms or your symptoms worsen. All information gathered is secure and HIPAA compliant. Even if you give permission now, you can opt out of either program at any time by texting or saying STOP during one of your interactions."</p>
+                <p class="mb-2">"The programs may involve a co-pay. It should be minimal."</p>
+                <p>"Do we have your permission to enroll you in both the APCM and RPM programs?"</p>
+              </div>
+            </div>
+
+            <!-- Consent Buttons -->
+            <div class="border-t border-gray-200 pt-3">
+              <div class="text-xs text-gray-600 mb-2">Does the patient consent to <strong>APCM and RPM</strong>?</div>
+              <div class="flex gap-1.5">
+                <button onclick="selectBothConsent('yes', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes to Both</button>
+                <button onclick="selectBothConsent('apcm_only', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">APCM Only</button>
+                <button onclick="selectBothConsent('rpm_only', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">RPM Only</button>
+                <button onclick="selectBothConsent('no', this)" class="consent-both-btn px-2.5 py-1 text-[11px] font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+              </div>
+            </div>
+
+            <!-- Response: Yes to both -->
+            <div id="consentYes" class="hidden bg-green-50 border border-green-200 rounded p-2.5 text-xs text-green-800">
+              <div class="text-[10px] font-semibold text-green-600 uppercase mb-1.5">Script</div>
+              <p>"That is great. I really think you will see the benefits of these programs."</p>
+            </div>
+
+            <!-- Response: Declined -->
+            <div id="consentNo" class="hidden mt-2 space-y-2">
+              <div class="bg-red-50 border border-red-200 rounded p-2.5 text-xs text-red-800">
+                <div class="text-[10px] font-semibold text-red-600 uppercase mb-1.5">Script</div>
+                <p>"I understand your hesitation. Would you mind sharing with me why? Is there some information I can relay back to <strong>Dr. Charles</strong>?"</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -178,7 +258,7 @@
           </button>
         </div>
 
-        <!-- Ticket Info -->
+        <!-- Ticket Info (GREY) -->
         <div class="border border-gray-200 rounded">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
             <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Ticket Info</h4>
@@ -207,6 +287,36 @@
           </div>
         </div>
 
+        <!-- Program Information (GREY, same style as Ticket Info, GREYED OUT if not consented) -->
+        <div id="programInfoSection" class="border border-gray-200 rounded greyed-out">
+          <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Program Information</h4>
+            <span class="text-[9px] text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded">Requires Consent</span>
+          </div>
+          <div class="p-3 space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-500">Response Rate</span>
+              <span class="text-gray-900">62%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-500">30 Day System Flag History</span>
+              <span class="text-yellow-600">11%</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-500">30 Day Nurse Escalation Rate</span>
+              <span class="text-red-600">50%</span>
+            </div>
+            <div class="flex items-start justify-between pt-2 border-t border-gray-200">
+              <span class="text-gray-500">Enrolled Programs</span>
+              <div class="flex flex-wrap gap-1 justify-end">
+                <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded">Hypertension</span>
+                <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded">Diabetes</span>
+                <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-[10px] rounded">Baseline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Attention Details with Resolution -->
         <div class="border border-gray-200 rounded">
           <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
@@ -228,57 +338,64 @@
               </div>
             </div>
 
-            <!-- Resolution Options - 7 Types -->
+            <!-- Resolution Options - 7 Types as REAL BUTTONS -->
             <div class="pt-3 border-t border-gray-200">
-              <div class="text-[10px] text-gray-500 font-medium mb-2">Resolution</div>
-              <div class="grid grid-cols-2 gap-2">
-                <!-- Escalate to Clinic Options -->
-                <button onclick="openResolutionModal('emergent')" class="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded hover:bg-red-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-red-500 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-red-700">Emergent</div>
-                    <div class="text-[10px] text-red-600">ED visit</div>
-                  </div>
-                </button>
-                <button onclick="openResolutionModal('urgent')" class="flex items-center gap-2 px-3 py-2 bg-orange-50 border border-orange-200 rounded hover:bg-orange-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-orange-500 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-orange-700">Urgent</div>
-                    <div class="text-[10px] text-orange-600">Within 48 hours</div>
-                  </div>
-                </button>
-                <button onclick="openResolutionModal('immediate')" class="flex items-center gap-2 px-3 py-2 bg-yellow-50 border border-yellow-200 rounded hover:bg-yellow-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-yellow-500 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-yellow-700">Immediate</div>
-                    <div class="text-[10px] text-yellow-600">3-7 days</div>
-                  </div>
-                </button>
-                <button onclick="openResolutionModal('routine')" class="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded hover:bg-green-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-green-500 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-green-700">Routine</div>
-                    <div class="text-[10px] text-green-600">8-30 days</div>
-                  </div>
-                </button>
-                <!-- Non-escalation Options -->
-                <button onclick="openResolutionModal('resolved')" class="flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-blue-500 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-blue-700">Resolved on Phone</div>
-                  </div>
-                </button>
-                <button onclick="openResolutionModal('noaction')" class="flex items-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 rounded hover:bg-slate-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-slate-500 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-slate-700">No Intervention Needed</div>
-                  </div>
-                </button>
-                <button onclick="openResolutionModal('unreachable')" class="col-span-2 flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-300 rounded hover:bg-gray-100 text-left">
-                  <span class="w-2.5 h-2.5 bg-gray-400 rounded-full flex-shrink-0"></span>
-                  <div>
-                    <div class="text-xs font-medium text-gray-600">Not Reachable</div>
-                  </div>
+              <div class="text-[10px] text-gray-500 font-medium mb-3">Select Resolution</div>
+              <div class="space-y-2">
+                <!-- Row 1: Escalate to Clinic -->
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openResolutionModal('emergent')" class="flex items-center justify-center gap-2 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    <span class="w-3 h-3 bg-white/30 rounded-full"></span>
+                    <div class="text-left">
+                      <div class="text-sm">Emergent</div>
+                      <div class="text-[10px] text-red-100 font-normal">ED visit</div>
+                    </div>
+                  </button>
+                  <button onclick="openResolutionModal('urgent')" class="flex items-center justify-center gap-2 px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    <span class="w-3 h-3 bg-white/30 rounded-full"></span>
+                    <div class="text-left">
+                      <div class="text-sm">Urgent</div>
+                      <div class="text-[10px] text-orange-100 font-normal">Within 48 hours</div>
+                    </div>
+                  </button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openResolutionModal('immediate')" class="flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    <span class="w-3 h-3 bg-white/30 rounded-full"></span>
+                    <div class="text-left">
+                      <div class="text-sm">Immediate</div>
+                      <div class="text-[10px] text-yellow-100 font-normal">3-7 days</div>
+                    </div>
+                  </button>
+                  <button onclick="openResolutionModal('routine')" class="flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    <span class="w-3 h-3 bg-white/30 rounded-full"></span>
+                    <div class="text-left">
+                      <div class="text-sm">Routine</div>
+                      <div class="text-[10px] text-green-100 font-normal">8-30 days</div>
+                    </div>
+                  </button>
+                </div>
+                <!-- Row 2: Non-escalation -->
+                <div class="grid grid-cols-2 gap-2">
+                  <button onclick="openResolutionModal('resolved')" class="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                    </svg>
+                    <span class="text-sm">Resolved on Phone</span>
+                  </button>
+                  <button onclick="openResolutionModal('noaction')" class="flex items-center justify-center gap-2 px-4 py-3 bg-slate-500 hover:bg-slate-600 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span class="text-sm">No Intervention</span>
+                  </button>
+                </div>
+                <!-- Row 3: Not Reachable -->
+                <button onclick="openResolutionModal('unreachable')" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gray-400 hover:bg-gray-500 text-white font-semibold rounded-lg shadow-sm transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                  </svg>
+                  <span class="text-sm">Not Reachable</span>
                 </button>
               </div>
             </div>
@@ -290,36 +407,6 @@
           <div class="h-px flex-1 bg-gray-200"></div>
           <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Patient Assessment</span>
           <div class="h-px flex-1 bg-gray-200"></div>
-        </div>
-
-        <!-- Program Information (GREYED OUT if not consented) -->
-        <div id="programInfoSection" class="border-2 border-blue-200 bg-blue-50/50 rounded greyed-out">
-          <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
-            <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Program Information</h4>
-            <span class="text-[9px] text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded">Requires Consent</span>
-          </div>
-          <div class="p-3 space-y-2 text-xs">
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">Response Rate</span>
-              <span class="font-semibold text-gray-900">62%</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">30 Day System Flag History</span>
-              <span class="font-semibold text-yellow-600">11%</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="text-gray-600">30 Day Nurse Escalation Rate</span>
-              <span class="font-semibold text-red-600">50%</span>
-            </div>
-            <div class="flex items-start justify-between pt-2 border-t border-blue-200">
-              <span class="text-gray-600">Enrolled Programs</span>
-              <div class="flex flex-wrap gap-1 justify-end">
-                <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded">Hypertension</span>
-                <span class="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded">Diabetes</span>
-                <span class="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-[10px] rounded">Baseline</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Response -->
@@ -383,41 +470,68 @@
           </div>
         </div>
 
-        <!-- Vitals - Right-aligned values -->
+        <!-- Vitals - 3 Lines per metric: Reading, Baseline, Population -->
         <div class="border-2 border-blue-200 bg-blue-50/50 rounded">
           <div class="px-3 py-1.5 bg-blue-100/50 border-b border-blue-200 flex items-center justify-between">
             <h4 class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Vitals</h4>
             <span class="text-[10px] text-gray-500">Feb 20, 10:30 AM</span>
           </div>
           <div class="divide-y divide-blue-100 text-xs">
-            <!-- Blood Pressure - FLAGGED (full row) -->
-            <div class="flex items-center justify-between px-3 py-2 bg-red-50">
-              <span class="text-gray-700 font-medium">Blood Pressure</span>
-              <div class="flex items-center gap-3">
-                <span class="text-[10px] text-gray-500">Baseline:</span>
-                <span class="px-1.5 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">+15 SBP/+7 DBP</span>
-                <span class="text-[10px] text-gray-500">Pop:</span>
-                <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Normal</span>
+
+            <!-- Blood Pressure -->
+            <div class="px-3 py-2">
+              <div class="font-medium text-gray-700 mb-2">Blood Pressure</div>
+              <div class="space-y-1 ml-3">
+                <div class="flex items-center justify-between bg-red-50 px-2 py-1 rounded">
+                  <span class="text-gray-600">Reading</span>
+                  <span class="font-semibold text-red-700">155/90 mmHg</span>
+                </div>
+                <div class="flex items-center justify-between bg-red-50 px-2 py-1 rounded">
+                  <span class="text-gray-600">vs Baseline</span>
+                  <span class="font-semibold text-red-700">+15 SBP / +7 DBP</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Population</span>
+                  <span class="font-semibold text-green-700">Normal range</span>
+                </div>
               </div>
             </div>
-            <!-- Pulse - WARNING (full row) -->
-            <div class="flex items-center justify-between px-3 py-2 bg-yellow-50">
-              <span class="text-gray-700 font-medium">Pulse</span>
-              <div class="flex items-center gap-3">
-                <span class="text-[10px] text-gray-500">Baseline:</span>
-                <span class="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-medium rounded">+20</span>
-                <span class="text-[10px] text-gray-500">Pop:</span>
-                <span class="text-gray-600">91</span>
+
+            <!-- Pulse -->
+            <div class="px-3 py-2">
+              <div class="font-medium text-gray-700 mb-2">Pulse</div>
+              <div class="space-y-1 ml-3">
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">Reading</span>
+                  <span class="font-semibold text-gray-900">91 bpm</span>
+                </div>
+                <div class="flex items-center justify-between bg-yellow-50 px-2 py-1 rounded">
+                  <span class="text-gray-600">vs Baseline</span>
+                  <span class="font-semibold text-yellow-700">+20 bpm</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Population</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
               </div>
             </div>
-            <!-- Respiratory Rate - OK -->
-            <div class="flex items-center justify-between px-3 py-2">
-              <span class="text-gray-700 font-medium">Respiratory Rate</span>
-              <div class="flex items-center gap-3">
-                <span class="text-[10px] text-gray-500">Baseline:</span>
-                <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Normal</span>
-                <span class="text-[10px] text-gray-500">Pop:</span>
-                <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Normal</span>
+
+            <!-- Respiratory Rate -->
+            <div class="px-3 py-2">
+              <div class="font-medium text-gray-700 mb-2">Respiratory Rate</div>
+              <div class="space-y-1 ml-3">
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">Reading</span>
+                  <span class="font-semibold text-gray-900">16 breaths/min</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Baseline</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Population</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
               </div>
             </div>
           </div>
@@ -431,31 +545,68 @@
           </a>
         </div>
 
-        <!-- Voice Analysis - Right-aligned values -->
+        <!-- Voice Analysis - 3 Lines per metric -->
         <div class="border-2 border-purple-200 bg-purple-50/50 rounded">
           <div class="px-3 py-1.5 bg-purple-100/50 border-b border-purple-200 flex items-center justify-between">
             <h4 class="text-xs font-semibold text-purple-700 uppercase tracking-wide">Voice Analysis</h4>
             <span class="text-[10px] text-gray-500">Canary Speech · Feb 20</span>
           </div>
           <div class="divide-y divide-purple-100 text-xs">
-            <!-- Depression - OK -->
-            <div class="flex items-center justify-between px-3 py-2">
-              <span class="text-gray-700 font-medium">Depression</span>
-              <div class="flex items-center gap-3">
-                <span class="text-[10px] text-gray-500">Baseline:</span>
-                <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Normal</span>
-                <span class="text-[10px] text-gray-500">Pop:</span>
-                <span class="px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded">Normal</span>
+
+            <!-- Depression -->
+            <div class="px-3 py-2">
+              <div class="font-medium text-gray-700 mb-2">Depression</div>
+              <div class="space-y-1 ml-3">
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">Score</span>
+                  <span class="font-semibold text-gray-900">3/10</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Baseline</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Population</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
               </div>
             </div>
-            <!-- Anxiety - FLAGGED (full row) -->
-            <div class="flex items-center justify-between px-3 py-2 bg-red-50">
-              <span class="text-gray-700 font-medium">Anxiety</span>
-              <div class="flex items-center gap-3">
-                <span class="text-[10px] text-gray-500">Baseline:</span>
-                <span class="px-1.5 py-0.5 bg-yellow-100 text-yellow-700 text-[10px] font-medium rounded">+2/10</span>
-                <span class="text-[10px] text-gray-500">Pop:</span>
-                <span class="px-1.5 py-0.5 bg-red-100 text-red-700 text-[10px] font-medium rounded">8/10</span>
+
+            <!-- Anxiety -->
+            <div class="px-3 py-2">
+              <div class="font-medium text-gray-700 mb-2">Anxiety</div>
+              <div class="space-y-1 ml-3">
+                <div class="flex items-center justify-between bg-red-50 px-2 py-1 rounded">
+                  <span class="text-gray-600">Score</span>
+                  <span class="font-semibold text-red-700">8/10</span>
+                </div>
+                <div class="flex items-center justify-between bg-yellow-50 px-2 py-1 rounded">
+                  <span class="text-gray-600">vs Baseline</span>
+                  <span class="font-semibold text-yellow-700">+2 points</span>
+                </div>
+                <div class="flex items-center justify-between bg-red-50 px-2 py-1 rounded">
+                  <span class="text-gray-600">vs Population</span>
+                  <span class="font-semibold text-red-700">High</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cognitive Load -->
+            <div class="px-3 py-2">
+              <div class="font-medium text-gray-700 mb-2">Cognitive Load</div>
+              <div class="space-y-1 ml-3">
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">Score</span>
+                  <span class="font-semibold text-gray-900">5/10</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Baseline</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
+                <div class="flex items-center justify-between px-2 py-1">
+                  <span class="text-gray-600">vs Population</span>
+                  <span class="font-semibold text-green-700">Normal</span>
+                </div>
               </div>
             </div>
           </div>
@@ -882,8 +1033,41 @@
     btn.classList.add('bg-green-100', 'border-green-300', 'text-green-700');
   }
 
-  function openConsentFlow() {
-    alert('Open consent flow...');
+  // Consent flow functions
+  function selectRecording(value, btn) {
+    document.querySelectorAll('.recording-btn').forEach(b => {
+      b.classList.remove('bg-green-100', 'border-green-300', 'text-green-700');
+      b.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+    });
+    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+    btn.classList.add('bg-green-100', 'border-green-300', 'text-green-700');
+  }
+
+  function selectVerified(value, btn) {
+    document.querySelectorAll('.verified-btn').forEach(b => {
+      b.classList.remove('bg-green-100', 'border-green-300', 'text-green-700');
+      b.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+    });
+    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+    btn.classList.add('bg-green-100', 'border-green-300', 'text-green-700');
+  }
+
+  function selectBothConsent(value, btn) {
+    document.querySelectorAll('.consent-both-btn').forEach(b => {
+      b.classList.remove('bg-green-100', 'border-green-300', 'text-green-700');
+      b.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+    });
+    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
+    btn.classList.add('bg-green-100', 'border-green-300', 'text-green-700');
+
+    // Show/hide response sections
+    if (value === 'yes' || value === 'apcm_only' || value === 'rpm_only') {
+      document.getElementById('consentYes').classList.remove('hidden');
+      document.getElementById('consentNo').classList.add('hidden');
+    } else if (value === 'no') {
+      document.getElementById('consentYes').classList.add('hidden');
+      document.getElementById('consentNo').classList.remove('hidden');
+    }
   }
 </script>
 </body>
