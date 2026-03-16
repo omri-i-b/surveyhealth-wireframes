@@ -163,38 +163,49 @@
         </div>
 
         <!-- Ticket Info (GREY) -->
-        <div class="border border-gray-200 rounded">
-          <div class="px-3 py-1.5 bg-gray-50 border-b border-gray-200">
-            <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Ticket Info</h4>
+        <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+          <div class="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Ticket Info</h4>
           </div>
-          <div class="p-3 space-y-2 text-xs">
+          <div class="p-4 space-y-2.5 text-sm">
             <div class="flex items-center justify-between">
               <span class="text-gray-500">Type</span>
-              <span class="text-gray-900">Evaluation</span>
+              <span class="text-gray-900 font-medium">Evaluation</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-gray-500">Status</span>
-              <span class="text-gray-900">Open</span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                <span class="text-gray-900 font-medium">Open</span>
+              </span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-gray-500">Assignee</span>
-              <span class="text-gray-900">C. Dashing</span>
+              <span class="text-gray-900 font-medium">C. Dashing</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-gray-500">Program</span>
-              <span class="text-gray-900">Hypertension</span>
+              <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium rounded">Hypertension</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-gray-500">Channel</span>
-              <span class="text-gray-900">Voice Call</span>
+              <span class="inline-flex items-center gap-1.5 text-gray-900 font-medium">
+                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                </svg>
+                Voice Call
+              </span>
             </div>
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between pt-2 border-t border-gray-100">
               <span class="text-gray-500">Created</span>
-              <span class="text-gray-900">Mar 17, 2026 · 10:32 AM</span>
+              <span class="text-gray-600 text-xs">Mar 17, 2026 · 10:32 AM</span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-gray-500">Time Since Assessment</span>
-              <span class="text-gray-900">0 hr 42 min</span>
+              <span class="text-orange-600 font-semibold">42 min</span>
             </div>
           </div>
         </div>
