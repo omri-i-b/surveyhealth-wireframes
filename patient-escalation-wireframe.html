@@ -10,79 +10,79 @@
     .greyed-out { opacity: 0.6; pointer-events: none; }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-slate-50 text-slate-800 text-[13px]">
 
   <!-- Modal Backdrop -->
-  <div id="modalBackdrop" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="closeModal()"></div>
+  <div id="modalBackdrop" class="fixed inset-0 bg-black/40 z-40 hidden" onclick="closeModal()"></div>
 
   <!-- Resolution Modal -->
   <div id="resolutionModal" class="fixed inset-0 z-50 hidden items-center justify-center">
-    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4" onclick="event.stopPropagation()">
-      <div id="modalHeader" class="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-red-50">
+    <div class="bg-white rounded shadow-lg w-full max-w-md mx-4 border border-slate-200" onclick="event.stopPropagation()">
+      <div id="modalHeader" class="flex items-center justify-between px-4 py-2.5 border-b border-slate-200 bg-red-50">
         <div class="flex items-center gap-2">
-          <div id="modalIcon" class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-            <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div id="modalIcon" class="w-7 h-7 bg-red-100 rounded flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
             </svg>
           </div>
-          <h3 id="modalTitle" class="font-semibold text-red-900">Emergent Evaluation</h3>
+          <h3 id="modalTitle" class="font-medium text-red-900 text-sm">Emergent Evaluation</h3>
         </div>
         <button onclick="closeModal()" class="p-1 hover:bg-red-100 rounded">
-          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
-      <div class="p-4 space-y-4">
-        <div id="coordinatorCallSection" class="space-y-4">
-          <div class="bg-blue-50 border border-blue-200 rounded p-3">
-            <div class="text-xs font-medium text-blue-800 mb-2">Coordinator Call Required</div>
-            <div class="space-y-3">
+      <div class="p-4 space-y-3">
+        <div id="coordinatorCallSection" class="space-y-3">
+          <div class="bg-blue-50 border border-blue-100 rounded p-3">
+            <div class="text-xs font-medium text-blue-700 mb-2">Coordinator Call Required</div>
+            <div class="space-y-2">
               <div>
-                <label class="text-xs font-medium text-gray-700 block mb-2">Did you complete the call? *</label>
+                <label class="text-xs text-slate-600 block mb-1.5">Did you complete the call? *</label>
                 <div class="flex gap-2">
-                  <button onclick="selectCallCompleted('yes', this)" class="call-btn flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-                  <button onclick="selectCallCompleted('no', this)" class="call-btn flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+                  <button onclick="selectCallCompleted('yes', this)" class="call-btn flex-1 px-3 py-1.5 text-xs font-medium border border-slate-200 rounded hover:bg-slate-50 bg-white text-slate-600">Yes</button>
+                  <button onclick="selectCallCompleted('no', this)" class="call-btn flex-1 px-3 py-1.5 text-xs font-medium border border-slate-200 rounded hover:bg-slate-50 bg-white text-slate-600">No</button>
                 </div>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 block mb-2">Call Date</label>
-                <input type="date" class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label class="text-xs text-slate-600 block mb-1.5">Call Date</label>
+                <input type="date" class="w-full px-2.5 py-1.5 text-xs border border-slate-200 rounded focus:outline-none focus:border-blue-400">
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 block mb-2">Call Summary</label>
-                <textarea class="w-full px-3 py-2 text-sm border border-gray-200 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Summary of call with patient..."></textarea>
+                <label class="text-xs text-slate-600 block mb-1.5">Call Summary</label>
+                <textarea class="w-full px-2.5 py-1.5 text-xs border border-slate-200 rounded resize-none focus:outline-none focus:border-blue-400" rows="2" placeholder="Summary of call with patient..."></textarea>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <label class="text-xs font-medium text-gray-700 block mb-2">Have you contacted the clinic? *</label>
+          <label class="text-xs text-slate-600 block mb-1.5">Have you contacted the clinic? *</label>
           <div class="flex gap-2">
-            <button onclick="selectContacted('yes', this)" class="contacted-btn flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">Yes</button>
-            <button onclick="selectContacted('no', this)" class="contacted-btn flex-1 px-3 py-2 text-sm font-medium border border-gray-200 rounded hover:bg-gray-50 bg-white text-gray-700">No</button>
+            <button onclick="selectContacted('yes', this)" class="contacted-btn flex-1 px-3 py-1.5 text-xs font-medium border border-slate-200 rounded hover:bg-slate-50 bg-white text-slate-600">Yes</button>
+            <button onclick="selectContacted('no', this)" class="contacted-btn flex-1 px-3 py-1.5 text-xs font-medium border border-slate-200 rounded hover:bg-slate-50 bg-white text-slate-600">No</button>
           </div>
         </div>
         <div>
-          <label class="text-xs font-medium text-gray-700 block mb-2">Handed off to *</label>
-          <input type="text" placeholder="e.g., Patty Smith, RN" class="w-full px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <label class="text-xs text-slate-600 block mb-1.5">Handed off to *</label>
+          <input type="text" placeholder="e.g., Patty Smith, RN" class="w-full px-2.5 py-1.5 text-xs border border-slate-200 rounded focus:outline-none focus:border-blue-400">
         </div>
         <div>
-          <label class="text-xs font-medium text-gray-700 block mb-2">Appointment scheduled</label>
+          <label class="text-xs text-slate-600 block mb-1.5">Appointment scheduled</label>
           <div class="flex gap-2">
-            <input type="date" class="flex-1 px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <input type="time" class="w-28 px-3 py-2 text-sm border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="date" class="flex-1 px-2.5 py-1.5 text-xs border border-slate-200 rounded focus:outline-none focus:border-blue-400">
+            <input type="time" class="w-24 px-2.5 py-1.5 text-xs border border-slate-200 rounded focus:outline-none focus:border-blue-400">
           </div>
         </div>
         <div>
-          <label class="text-xs font-medium text-gray-700 block mb-2">Notes <span class="text-gray-400 font-normal">(optional)</span></label>
-          <textarea class="w-full px-3 py-2 text-sm border border-gray-200 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Any additional information..."></textarea>
+          <label class="text-xs text-slate-600 block mb-1.5">Notes <span class="text-slate-400">(optional)</span></label>
+          <textarea class="w-full px-2.5 py-1.5 text-xs border border-slate-200 rounded resize-none focus:outline-none focus:border-blue-400" rows="2" placeholder="Any additional information..."></textarea>
         </div>
       </div>
-      <div class="flex items-center justify-end gap-2 px-4 py-3 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-        <button onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded">Cancel</button>
-        <button onclick="confirmResolution()" id="confirmBtn" class="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded inline-flex items-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center justify-end gap-2 px-4 py-2.5 border-t border-slate-100 bg-slate-50">
+        <button onclick="closeModal()" class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded">Cancel</button>
+        <button onclick="confirmResolution()" id="confirmBtn" class="px-3 py-1.5 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded inline-flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
           </svg>
           Confirm
@@ -93,156 +93,156 @@
 
   <div class="flex h-screen">
 
-    <!-- Left Icon Sidebar (like Intercom) -->
-    <div class="w-14 bg-slate-900 flex flex-col items-center py-4">
+    <!-- Left Icon Sidebar -->
+    <div class="w-12 bg-slate-800 flex flex-col items-center py-3">
       <!-- Logo -->
-      <div class="w-9 h-9 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center mb-6">
-        <span class="text-white font-bold text-sm">SH</span>
+      <div class="w-8 h-8 bg-emerald-500 rounded flex items-center justify-center mb-5">
+        <span class="text-white font-semibold text-xs">SH</span>
       </div>
 
       <!-- Nav Items -->
-      <div class="flex-1 flex flex-col items-center gap-1">
+      <div class="flex-1 flex flex-col items-center gap-0.5">
         <!-- Tickets (Active) -->
-        <a href="#" class="w-10 h-10 bg-slate-700 rounded-lg flex items-center justify-center text-white relative group">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
+        <a href="#" class="w-9 h-9 bg-slate-700 rounded flex items-center justify-center text-white relative group">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
           </svg>
-          <span class="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">Tickets</span>
+          <span class="absolute left-full ml-2 px-2 py-1 bg-slate-900 text-white text-[11px] rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity z-50">Tickets</span>
           <!-- Badge -->
-          <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">4</span>
+          <span class="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-red-500 text-white text-[9px] font-medium rounded flex items-center justify-center">4</span>
         </a>
 
         <!-- Patients -->
-        <a href="#" class="w-10 h-10 hover:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:text-white relative group transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+        <a href="#" class="w-9 h-9 hover:bg-slate-700 rounded flex items-center justify-center text-slate-400 hover:text-white relative group transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
           </svg>
-          <span class="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">Patients</span>
+          <span class="absolute left-full ml-2 px-2 py-1 bg-slate-900 text-white text-[11px] rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity z-50">Patients</span>
         </a>
 
         <!-- Adhoc -->
-        <a href="#" class="w-10 h-10 hover:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:text-white relative group transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+        <a href="#" class="w-9 h-9 hover:bg-slate-700 rounded flex items-center justify-center text-slate-400 hover:text-white relative group transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
           </svg>
-          <span class="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">Adhoc Calls</span>
+          <span class="absolute left-full ml-2 px-2 py-1 bg-slate-900 text-white text-[11px] rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity z-50">Adhoc Calls</span>
         </a>
       </div>
 
       <!-- Bottom Items -->
-      <div class="flex flex-col items-center gap-1">
+      <div class="flex flex-col items-center gap-0.5">
         <!-- Settings -->
-        <a href="#" class="w-10 h-10 hover:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:text-white relative group transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        <a href="#" class="w-9 h-9 hover:bg-slate-700 rounded flex items-center justify-center text-slate-400 hover:text-white relative group transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
           </svg>
-          <span class="absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">Settings</span>
+          <span class="absolute left-full ml-2 px-2 py-1 bg-slate-900 text-white text-[11px] rounded opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity z-50">Settings</span>
         </a>
 
         <!-- User Avatar -->
-        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-semibold mt-2 cursor-pointer">
+        <div class="w-7 h-7 bg-indigo-500 rounded flex items-center justify-center text-white text-[10px] font-medium mt-1.5 cursor-pointer">
           CD
         </div>
       </div>
     </div>
 
     <!-- Ticket List Panel -->
-    <div class="w-72 bg-white border-r border-gray-200 flex flex-col">
+    <div class="w-64 bg-white border-r border-slate-200 flex flex-col">
       <!-- Header -->
-      <div class="p-4 border-b border-gray-200">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-lg font-bold text-gray-900">Tickets</h2>
-          <button class="w-8 h-8 hover:bg-gray-100 rounded-lg flex items-center justify-center text-gray-500">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+      <div class="px-3 py-2.5 border-b border-slate-200">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-sm font-semibold text-slate-800">Tickets</h2>
+          <button class="w-7 h-7 hover:bg-slate-100 rounded flex items-center justify-center text-slate-400">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
             </svg>
           </button>
         </div>
         <!-- Filter Tabs -->
-        <div class="flex gap-1 text-sm">
-          <button class="px-3 py-1.5 bg-slate-900 text-white rounded-md font-medium">Open</button>
-          <button class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded-md font-medium">Resolved</button>
-          <button class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded-md font-medium">All</button>
+        <div class="flex gap-0.5 text-xs">
+          <button class="px-2.5 py-1 bg-slate-800 text-white rounded font-medium">Open</button>
+          <button class="px-2.5 py-1 text-slate-500 hover:bg-slate-100 rounded font-medium">Resolved</button>
+          <button class="px-2.5 py-1 text-slate-500 hover:bg-slate-100 rounded font-medium">All</button>
         </div>
       </div>
 
       <!-- Ticket List -->
       <div class="flex-1 overflow-y-auto">
         <!-- Active Ticket -->
-        <div class="px-3 py-3 bg-blue-50 border-l-2 border-blue-600 cursor-pointer">
-          <div class="flex items-start gap-3">
-            <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+        <div class="px-3 py-2.5 bg-blue-50 border-l-2 border-blue-500 cursor-pointer">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 bg-indigo-500 rounded flex items-center justify-center text-white text-[10px] font-medium flex-shrink-0">
               JG
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between mb-0.5">
-                <span class="font-semibold text-gray-900 text-sm">Jonathan Goldsmith</span>
-                <span class="text-xs text-gray-500">42m</span>
+                <span class="font-medium text-slate-800 text-xs">Jonathan Goldsmith</span>
+                <span class="text-[11px] text-slate-400">42m</span>
               </div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-                <span class="text-xs text-gray-600">Urgent · Evaluation</span>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                <span class="text-[11px] text-slate-500">Urgent · Evaluation</span>
               </div>
-              <p class="text-xs text-gray-500 truncate">New symptoms, worsening energy</p>
+              <p class="text-[11px] text-slate-400 truncate">New symptoms, worsening energy</p>
             </div>
           </div>
         </div>
 
         <!-- Other Tickets -->
-        <div class="px-3 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
-          <div class="flex items-start gap-3">
-            <div class="w-9 h-9 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+        <div class="px-3 py-2.5 hover:bg-slate-50 cursor-pointer border-b border-slate-100">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 bg-emerald-500 rounded flex items-center justify-center text-white text-[10px] font-medium flex-shrink-0">
               MS
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between mb-0.5">
-                <span class="font-semibold text-gray-900 text-sm">Maria Santos</span>
-                <span class="text-xs text-gray-500">1h</span>
+                <span class="font-medium text-slate-800 text-xs">Maria Santos</span>
+                <span class="text-[11px] text-slate-400">1h</span>
               </div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                <span class="text-xs text-gray-600">Immediate · Follow-up</span>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                <span class="text-[11px] text-slate-500">Immediate · Follow-up</span>
               </div>
-              <p class="text-xs text-gray-500 truncate">Blood pressure reading elevated</p>
+              <p class="text-[11px] text-slate-400 truncate">Blood pressure reading elevated</p>
             </div>
           </div>
         </div>
 
-        <div class="px-3 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
-          <div class="flex items-start gap-3">
-            <div class="w-9 h-9 bg-gradient-to-br from-purple-500 to-violet-600 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+        <div class="px-3 py-2.5 hover:bg-slate-50 cursor-pointer border-b border-slate-100">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 bg-violet-500 rounded flex items-center justify-center text-white text-[10px] font-medium flex-shrink-0">
               RJ
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between mb-0.5">
-                <span class="font-semibold text-gray-900 text-sm">Robert Johnson</span>
-                <span class="text-xs text-gray-500">2h</span>
+                <span class="font-medium text-slate-800 text-xs">Robert Johnson</span>
+                <span class="text-[11px] text-slate-400">2h</span>
               </div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
-                <span class="text-xs text-gray-600">Urgent · Wound Check</span>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                <span class="text-[11px] text-slate-500">Urgent · Wound Check</span>
               </div>
-              <p class="text-xs text-gray-500 truncate">Wound showing signs of infection</p>
+              <p class="text-[11px] text-slate-400 truncate">Wound showing signs of infection</p>
             </div>
           </div>
         </div>
 
-        <div class="px-3 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
-          <div class="flex items-start gap-3">
-            <div class="w-9 h-9 bg-gradient-to-br from-amber-500 to-orange-600 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+        <div class="px-3 py-2.5 hover:bg-slate-50 cursor-pointer border-b border-slate-100">
+          <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 bg-amber-500 rounded flex items-center justify-center text-white text-[10px] font-medium flex-shrink-0">
               PT
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between mb-0.5">
-                <span class="font-semibold text-gray-900 text-sm">Patricia Thompson</span>
-                <span class="text-xs text-gray-500">3h</span>
+                <span class="font-medium text-slate-800 text-xs">Patricia Thompson</span>
+                <span class="text-[11px] text-slate-400">3h</span>
               </div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                <span class="text-xs text-gray-600">Routine · Check-in</span>
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                <span class="text-[11px] text-slate-500">Routine · Check-in</span>
               </div>
-              <p class="text-xs text-gray-500 truncate">All vitals within normal limits</p>
+              <p class="text-[11px] text-slate-400 truncate">All vitals within normal limits</p>
             </div>
           </div>
         </div>
@@ -250,28 +250,28 @@
     </div>
 
     <!-- Main Content Panel -->
-    <div class="flex-1 flex flex-col bg-gray-50 min-w-0">
+    <div class="flex-1 flex flex-col bg-slate-50 min-w-0">
       <!-- Top Bar -->
-      <div class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 flex-shrink-0">
-        <div class="flex items-center gap-3">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse"></span>
-            <span class="font-semibold text-sm text-gray-900">Open</span>
-          </div>
-          <span class="text-gray-300">|</span>
-          <span class="text-gray-500 text-sm font-mono">#42</span>
-          <span class="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-semibold rounded-full">Urgent</span>
-        </div>
+      <div class="h-11 bg-white border-b border-slate-200 flex items-center justify-between px-3 flex-shrink-0">
         <div class="flex items-center gap-2">
-          <span class="text-xs text-gray-400">1 of 4</span>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+            <span class="font-medium text-xs text-slate-700">Open</span>
+          </div>
+          <span class="text-slate-300">·</span>
+          <span class="text-slate-400 text-xs font-mono">#42</span>
+          <span class="px-1.5 py-0.5 bg-orange-100 text-orange-600 text-[10px] font-medium rounded">Urgent</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[11px] text-slate-400">1 of 4</span>
           <div class="flex items-center">
-            <button class="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
-            <button class="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
             </button>
@@ -280,260 +280,260 @@
       </div>
 
       <!-- Scrollable Content -->
-      <div class="flex-1 overflow-y-auto p-4">
+      <div class="flex-1 overflow-y-auto p-3">
         <!-- Assigned Banner -->
-        <div class="bg-white border border-gray-200 rounded-lg px-4 py-2.5 flex items-center justify-between mb-4 shadow-sm">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+        <div class="bg-white border border-slate-200 rounded px-3 py-2 flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 bg-blue-500 rounded flex items-center justify-center text-white text-[10px] font-medium">
               CD
             </div>
             <div class="flex flex-col">
-              <span class="text-sm font-semibold text-gray-900">C. Dashing</span>
-              <span class="text-xs text-blue-600">Assigned to you</span>
+              <span class="text-xs font-medium text-slate-800">C. Dashing</span>
+              <span class="text-[11px] text-blue-600">Assigned to you</span>
             </div>
           </div>
-          <button class="px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors">
+          <button class="px-2.5 py-1 text-[11px] font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors">
             Reassign
           </button>
         </div>
 
         <!-- Ticket Info -->
-        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-4">
-          <div class="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        <div class="bg-white border border-slate-200 rounded overflow-hidden mb-3">
+          <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
             </svg>
-            <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Ticket Info</h4>
+            <h4 class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Ticket Info</h4>
           </div>
-          <div class="p-4 grid grid-cols-2 gap-3 text-sm">
+          <div class="p-3 grid grid-cols-2 gap-2 text-xs">
             <div class="flex items-center justify-between">
-              <span class="text-gray-500">Type</span>
-              <span class="text-gray-900 font-medium">Evaluation</span>
+              <span class="text-slate-400">Type</span>
+              <span class="text-slate-700 font-medium">Evaluation</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-gray-500">Status</span>
-              <span class="inline-flex items-center gap-1.5">
-                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-                <span class="text-gray-900 font-medium">Open</span>
+              <span class="text-slate-400">Status</span>
+              <span class="inline-flex items-center gap-1">
+                <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                <span class="text-slate-700 font-medium">Open</span>
               </span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-gray-500">Program</span>
-              <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium rounded">Hypertension</span>
+              <span class="text-slate-400">Program</span>
+              <span class="px-1.5 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded">Hypertension</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-gray-500">Channel</span>
-              <span class="inline-flex items-center gap-1.5 text-gray-900 font-medium">
-                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              <span class="text-slate-400">Channel</span>
+              <span class="inline-flex items-center gap-1 text-slate-700 font-medium">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
                 Voice
               </span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-gray-500">Created</span>
-              <span class="text-gray-600 text-xs">Mar 17, 2026 · 10:32 AM</span>
+              <span class="text-slate-400">Created</span>
+              <span class="text-slate-500 text-[11px]">Mar 17, 2026 · 10:32 AM</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-gray-500">Wait Time</span>
+              <span class="text-slate-400">Wait Time</span>
               <span class="text-orange-600 font-semibold">42 min</span>
             </div>
           </div>
         </div>
 
         <!-- Section: Patient Assessment -->
-        <div class="flex items-center gap-3 py-3">
-          <div class="h-px flex-1 bg-gray-200"></div>
-          <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Patient Assessment</span>
-          <div class="h-px flex-1 bg-gray-200"></div>
+        <div class="flex items-center gap-2 py-2.5">
+          <div class="h-px flex-1 bg-slate-200"></div>
+          <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Patient Assessment</span>
+          <div class="h-px flex-1 bg-slate-200"></div>
         </div>
 
         <!-- Response -->
-        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-4">
-          <div class="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+        <div class="bg-white border border-slate-200 rounded overflow-hidden mb-3">
+          <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
               </svg>
-              <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Response</h4>
+              <h4 class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Response</h4>
             </div>
-            <span class="text-xs text-gray-400">4 questions</span>
+            <span class="text-[11px] text-slate-400">4 questions</span>
           </div>
-          <div class="divide-y divide-gray-100 text-sm">
-            <div class="px-4 py-3 bg-red-50/60">
-              <div class="flex items-start justify-between gap-3 mb-2">
-                <div class="text-gray-800 font-medium">In the past week, have you had any NEW or WORSENING symptoms?</div>
-                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded flex-shrink-0">YES</span>
+          <div class="divide-y divide-slate-100 text-xs">
+            <div class="px-3 py-2.5 bg-red-50/50">
+              <div class="flex items-start justify-between gap-2 mb-1.5">
+                <div class="text-slate-700 font-medium">In the past week, have you had any NEW or WORSENING symptoms?</div>
+                <span class="px-1.5 py-0.5 bg-red-100 text-red-600 text-[10px] font-semibold rounded flex-shrink-0">YES</span>
               </div>
-              <div class="bg-white border border-gray-200 rounded p-2.5">
-                <p class="text-gray-600 italic text-xs">"Yeah, I've been having some trouble breathing lately, especially when I climb stairs. And I've had some chest tightness too."</p>
-              </div>
-            </div>
-            <div class="px-4 py-3 bg-red-50/60">
-              <div class="flex items-start justify-between gap-3 mb-2">
-                <div class="text-gray-800 font-medium">Compared to last week, how is your energy level?</div>
-                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded flex-shrink-0">WORSE</span>
-              </div>
-              <div class="bg-white border border-gray-200 rounded p-2.5">
-                <p class="text-gray-600 italic text-xs">"It's definitely worse. I feel tired all the time now, even after sleeping."</p>
+              <div class="bg-white border border-slate-100 rounded p-2">
+                <p class="text-slate-500 italic text-[11px]">"Yeah, I've been having some trouble breathing lately, especially when I climb stairs. And I've had some chest tightness too."</p>
               </div>
             </div>
-            <div class="px-4 py-3 bg-green-50/60">
-              <div class="flex items-start justify-between gap-3 mb-2">
-                <div class="text-gray-800 font-medium">Do you want to talk to a nurse or doctor?</div>
-                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded flex-shrink-0">NO</span>
+            <div class="px-3 py-2.5 bg-red-50/50">
+              <div class="flex items-start justify-between gap-2 mb-1.5">
+                <div class="text-slate-700 font-medium">Compared to last week, how is your energy level?</div>
+                <span class="px-1.5 py-0.5 bg-red-100 text-red-600 text-[10px] font-semibold rounded flex-shrink-0">WORSE</span>
               </div>
-              <div class="bg-white border border-gray-200 rounded p-2.5">
-                <p class="text-gray-600 italic text-xs">"No, I think I'm okay for now. I have an appointment coming up next week anyway."</p>
+              <div class="bg-white border border-slate-100 rounded p-2">
+                <p class="text-slate-500 italic text-[11px]">"It's definitely worse. I feel tired all the time now, even after sleeping."</p>
               </div>
             </div>
-            <div class="px-4 py-3 bg-green-50/60">
-              <div class="flex items-start justify-between gap-3 mb-2">
-                <div class="text-gray-800 font-medium">Are you taking your medications as prescribed?</div>
-                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded flex-shrink-0">YES</span>
+            <div class="px-3 py-2.5 bg-emerald-50/50">
+              <div class="flex items-start justify-between gap-2 mb-1.5">
+                <div class="text-slate-700 font-medium">Do you want to talk to a nurse or doctor?</div>
+                <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-600 text-[10px] font-semibold rounded flex-shrink-0">NO</span>
               </div>
-              <div class="bg-white border border-gray-200 rounded p-2.5">
-                <p class="text-gray-600 italic text-xs">"Yes, I take them every morning with breakfast, just like the doctor told me."</p>
+              <div class="bg-white border border-slate-100 rounded p-2">
+                <p class="text-slate-500 italic text-[11px]">"No, I think I'm okay for now. I have an appointment coming up next week anyway."</p>
+              </div>
+            </div>
+            <div class="px-3 py-2.5 bg-emerald-50/50">
+              <div class="flex items-start justify-between gap-2 mb-1.5">
+                <div class="text-slate-700 font-medium">Are you taking your medications as prescribed?</div>
+                <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-600 text-[10px] font-semibold rounded flex-shrink-0">YES</span>
+              </div>
+              <div class="bg-white border border-slate-100 rounded p-2">
+                <p class="text-slate-500 italic text-[11px]">"Yes, I take them every morning with breakfast, just like the doctor told me."</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Vitals -->
-        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm mb-4">
-          <div class="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+        <div class="bg-white border border-slate-200 rounded overflow-hidden mb-3">
+          <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
               </svg>
-              <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Vitals</h4>
+              <h4 class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Vitals</h4>
             </div>
-            <a href="#" class="text-xs text-blue-600 hover:text-blue-700 font-medium">View Full →</a>
+            <a href="#" class="text-[11px] text-blue-600 hover:text-blue-700 font-medium">View Full →</a>
           </div>
-          <div class="divide-y divide-gray-100 text-sm">
-            <div class="px-4 py-3 bg-red-50/60 flex items-center justify-between">
-              <span class="font-medium text-gray-800">Blood Pressure</span>
+          <div class="divide-y divide-slate-100 text-xs">
+            <div class="px-3 py-2.5 bg-red-50/50 flex items-center justify-between">
+              <span class="font-medium text-slate-700">Blood Pressure</span>
               <div class="text-right">
-                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded">155/90 mmHg</span>
-                <div class="text-xs text-red-600 mt-0.5">+15/+7 vs baseline</div>
+                <span class="px-1.5 py-0.5 bg-red-100 text-red-600 text-[10px] font-semibold rounded">155/90 mmHg</span>
+                <div class="text-[10px] text-red-500 mt-0.5">+15/+7 vs baseline</div>
               </div>
             </div>
-            <div class="px-4 py-3 bg-yellow-50/60 flex items-center justify-between">
-              <span class="font-medium text-gray-800">Pulse</span>
+            <div class="px-3 py-2.5 bg-amber-50/50 flex items-center justify-between">
+              <span class="font-medium text-slate-700">Pulse</span>
               <div class="text-right">
-                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs font-bold rounded">78 bpm</span>
-                <div class="text-xs text-yellow-600 mt-0.5">+10 vs baseline</div>
+                <span class="px-1.5 py-0.5 bg-amber-100 text-amber-600 text-[10px] font-semibold rounded">78 bpm</span>
+                <div class="text-[10px] text-amber-500 mt-0.5">+10 vs baseline</div>
               </div>
             </div>
-            <div class="px-4 py-3 bg-green-50/60 flex items-center justify-between">
-              <span class="font-medium text-gray-800">Respiratory Rate</span>
+            <div class="px-3 py-2.5 bg-emerald-50/50 flex items-center justify-between">
+              <span class="font-medium text-slate-700">Respiratory Rate</span>
               <div class="text-right">
-                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded">16 breaths/min</span>
-                <div class="text-xs text-green-600 mt-0.5">WNL</div>
+                <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-600 text-[10px] font-semibold rounded">16 breaths/min</span>
+                <div class="text-[10px] text-emerald-500 mt-0.5">WNL</div>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Voice & Wound Analysis (side by side) -->
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-2 gap-3 mb-3">
           <!-- Voice Analysis -->
-          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-            <div class="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+          <div class="bg-white border border-slate-200 rounded overflow-hidden">
+            <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
                 </svg>
-                <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Voice</h4>
+                <h4 class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Voice</h4>
               </div>
             </div>
-            <div class="divide-y divide-gray-100 text-sm">
-              <div class="px-4 py-2.5 bg-red-50/60 flex items-center justify-between">
-                <span class="text-gray-700">Depression</span>
-                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded">High</span>
+            <div class="divide-y divide-slate-100 text-xs">
+              <div class="px-3 py-2 bg-red-50/50 flex items-center justify-between">
+                <span class="text-slate-600">Depression</span>
+                <span class="px-1.5 py-0.5 bg-red-100 text-red-600 text-[10px] font-semibold rounded">High</span>
               </div>
-              <div class="px-4 py-2.5 bg-yellow-50/60 flex items-center justify-between">
-                <span class="text-gray-700">Anxiety</span>
-                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-700 text-xs font-bold rounded">Medium</span>
+              <div class="px-3 py-2 bg-amber-50/50 flex items-center justify-between">
+                <span class="text-slate-600">Anxiety</span>
+                <span class="px-1.5 py-0.5 bg-amber-100 text-amber-600 text-[10px] font-semibold rounded">Medium</span>
               </div>
             </div>
           </div>
 
           <!-- Wound Analysis -->
-          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
-            <div class="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          <div class="bg-white border border-slate-200 rounded overflow-hidden">
+            <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <div class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <h4 class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Wound</h4>
+                <h4 class="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Wound</h4>
               </div>
             </div>
-            <div class="divide-y divide-gray-100 text-sm">
-              <div class="px-4 py-2.5 bg-red-50/60 flex items-center justify-between">
-                <span class="text-gray-700">Infection</span>
-                <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded">Present</span>
+            <div class="divide-y divide-slate-100 text-xs">
+              <div class="px-3 py-2 bg-red-50/50 flex items-center justify-between">
+                <span class="text-slate-600">Infection</span>
+                <span class="px-1.5 py-0.5 bg-red-100 text-red-600 text-[10px] font-semibold rounded">Present</span>
               </div>
-              <div class="px-4 py-2.5 bg-green-50/60 flex items-center justify-between">
-                <span class="text-gray-700">Integrity</span>
-                <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded">Intact</span>
+              <div class="px-3 py-2 bg-emerald-50/50 flex items-center justify-between">
+                <span class="text-slate-600">Integrity</span>
+                <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-600 text-[10px] font-semibold rounded">Intact</span>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Resolve Ticket -->
-        <div class="bg-white border-2 border-blue-200 rounded-lg overflow-hidden shadow-sm">
-          <div class="px-4 py-3 bg-blue-50 border-b border-blue-200 flex items-center gap-2">
-            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        <div class="bg-white border border-blue-200 rounded overflow-hidden">
+          <div class="px-3 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <h4 class="text-sm font-semibold text-blue-900">Resolve Ticket</h4>
+            <h4 class="text-xs font-semibold text-blue-800">Resolve Ticket</h4>
           </div>
-          <div class="p-4 space-y-4">
+          <div class="p-3 space-y-3">
             <div class="relative">
-              <label class="text-sm font-semibold text-gray-700 block mb-2">Outcome</label>
-              <button type="button" onclick="toggleOutcomeDropdown()" id="outcomeButton" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-white hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-between transition-colors">
-                <span id="outcomeSelected" class="text-gray-400">Select outcome...</span>
-                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              <label class="text-xs font-medium text-slate-600 block mb-1.5">Outcome</label>
+              <button type="button" onclick="toggleOutcomeDropdown()" id="outcomeButton" class="w-full px-3 py-2 text-xs border border-slate-200 rounded bg-white hover:border-slate-300 focus:outline-none focus:border-blue-400 flex items-center justify-between transition-colors">
+                <span id="outcomeSelected" class="text-slate-400">Select outcome...</span>
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/>
                 </svg>
               </button>
-              <div id="outcomeDropdown" class="hidden absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-64 overflow-y-auto">
-                <div class="px-3 py-1.5 text-xs font-bold text-gray-500 uppercase bg-gray-50 border-b">Escalation</div>
-                <div class="px-3 py-2.5 hover:bg-red-50 cursor-pointer flex items-center gap-2" onclick="selectOutcome('Emergent', 'red')">
-                  <span class="w-2 h-2 bg-red-500 rounded-full"></span>
-                  <span class="text-sm font-medium">Emergent</span>
+              <div id="outcomeDropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-slate-200 rounded shadow-md max-h-56 overflow-y-auto">
+                <div class="px-2.5 py-1.5 text-[10px] font-semibold text-slate-400 uppercase bg-slate-50 border-b border-slate-100">Escalation</div>
+                <div class="px-2.5 py-2 hover:bg-red-50 cursor-pointer flex items-center gap-1.5" onclick="selectOutcome('Emergent', 'red')">
+                  <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                  <span class="text-xs font-medium text-slate-700">Emergent</span>
                 </div>
-                <div class="px-3 py-2.5 hover:bg-orange-50 cursor-pointer flex items-center gap-2" onclick="selectOutcome('Urgent', 'orange')">
-                  <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
-                  <span class="text-sm font-medium">Urgent</span>
+                <div class="px-2.5 py-2 hover:bg-orange-50 cursor-pointer flex items-center gap-1.5" onclick="selectOutcome('Urgent', 'orange')">
+                  <span class="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                  <span class="text-xs font-medium text-slate-700">Urgent</span>
                 </div>
-                <div class="px-3 py-2.5 hover:bg-yellow-50 cursor-pointer flex items-center gap-2" onclick="selectOutcome('Immediate', 'yellow')">
-                  <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                  <span class="text-sm font-medium">Immediate</span>
+                <div class="px-2.5 py-2 hover:bg-amber-50 cursor-pointer flex items-center gap-1.5" onclick="selectOutcome('Immediate', 'yellow')">
+                  <span class="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                  <span class="text-xs font-medium text-slate-700">Immediate</span>
                 </div>
-                <div class="px-3 py-2.5 hover:bg-green-50 cursor-pointer flex items-center gap-2 border-b" onclick="selectOutcome('Routine', 'green')">
-                  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
-                  <span class="text-sm font-medium">Routine</span>
+                <div class="px-2.5 py-2 hover:bg-emerald-50 cursor-pointer flex items-center gap-1.5 border-b border-slate-100" onclick="selectOutcome('Routine', 'green')">
+                  <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                  <span class="text-xs font-medium text-slate-700">Routine</span>
                 </div>
-                <div class="px-3 py-1.5 text-xs font-bold text-gray-500 uppercase bg-gray-50 border-b">Non-Escalation</div>
-                <div class="px-3 py-2.5 hover:bg-blue-50 cursor-pointer flex items-center gap-2" onclick="selectOutcome('Resolved on Phone', 'blue')">
-                  <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
-                  <span class="text-sm font-medium">Resolved on Phone</span>
+                <div class="px-2.5 py-1.5 text-[10px] font-semibold text-slate-400 uppercase bg-slate-50 border-b border-slate-100">Non-Escalation</div>
+                <div class="px-2.5 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-1.5" onclick="selectOutcome('Resolved on Phone', 'blue')">
+                  <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                  <span class="text-xs font-medium text-slate-700">Resolved on Phone</span>
                 </div>
-                <div class="px-3 py-2.5 hover:bg-gray-50 cursor-pointer flex items-center gap-2" onclick="selectOutcome('No Intervention Needed', 'gray')">
-                  <span class="w-2 h-2 bg-gray-400 rounded-full"></span>
-                  <span class="text-sm font-medium">No Intervention Needed</span>
+                <div class="px-2.5 py-2 hover:bg-slate-50 cursor-pointer flex items-center gap-1.5" onclick="selectOutcome('No Intervention Needed', 'gray')">
+                  <span class="w-1.5 h-1.5 bg-slate-400 rounded-full"></span>
+                  <span class="text-xs font-medium text-slate-700">No Intervention Needed</span>
                 </div>
               </div>
             </div>
             <div>
-              <label class="text-sm font-semibold text-gray-700 block mb-2">Notes <span class="text-gray-400 font-normal text-xs">(optional)</span></label>
-              <textarea class="w-full h-20 px-3 py-2 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Document your assessment..."></textarea>
+              <label class="text-xs font-medium text-slate-600 block mb-1.5">Notes <span class="text-slate-400 font-normal">(optional)</span></label>
+              <textarea class="w-full h-16 px-2.5 py-2 text-xs border border-slate-200 rounded resize-none focus:outline-none focus:border-blue-400" placeholder="Document your assessment..."></textarea>
             </div>
-            <button class="w-full px-4 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="w-full px-3 py-2 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700 flex items-center justify-center gap-1.5 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
               Resolve Ticket
@@ -544,51 +544,51 @@
     </div>
 
     <!-- Right Sidebar - Patient Details -->
-    <div class="w-80 bg-white border-l border-gray-200 flex flex-col flex-shrink-0">
+    <div class="w-72 bg-white border-l border-slate-200 flex flex-col flex-shrink-0">
       <!-- Tabs -->
-      <div class="flex border-b border-gray-200">
-        <button class="flex-1 px-4 py-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600">Details</button>
-        <button class="flex-1 px-4 py-3 text-sm font-medium text-gray-500 hover:text-gray-700">History</button>
+      <div class="flex border-b border-slate-200">
+        <button class="flex-1 px-3 py-2.5 text-xs font-semibold text-blue-600 border-b-2 border-blue-600">Details</button>
+        <button class="flex-1 px-3 py-2.5 text-xs font-medium text-slate-400 hover:text-slate-600">History</button>
       </div>
 
       <!-- Patient Header -->
-      <div class="p-4 border-b border-gray-200">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+      <div class="p-3 border-b border-slate-200">
+        <div class="flex items-center gap-2.5 mb-2.5">
+          <div class="w-10 h-10 bg-indigo-500 rounded flex items-center justify-center text-white font-semibold text-xs">
             JG
           </div>
           <div>
-            <div class="font-bold text-gray-900">Jonathan Goldsmith</div>
-            <div class="text-xs text-gray-500">Male · 63 years old</div>
+            <div class="font-semibold text-slate-800 text-sm">Jonathan Goldsmith</div>
+            <div class="text-[11px] text-slate-400">Male · 63 years old</div>
           </div>
         </div>
 
         <!-- Phone -->
-        <div class="bg-gray-50 rounded-lg p-2.5 mb-3">
+        <div class="bg-slate-50 rounded p-2 mb-2.5">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-              <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            <div class="w-7 h-7 bg-emerald-100 rounded flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
               </svg>
             </div>
             <div class="flex-1">
-              <div class="font-semibold text-gray-900 text-sm">(212) 384-2733</div>
-              <div class="text-xs text-gray-400">Cell · Primary</div>
+              <div class="font-medium text-slate-800 text-xs">(212) 384-2733</div>
+              <div class="text-[10px] text-slate-400">Cell · Primary</div>
             </div>
           </div>
         </div>
 
         <!-- Call Buttons -->
         <div class="flex gap-2">
-          <button class="flex-1 px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 flex items-center justify-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+          <button class="flex-1 px-2.5 py-1.5 bg-emerald-600 text-white text-xs font-medium rounded hover:bg-emerald-700 flex items-center justify-center gap-1.5 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
             </svg>
             Call
           </button>
-          <button class="flex-1 px-3 py-2 bg-white border border-gray-200 text-sm font-medium rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2">
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+          <button class="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 text-xs font-medium rounded hover:bg-slate-50 flex items-center justify-center gap-1.5 transition-colors">
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
             Log
           </button>
@@ -596,42 +596,42 @@
       </div>
 
       <!-- Scrollable Details -->
-      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+      <div class="flex-1 overflow-y-auto p-3 space-y-3">
         <!-- Consent Status -->
-        <div class="bg-green-50 border border-green-200 rounded-lg px-3 py-2 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        <div class="bg-emerald-50 border border-emerald-100 rounded px-2.5 py-1.5 flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
-            <span class="text-green-800 font-semibold text-sm">Consented</span>
+            <span class="text-emerald-700 font-medium text-xs">Consented</span>
           </div>
-          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
         </div>
 
         <!-- Demographics -->
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Demographics</h5>
-            <button class="text-xs text-blue-600 hover:text-blue-700">Edit</button>
+          <div class="flex items-center justify-between mb-1.5">
+            <h5 class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Demographics</h5>
+            <button class="text-[11px] text-blue-600 hover:text-blue-700">Edit</button>
           </div>
-          <div class="space-y-2 text-sm">
+          <div class="space-y-1.5 text-xs">
             <div class="flex justify-between">
-              <span class="text-gray-500">DOB</span>
-              <span class="text-gray-900 font-medium">04/22/1962</span>
+              <span class="text-slate-400">DOB</span>
+              <span class="text-slate-700 font-medium">04/22/1962</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-500">State</span>
-              <span class="text-gray-900 font-medium">PA</span>
+              <span class="text-slate-400">State</span>
+              <span class="text-slate-700 font-medium">PA</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-500">Insurance</span>
-              <span class="text-gray-900 font-medium">United PPO Plus</span>
+              <span class="text-slate-400">Insurance</span>
+              <span class="text-slate-700 font-medium">United PPO Plus</span>
             </div>
             <div class="flex justify-between items-start">
-              <span class="text-gray-500">Diagnoses</span>
+              <span class="text-slate-400">Diagnoses</span>
               <div class="flex flex-wrap gap-1 justify-end">
-                <span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">Hypertension</span>
-                <span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">Diabetes</span>
+                <span class="px-1.5 py-0.5 bg-violet-50 text-violet-600 text-[10px] font-medium rounded">Hypertension</span>
+                <span class="px-1.5 py-0.5 bg-violet-50 text-violet-600 text-[10px] font-medium rounded">Diabetes</span>
               </div>
             </div>
           </div>
@@ -639,22 +639,22 @@
 
         <!-- Provider -->
         <div>
-          <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Provider</h5>
-          <div class="space-y-2 text-sm">
+          <h5 class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Provider</h5>
+          <div class="space-y-1.5 text-xs">
             <div class="flex justify-between">
-              <span class="text-gray-500">Name</span>
-              <span class="text-gray-900 font-medium">Dr. Charles</span>
+              <span class="text-slate-400">Name</span>
+              <span class="text-slate-700 font-medium">Dr. Charles</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-500">Practice</span>
-              <span class="text-gray-900 font-medium">Dashing Medical</span>
+              <span class="text-slate-400">Practice</span>
+              <span class="text-slate-700 font-medium">Dashing Medical</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-500">Location</span>
-              <span class="text-gray-900 font-medium">Lexington, PA</span>
+              <span class="text-slate-400">Location</span>
+              <span class="text-slate-700 font-medium">Lexington, PA</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-500">Phone</span>
+              <span class="text-slate-400">Phone</span>
               <a href="tel:2157353345" class="text-blue-600 font-medium hover:underline">(215) 735-3345</a>
             </div>
           </div>
@@ -662,40 +662,40 @@
 
         <!-- Program Stats -->
         <div>
-          <h5 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Program Stats</h5>
-          <div class="space-y-2 text-sm">
+          <h5 class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Program Stats</h5>
+          <div class="space-y-1.5 text-xs">
             <div class="flex justify-between items-center">
-              <span class="text-gray-500">Response Rate</span>
-              <div class="flex items-center gap-2">
-                <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div class="w-[62%] h-full bg-green-500 rounded-full"></div>
+              <span class="text-slate-400">Response Rate</span>
+              <div class="flex items-center gap-1.5">
+                <div class="w-14 h-1 bg-slate-200 rounded-full overflow-hidden">
+                  <div class="w-[62%] h-full bg-emerald-500 rounded-full"></div>
                 </div>
-                <span class="text-gray-900 font-semibold w-8 text-right">62%</span>
+                <span class="text-slate-700 font-semibold w-7 text-right">62%</span>
               </div>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-gray-500">30-Day Flag</span>
-              <div class="flex items-center gap-2">
-                <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                  <div class="w-[11%] h-full bg-yellow-500 rounded-full"></div>
+              <span class="text-slate-400">30-Day Flag</span>
+              <div class="flex items-center gap-1.5">
+                <div class="w-14 h-1 bg-slate-200 rounded-full overflow-hidden">
+                  <div class="w-[11%] h-full bg-amber-500 rounded-full"></div>
                 </div>
-                <span class="text-yellow-600 font-semibold w-8 text-right">11%</span>
+                <span class="text-amber-600 font-semibold w-7 text-right">11%</span>
               </div>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-gray-500">30-Day Escalation</span>
-              <div class="flex items-center gap-2">
-                <div class="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+              <span class="text-slate-400">30-Day Escalation</span>
+              <div class="flex items-center gap-1.5">
+                <div class="w-14 h-1 bg-slate-200 rounded-full overflow-hidden">
                   <div class="w-[50%] h-full bg-red-500 rounded-full"></div>
                 </div>
-                <span class="text-red-600 font-semibold w-8 text-right">50%</span>
+                <span class="text-red-600 font-semibold w-7 text-right">50%</span>
               </div>
             </div>
-            <div class="flex justify-between items-start pt-2 border-t border-gray-100">
-              <span class="text-gray-500">Programs</span>
+            <div class="flex justify-between items-start pt-1.5 border-t border-slate-100">
+              <span class="text-slate-400">Programs</span>
               <div class="flex flex-wrap gap-1 justify-end">
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">Hypertension</span>
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">Diabetes</span>
+                <span class="px-1.5 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded">Hypertension</span>
+                <span class="px-1.5 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-medium rounded">Diabetes</span>
               </div>
             </div>
           </div>
@@ -713,8 +713,8 @@
   function selectOutcome(value, color) {
     const selected = document.getElementById('outcomeSelected');
     selected.textContent = value;
-    selected.classList.remove('text-gray-400');
-    selected.classList.add('text-gray-900');
+    selected.classList.remove('text-slate-400');
+    selected.classList.add('text-slate-800');
     document.getElementById('outcomeDropdown').classList.add('hidden');
   }
 
@@ -738,20 +738,20 @@
 
   function selectContacted(value, btn) {
     document.querySelectorAll('.contacted-btn').forEach(b => {
-      b.classList.remove('bg-green-100', 'border-green-300', 'text-green-700');
-      b.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+      b.classList.remove('bg-emerald-100', 'border-emerald-300', 'text-emerald-700');
+      b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
     });
-    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
-    btn.classList.add('bg-green-100', 'border-green-300', 'text-green-700');
+    btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+    btn.classList.add('bg-emerald-100', 'border-emerald-300', 'text-emerald-700');
   }
 
   function selectCallCompleted(value, btn) {
     document.querySelectorAll('.call-btn').forEach(b => {
-      b.classList.remove('bg-green-100', 'border-green-300', 'text-green-700');
-      b.classList.add('bg-white', 'text-gray-700', 'border-gray-200');
+      b.classList.remove('bg-emerald-100', 'border-emerald-300', 'text-emerald-700');
+      b.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
     });
-    btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200');
-    btn.classList.add('bg-green-100', 'border-green-300', 'text-green-700');
+    btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+    btn.classList.add('bg-emerald-100', 'border-emerald-300', 'text-emerald-700');
   }
 </script>
 </body>
