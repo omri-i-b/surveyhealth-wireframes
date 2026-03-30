@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Care Management Summary - SurveyHealth</title>
+    <link rel="stylesheet" href="../../styles/shared.css">
+    <style>
+        /* Page-specific styles */
+        .enrolled-programs {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .enrolled-programs label {
+            color: var(--color-gray-500);
+            font-weight: 500;
+        }
+
+        .condition-cell {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .chart-line {
+            position: absolute;
+            top: 30%;
+            left: 5%;
+            right: 5%;
+            height: 60%;
+        }
+
+        .chart-line svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .note-vitals {
+            font-size: 12px;
+            color: var(--color-gray-500);
+            margin-bottom: 6px;
+        }
+
+        .note-vitals span {
+            color: var(--color-gray-900);
+            font-weight: 500;
+        }
+
+        .follow-up-note {
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-600);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-gray-100);
+        }
+
+        .follow-up-note:last-child {
+            border-bottom: none;
+        }
+
+        .follow-up-note strong {
+            color: var(--color-gray-900);
+        }
+
+        .page-break {
+            page-break-before: always;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="report-header">
+            <div class="report-header-left">
+                <h1>Monthly Care Management Summary</h1>
+                <div class="subtitle">RPM and APCM Services – 30-Day Reporting Period</div>
+            </div>
+            <div class="report-header-right">
+                <div class="logo">
+                    <span style="font-size: 18px; font-weight: 700; color: #94a3b8; letter-spacing: 2px;">LOGO</span>
+                </div>
+                <button class="btn-print" onclick="window.print()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 6,2 18,2 18,9"></polyline>
+                        <path d="M6,18 L4,18 C2.9,18 2,17.1 2,16 L2,11 C2,9.9 2.9,9 4,9 L20,9 C21.1,9 22,9.9 22,11 L22,16 C22,17.1 21.1,18 20,18 L18,18"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    Print / Save PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Patient Info Bar -->
+        <div class="patient-info-bar">
+            <div class="patient-details">
+                <div class="patient-detail">
+                    <label>Patient:</label>
+                    <span>Maria Rodriguez</span>
+                </div>
+                <div class="patient-detail">
+                    <label>DOB:</label>
+                    <span>03/22/1960</span>
+                </div>
+                <div class="patient-detail">
+                    <label>EHR:</label>
+                    <span>SH-2025-0847</span>
+                </div>
+                <div class="patient-detail">
+                    <label>Period:</label>
+                    <span>December 15, 2024 - January 14, 2025</span>
+                </div>
+            </div>
+            <div class="enrolled-programs">
+                <label>Enrolled:</label>
+                <span class="program-badge rpm">RPM</span>
+                <span class="program-badge apcm">APCM</span>
+            </div>
+        </div>
+
+        <!-- Active Conditions -->
+        <div class="section">
+            <h2 class="section-title">Active Conditions</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Condition</th>
+                            <th>ICD-10</th>
+                            <th>Program</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="condition-cell"><span class="condition-icon hypertension"></span>Hypertension</div></td>
+                            <td>I10</td>
+                            <td>RPM</td>
+                            <td>06/15/2023</td>
+                        </tr>
+                        <tr>
+                            <td><div class="condition-cell"><span class="condition-icon depression"></span>Major Depressive Disorder</div></td>
+                            <td>F32.1</td>
+                            <td>APCM</td>
+                            <td>02/10/2024</td>
+                        </tr>
+                        <tr>
+                            <td><div class="condition-cell"><span class="condition-icon anxiety"></span>Major Anxiety Disorder</div></td>
+                            <td>F41.1</td>
+                            <td>APCM</td>
+                            <td>02/10/2024</td>
+                        </tr>
+                        <tr>
+                            <td><div class="condition-cell"><span class="condition-icon diabetes"></span>Type 2 Diabetes Mellitus</div></td>
+                            <td>E11.9</td>
+                            <td>RPM</td>
+                            <td>03/22/2021</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item"><label>Conditions:</label><span>4</span></div>
+            <div class="stat-item"><label>Objectives Met:</label><span>3/4</span></div>
+            <div class="stat-item"><label>RPM Minutes:</label><span>40</span></div>
+            <div class="stat-item"><label>APCM Minutes:</label><span>51</span></div>
+            <div class="stat-item"><label>Interactions:</label><span>8</span></div>
+        </div>
+
+        <!-- Blood Pressure Trend -->
+        <div class="section">
+            <h2 class="section-title">Blood Pressure Trend (60-Day) – RPM</h2>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-stats">
+                        <div class="stat-item"><label>Avg:</label><span>133/81 mmHg</span></div>
+                        <div class="stat-item"><label>Min:</label><span>126</span></div>
+                        <div class="stat-item"><label>Max:</label><span>142</span></div>
+                        <div class="stat-item"><label>Readings:</label><span>15</span></div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="chart-line">
+                        <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+                            <polyline fill="none" stroke="#3b82f6" stroke-width="2"
+                                points="0,30 50,35 100,25 150,28 200,20 250,22 300,18 350,15 400,12" />
+                            <polyline fill="none" stroke="#22c55e" stroke-width="2"
+                                points="0,70 50,72 100,68 150,70 200,65 250,68 300,62 350,60 400,58" />
+                            <line x1="0" y1="40" x2="400" y2="40" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item"><span class="legend-line" style="background: #3b82f6;"></span>Systolic</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #22c55e;"></span>Diastolic</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #ef4444; height: 1px; border-top: 1px dashed #ef4444;"></span>Target ≤130</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Behavioral Health Assessments -->
+        <div class="section">
+            <h2 class="section-title">Behavioral Health Assessments – APCM</h2>
+            <h3 class="section-subtitle">Assessment Summary</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Assessment Type</th>
+                            <th>Total Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01/11/2025</td>
+                            <td>GAD-7</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>01/09/2025</td>
+                            <td>PHQ-9</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>01/04/2025</td>
+                            <td>GAD-7</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>01/02/2025</td>
+                            <td>PHQ-9</td>
+                            <td>11</td>
+                        </tr>
+                        <tr>
+                            <td>12/21/2024</td>
+                            <td>GAD-7</td>
+                            <td>8</td>
+                        </tr>
+                        <tr>
+                            <td>12/19/2024</td>
+                            <td>PHQ-9</td>
+                            <td>12</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page Header for page 2 -->
+        <div class="page-header">
+            <div class="page-header-left">
+                <strong>Maria Rodriguez</strong>
+                <span>EHR: SH-2025-0847</span>
+            </div>
+            <div class="logo">
+                <img src="../../logo.jpg" alt="SurveyHealth" style="width: 20px; height: 20px;">
+                <span style="font-size: 14px;">SurveyHealth</span>
+            </div>
+        </div>
+
+        <!-- Clinical Notes -->
+        <div class="section">
+            <h2 class="section-title">Clinical Notes</h2>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">01/14/2025</span>
+                        <span class="program-badge rpm">RPM</span>
+                        <span class="note-type">Phone • 12 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>BP 126/75 mmHg</span></div>
+                <div class="note-content">Patient reports improved medication adherence. Blood pressure trending toward goal at 126/75. Reinforced importance of low-sodium diet and regular monitoring. Adjusted reminder schedule for BP readings.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">01/10/2025</span>
+                        <span class="program-badge apcm">APCM</span>
+                        <span class="note-type">Video • 18 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>N/A</span></div>
+                <div class="note-content">PHQ-9 completed, score 10 (improved from 12). Patient reports improved sleep and mood. GAD-7 completed, score 7. Continuing current treatment plan. Discussed coping strategies.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">01/06/2025</span>
+                        <span class="program-badge rpm">RPM</span>
+                        <span class="note-type">Phone • 8 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>BP 130/78 mmHg</span></div>
+                <div class="note-content">Weekly RPM device check-in. Patient using BP cuff correctly with consistent readings. No medication side effects reported. Encouraged continued exercise routine.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">01/02/2025</span>
+                        <span class="program-badge rpm">RPM</span>
+                        <span class="note-type">Phone • 10 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>BP 132/80 mmHg</span></div>
+                <div class="note-content">Review of RPM device-generated blood pressure data. Reading 132/80, trending down from prior week. Patient following medication regimen. No adverse symptoms reported.</div>
+            </div>
+        </div>
+
+        <!-- Care Transitions -->
+        <div class="section">
+            <h2 class="section-title">Care Transitions</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Facility</th>
+                            <th>Diagnosis/Procedure</th>
+                            <th>Outcome</th>
+                            <th>Follow-up</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-11-28</td>
+                            <td>ED Visit</td>
+                            <td>Memorial General Hospital</td>
+                            <td>Chest pain - ruled out cardiac</td>
+                            <td>Discharged same day, cardiac workup negative</td>
+                            <td><span class="badge badge-required">Required</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-12-05</td>
+                            <td>Hospitalization</td>
+                            <td>St. Mary's Medical Center</td>
+                            <td>Hypertensive crisis - BP 180/110</td>
+                            <td>Admitted 2 days, medications adjusted, stabilized</td>
+                            <td><span class="badge badge-required">Required</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-11-15</td>
+                            <td>Surgery</td>
+                            <td>Regional Surgical Center</td>
+                            <td>Cataract extraction, left eye</td>
+                            <td>Outpatient procedure, no complications</td>
+                            <td><span class="badge badge-required">Required</span></td>
+                        </tr>
+                        <tr>
+                            <td>2024-12-12</td>
+                            <td>Care Coordination</td>
+                            <td>N/A</td>
+                            <td>Cardiology referral follow-up</td>
+                            <td>Stress test scheduled, EKG normal</td>
+                            <td><span class="badge badge-complete">Complete</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding: 12px 0;">
+                <div class="follow-up-note"><strong>Follow-up Note (2024-11-28):</strong> Schedule cardiology follow-up within 2 weeks</div>
+                <div class="follow-up-note"><strong>Follow-up Note (2024-12-05):</strong> PCP follow-up within 7 days, daily RPM monitoring</div>
+                <div class="follow-up-note"><strong>Follow-up Note (2024-11-15):</strong> Ophthalmology follow-up 1 week post-op</div>
+            </div>
+        </div>
+
+        <!-- Care Interactions -->
+        <div class="section">
+            <h2 class="section-title">Care Interactions</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Program</th>
+                            <th>Qualifying Activity</th>
+                            <th>Type</th>
+                            <th>Int.</th>
+                            <th>Min</th>
+                            <th>Data</th>
+                            <th>Staff</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01/14/2025</td>
+                            <td>RPM</td>
+                            <td>Review of device-generated physiologic data</td>
+                            <td>Phone</td>
+                            <td>Yes</td>
+                            <td>12</td>
+                            <td>BP</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>01/10/2025</td>
+                            <td>APCM</td>
+                            <td>Behavioral health follow-up</td>
+                            <td>Video</td>
+                            <td>Yes</td>
+                            <td>18</td>
+                            <td>None</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>01/06/2025</td>
+                            <td>RPM</td>
+                            <td>Interactive patient communication based on RPM data</td>
+                            <td>Phone</td>
+                            <td>Yes</td>
+                            <td>8</td>
+                            <td>BP</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>01/02/2025</td>
+                            <td>RPM</td>
+                            <td>Review of device-generated physiologic data</td>
+                            <td>Phone</td>
+                            <td>Yes</td>
+                            <td>10</td>
+                            <td>BP</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>12/28/2024</td>
+                            <td>APCM</td>
+                            <td>Care plan update</td>
+                            <td>Video</td>
+                            <td>Yes</td>
+                            <td>15</td>
+                            <td>None</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>12/22/2024</td>
+                            <td>RPM</td>
+                            <td>Alert follow-up and care coordination</td>
+                            <td>Phone</td>
+                            <td>Yes</td>
+                            <td>5</td>
+                            <td>BP</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>12/18/2024</td>
+                            <td>APCM</td>
+                            <td>Behavioral health follow-up</td>
+                            <td>Video</td>
+                            <td>Yes</td>
+                            <td>18</td>
+                            <td>None</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>12/15/2024</td>
+                            <td>RPM</td>
+                            <td>Review of device-generated physiologic data</td>
+                            <td>Phone</td>
+                            <td>Yes</td>
+                            <td>5</td>
+                            <td>BP</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Device Use Details -->
+        <div class="section">
+            <h2 class="section-title">Device Use Details</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>MRN</th>
+                            <th>Admitted</th>
+                            <th>Readings</th>
+                            <th>Max Reads</th>
+                            <th>Most Compliant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SH-2025-0847</td>
+                            <td>12/01/2024</td>
+                            <td>30</td>
+                            <td>42</td>
+                            <td>Blood pressure monitoring via wireless cuff</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page Break for Appendix -->
+        <div class="page-break">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <strong>Maria Rodriguez</strong>
+                    <span>EHR: SH-2025-0847</span>
+                </div>
+                <div class="logo">
+                    <span style="font-size: 14px; font-weight: 700; color: #94a3b8; letter-spacing: 2px;">LOGO</span>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size: 18px;">Appendix: Vital Signs and Behavioral Assessments Log</h2>
+            <p class="text-muted text-small" style="margin-bottom: 20px;">Behavioral health assessments conducted via Survey Health APCM module. All responses are patient-reported.</p>
+
+            <!-- PHQ-9 Assessment -->
+            <div class="assessment-card">
+                <div class="assessment-header">
+                    <h4>PHQ-9 Depression Screening – Detailed</h4>
+                    <span class="assessment-date">Administered: 01/09/2025 | Score: 10 (Moderate)</span>
+                </div>
+                <div class="assessment-questions">
+                    <div class="assessment-question header">
+                        <span>Question</span>
+                        <span>Not at all</span>
+                        <span>Several days</span>
+                        <span>More than half</span>
+                        <span>Nearly every</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>1. Little interest or pleasure in doing things</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>2. Feeling down, depressed, or hopeless</span>
+                        <span class="response">0</span>
+                        <span class="response">1</span>
+                        <span class="response selected">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>3. Trouble falling or staying asleep, or sleeping too much</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>4. Feeling tired or having little energy</span>
+                        <span class="response">0</span>
+                        <span class="response">1</span>
+                        <span class="response selected">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>5. Poor appetite or overeating</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>6. Feeling bad about yourself</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>7. Trouble concentrating on things</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>8. Moving or speaking slowly / being fidgety or restless</span>
+                        <span class="response selected">0</span>
+                        <span class="response">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>9. Thoughts of self-harm</span>
+                        <span class="response selected">0</span>
+                        <span class="response">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                </div>
+                <div class="assessment-total">
+                    <label>Total Score:</label>
+                    <span>10</span>
+                </div>
+            </div>
+
+            <!-- PHQ-9 Functional Impact -->
+            <div class="section">
+                <h3 class="section-subtitle">PHQ-9 Functional Impact Question</h3>
+                <p class="text-muted text-small" style="margin-bottom: 12px;">If you checked off any problems, how difficult have these made it for you to do your work, take care of things at home, or get along with other people?</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Not difficult</th>
+                                <th>Somewhat difficult</th>
+                                <th>Very difficult</th>
+                                <th>Extremely difficult</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td style="background: var(--color-primary-light); text-align: center;"><strong>X</strong></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GAD-7 Assessment -->
+            <div class="assessment-card">
+                <div class="assessment-header">
+                    <h4>GAD-7 Anxiety Screening – Detailed</h4>
+                    <span class="assessment-date">Administered: 01/11/2025 | Score: 7 (Mild)</span>
+                </div>
+                <div class="assessment-questions">
+                    <div class="assessment-question header">
+                        <span>Question</span>
+                        <span>Not at all</span>
+                        <span>Several days</span>
+                        <span>More than half</span>
+                        <span>Nearly every</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>1. Feeling nervous, anxious, or on edge</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>2. Not being able to stop or control worrying</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>3. Worrying too much about different things</span>
+                        <span class="response">0</span>
+                        <span class="response">1</span>
+                        <span class="response selected">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>4. Trouble relaxing</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>5. Being so restless that it's hard to sit still</span>
+                        <span class="response selected">0</span>
+                        <span class="response">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>6. Becoming easily annoyed or irritable</span>
+                        <span class="response">0</span>
+                        <span class="response selected">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                    <div class="assessment-question">
+                        <span>7. Feeling afraid as if something awful might happen</span>
+                        <span class="response selected">0</span>
+                        <span class="response">1</span>
+                        <span class="response">2</span>
+                        <span class="response">3</span>
+                    </div>
+                </div>
+                <div class="assessment-total">
+                    <label>Total Score:</label>
+                    <span>7</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vital Signs Log -->
+        <div class="page-break">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <strong>Maria Rodriguez</strong>
+                    <span>EHR: SH-2025-0847</span>
+                </div>
+                <div class="logo">
+                    <span style="font-size: 14px; font-weight: 700; color: #94a3b8; letter-spacing: 2px;">LOGO</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Vital Signs Log – RPM</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Metric</th>
+                                <th>Read</th>
+                                <th>Valid</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>01/14/2025</td>
+                                <td>8:15AM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>126 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>75 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>01/13/2025</td>
+                                <td>5:09PM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>126 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>75 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>01/11/2025</td>
+                                <td>5:10PM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>127 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>75 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>01/09/2025</td>
+                                <td>5:09PM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>128 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>76 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>01/07/2025</td>
+                                <td>5:08PM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>129 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>77 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>01/06/2025</td>
+                                <td>8:20AM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>130 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>78 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>01/02/2025</td>
+                                <td>8:30AM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>132 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>80 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>12/28/2024</td>
+                                <td>5:15PM</td>
+                                <td>Blood Pressure - Systolic</td>
+                                <td>135 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Blood Pressure - Diastolic</td>
+                                <td>82 mmHg</td>
+                                <td><span class="checkmark">Yes</span></td>
+                                <td>—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Care Plan Goals -->
+        <div class="page-break">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <strong>Maria Rodriguez</strong>
+                    <span>EHR: SH-2025-0847</span>
+                </div>
+                <div class="logo">
+                    <span style="font-size: 14px; font-weight: 700; color: #94a3b8; letter-spacing: 2px;">LOGO</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Care Plan Goals, Objectives, and Outcomes</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Condition</th>
+                                <th>Program</th>
+                                <th>Long-Term Goal</th>
+                                <th>Short-Term Objective</th>
+                                <th>Prior</th>
+                                <th>Current</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="condition-cell">
+                                        <span class="condition-icon hypertension"></span>
+                                        <div>Hypertension<br><small class="text-muted">I10</small></div>
+                                    </div>
+                                </td>
+                                <td>RPM</td>
+                                <td>Maintain systolic BP ≤130 mmHg and reduce cardiovascular risk</td>
+                                <td>Reduce average systolic BP by ≥5 mmHg from prior period OR achieve average ≤130 mmHg</td>
+                                <td>145 mmHg</td>
+                                <td>133 mmHg</td>
+                                <td><span class="badge badge-met">Met</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="condition-cell">
+                                        <span class="condition-icon depression"></span>
+                                        <div>Major Depressive Disorder<br><small class="text-muted">F32.1</small></div>
+                                    </div>
+                                </td>
+                                <td>APCM</td>
+                                <td>Achieve PHQ-9 score ≤5 (minimal depression) and maintain functional status</td>
+                                <td>No increase in PHQ-9 score compared to prior 30-day period</td>
+                                <td>13</td>
+                                <td>11</td>
+                                <td><span class="badge badge-met">Met</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="condition-cell">
+                                        <span class="condition-icon anxiety"></span>
+                                        <div>Major Anxiety Disorder<br><small class="text-muted">F41.1</small></div>
+                                    </div>
+                                </td>
+                                <td>APCM</td>
+                                <td>Achieve GAD-7 score ≤5 (minimal anxiety) and maintain functional status</td>
+                                <td>No increase in GAD-7 score compared to prior 30-day period</td>
+                                <td>9</td>
+                                <td>8</td>
+                                <td><span class="badge badge-met">Met</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="condition-cell">
+                                        <span class="condition-icon diabetes"></span>
+                                        <div>Type 2 Diabetes Mellitus<br><small class="text-muted">E11.9</small></div>
+                                    </div>
+                                </td>
+                                <td>RPM</td>
+                                <td>Maintain glycemic control and prevent diabetes-related complications</td>
+                                <td>Zero ED visits or hospitalizations related to diabetes in 30-day period</td>
+                                <td>1 event</td>
+                                <td>1 event</td>
+                                <td><span class="badge badge-ongoing">Ongoing</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="calculations-box">
+                    <h4>Objective Calculations</h4>
+                    <div class="calculation-row"><strong>Hypertension</strong> (RPM): Decrease: 12 mmHg | ≥5 mmHg reduction achieved</div>
+                    <div class="calculation-row"><strong>Major Depressive Disorder</strong> (APCM): Change: -2 | No increase detected</div>
+                    <div class="calculation-row"><strong>Major Anxiety Disorder</strong> (APCM): Change: -1 | No increase detected</div>
+                    <div class="calculation-row"><strong>Type 2 Diabetes Mellitus</strong> (RPM): Current period events: 1 | Events detected = Ongoing</div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="report-footer">
+                <p class="disclaimer">RPM and/or APCM services summarized in this report were delivered by qualified clinical staff under the supervision of the billing practitioner, in accordance with CMS guidelines. Medical necessity was reviewed and maintained throughout the billing period.</p>
+
+                <div class="signatures">
+                    <div class="signature-line">
+                        <label>Care Manager / Nurse Name & Title</label>
+                    </div>
+                    <div class="signature-line">
+                        <label>Date</label>
+                    </div>
+                    <div class="signature-line">
+                        <label>Billing Practitioner Name & Credentials</label>
+                    </div>
+                    <div class="signature-line">
+                        <label>Date</label>
+                    </div>
+                </div>
+
+                <p class="cpt-codes">RPM CPT: 99453, 99454, 99455, 99457, 99458 | APCM: G0556, G0557, G0558</p>
+                <p class="disclaimer">Physiologic data included in this report is collected via remote patient monitoring devices (RPM) and reviewed by qualified clinical staff. Behavioral health assessments are administered as part of APCM services.</p>
+                <p class="disclaimer">Goal determinations computed using 30-day rolling averages. All outcomes are deterministic and meet CMS documentation requirements.</p>
+                <p class="powered-by">Powered by Survey Health</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

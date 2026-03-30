@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Patient Escalation Report - SurveyHealth</title>
+    <link rel="stylesheet" href="../../styles/shared.css">
+    <style>
+        /* Page-specific overrides */
+        .compact-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-gray-200);
+            margin-bottom: var(--spacing-lg);
+            overflow: hidden;
+        }
+
+        .compact-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--color-gray-50);
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+
+        .compact-card-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-gray-900);
+            margin: 0;
+        }
+
+        .compact-card-header .badge {
+            margin-left: var(--spacing-md);
+        }
+
+        .compact-card-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            font-size: 12px;
+            color: var(--color-gray-500);
+        }
+
+        .compact-card-body {
+            display: grid;
+            gap: 1px;
+            background: var(--color-gray-200);
+        }
+
+        .compact-card-body.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .compact-card-body.four-col {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .compact-card-section {
+            background: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+        }
+
+        .compact-card-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--color-gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .compact-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 3px 0;
+            font-size: 12px;
+            gap: var(--spacing-sm);
+        }
+
+        .compact-label {
+            color: var(--color-gray-500);
+            flex-shrink: 0;
+        }
+
+        .compact-value {
+            color: var(--color-gray-800);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .compact-value.empty {
+            color: var(--color-gray-300);
+            font-weight: 400;
+        }
+
+        .recommendation-text {
+            margin-left: var(--spacing-sm);
+            color: var(--color-gray-500);
+            font-weight: 400;
+        }
+
+        .header-center {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-center h1 {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            color: var(--color-gray-900);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .header-center .date {
+            font-size: var(--font-size-lg);
+            color: var(--color-gray-500);
+        }
+
+        .header-center .org {
+            font-size: var(--font-size-base);
+            color: var(--color-gray-400);
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="report-header">
+            <div class="report-header-left">
+                <h1>Daily Patient Escalation Report</h1>
+                <div class="subtitle">Vitals Check Summary</div>
+            </div>
+            <div class="report-header-right">
+                <div class="logo">
+                    <img src="../../logo.jpg" alt="SurveyHealth">
+                    <span>SurveyHealth</span>
+                </div>
+                <button class="btn-print" onclick="window.print()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 6,2 18,2 18,9"></polyline>
+                        <path d="M6,18 L4,18 C2.9,18 2,17.1 2,16 L2,11 C2,9.9 2.9,9 4,9 L20,9 C21.1,9 22,9.9 22,11 L22,16 C22,17.1 21.1,18 20,18 L18,18"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    Print / Save PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Patient Info Bar -->
+        <div class="patient-info-bar">
+            <div class="patient-details">
+                <div class="patient-detail">
+                    <label>Organization:</label>
+                    <span>Mercy General Hospital</span>
+                </div>
+                <div class="patient-detail">
+                    <label>Report Date:</label>
+                    <span>March 9, 2026</span>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="program-badge rpm">RPM</span>
+            </div>
+        </div>
+
+        <!-- Summary: Emergent/Urgent/Immediate -->
+        <div class="section">
+            <div class="section-title">Patients Requiring Emergent/Urgent/Immediate Escalation</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px">#</th>
+                            <th>Patient</th>
+                            <th>Provider</th>
+                            <th>Recommendation</th>
+                            <th>Contacted Clinic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Jane Smith</td>
+                            <td>Dr. Sarah Chen</td>
+                            <td><span class="badge badge-emergent">Emergent</span><span class="recommendation-text">Recommended ED visit</span></td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Michael Davis</td>
+                            <td>Dr. James Wilson</td>
+                            <td><span class="badge badge-urgent">Urgent</span><span class="recommendation-text">Needs visit by Mar 11</span></td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Test User</td>
+                            <td>Nurse Alice Thompson</td>
+                            <td><span class="badge badge-immediate">Immediate</span><span class="recommendation-text">Needs visit by Mar 16</span></td>
+                            <td>No</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Summary: Routine -->
+        <div class="section">
+            <div class="section-title">Patients Requiring Routine Escalations</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px">#</th>
+                            <th>Patient</th>
+                            <th>Provider</th>
+                            <th>Recommendation</th>
+                            <th>Contacted Clinic</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Emma Wilson</td>
+                            <td>Dr. Sarah Chen</td>
+                            <td><span class="badge badge-routine">Routine</span><span class="recommendation-text">Needs visit by Apr 8</span></td>
+                            <td>No</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Summary: Net Interactions -->
+        <div class="section">
+            <div class="section-title">Net Patient Interactions</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px">#</th>
+                            <th>Patient</th>
+                            <th>Provider</th>
+                            <th>Disposition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Jane Smith</td>
+                            <td>Dr. Sarah Chen</td>
+                            <td>No Intervention Needed</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Robert Williams</td>
+                            <td>Dr. James Wilson</td>
+                            <td>Resolved on Phone</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>John Doe</td>
+                            <td>Dr. Sarah Chen</td>
+                            <td>No Intervention Needed</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Mary Johnson</td>
+                            <td>Dr. Sarah Chen</td>
+                            <td>Not Reachable</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Robert Williams</td>
+                            <td>Dr. James Wilson</td>
+                            <td>No Intervention Needed</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Robert Williams</td>
+                            <td>Dr. James Wilson</td>
+                            <td>Resolved on Phone</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>Sarah Anderson</td>
+                            <td>Dr. James Wilson</td>
+                            <td>Not Reachable</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Escalation Details -->
+        <h2 class="details-header">Escalation Details</h2>
+
+        <!-- Jane Smith - Emergent -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Jane Smith <span class="badge badge-emergent">Emergent</span></h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Evaluation</span>
+                    <span>Dr. Sarah Chen</span>
+                </div>
+            </div>
+            <div class="compact-card-body four-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">01/30/1980</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-987-6543</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I48.91, I10</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
+                    <div class="compact-reason">Patient gained 3 lbs in past week. Needs assessment.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Nurse Emma Garcia</span></div>
+                    <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Urgent</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Recommendation</div>
+                    <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Emergent Evaluation</span></div>
+                    <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Urgent</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Michael Davis - Urgent -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Michael Davis <span class="badge badge-urgent">Urgent</span></h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Evaluation</span>
+                    <span>Dr. James Wilson</span>
+                </div>
+            </div>
+            <div class="compact-card-body four-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">09/12/1955</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-987-6544</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I21.3, I10, E119</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Hypertension Mgmt</span></div>
+                    <div class="compact-reason">Patient having trouble sleeping. May need medication review.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Dr. Sarah Chen</span></div>
+                    <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Urgent</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Recommendation</div>
+                    <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Urgent Evaluation</span></div>
+                    <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Urgent</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test User - Immediate -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Test User <span class="badge badge-immediate">Immediate</span></h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Evaluation</span>
+                    <span>Nurse Alice Thompson</span>
+                </div>
+            </div>
+            <div class="compact-card-body four-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">05/20/1990</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-555-5555</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value empty">—</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
+                    <div class="compact-reason">Patient reported irregular heartbeat during morning reading.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Nurse Alice Thompson</span></div>
+                    <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Immediate</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Recommendation</div>
+                    <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Immediate Evaluation</span></div>
+                    <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Immediate</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emma Wilson - Routine -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Emma Wilson <span class="badge badge-routine">Routine</span></h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Evaluation</span>
+                    <span>Dr. Sarah Chen</span>
+                </div>
+            </div>
+            <div class="compact-card-body four-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">12/03/1978</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-555-5556</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">R00.0, F41.1</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
+                    <div class="compact-reason">Patient glucose reading below normal range (65 mg/dL).</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
+                    <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">routine</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Recommendation</div>
+                    <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Routine Evaluation</span></div>
+                    <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">routine</span></div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Resolution Details -->
+        <h2 class="details-header">Resolution Details</h2>
+
+        <!-- Jane Smith - No Intervention -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Jane Smith</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">No Intervention Needed</span>
+                    <span>Dr. Sarah Chen</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">01/30/1980</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-987-6543</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I48.91, I10</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-reason">Medication review completed. No changes needed.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Dr. Sarah Chen</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">No Intervention Needed</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Robert Williams - Resolved on Phone -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Robert Williams</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Resolved on Phone</span>
+                    <span>Dr. James Wilson</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/08/1972</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4569</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Hypertension Mgmt</span></div>
+                    <div class="compact-reason">Patient reported feeling dizzy in the morning.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Resolved on Phone</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- John Doe - No Intervention -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>John Doe</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">No Intervention Needed</span>
+                    <span>Dr. Sarah Chen</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/15/1958</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4567</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, E119</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
+                    <div class="compact-reason">Patient reported BP 145/95. Needs follow-up call.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Dr. Sarah Chen</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">No Intervention Needed</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mary Johnson - Not Reachable -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Mary Johnson</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Not Reachable</span>
+                    <span>Dr. Sarah Chen</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">07/22/1965</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4568</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, I50.9</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
+                    <div class="compact-reason">Patient missed morning medication. Needs reminder call.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Nurse Alice Thompson</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Not Reachable</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Robert Williams - No Intervention (2nd) -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Robert Williams</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">No Intervention Needed</span>
+                    <span>Dr. James Wilson</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/08/1972</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4569</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-reason">Patient completed vital scan review. BP within normal range.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">No Intervention Needed</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Robert Williams - Resolved on Phone (3rd) -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Robert Williams</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Resolved on Phone</span>
+                    <span>Dr. James Wilson</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/08/1972</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4569</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-reason">Vital signs reviewed. All readings within target range.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Resolved on Phone</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sarah Anderson - Not Reachable -->
+        <div class="compact-card">
+            <div class="compact-card-header">
+                <h3>Sarah Anderson</h3>
+                <div class="compact-card-meta">
+                    <span class="ticket-type">Not Reachable</span>
+                    <span>Dr. James Wilson</span>
+                </div>
+            </div>
+            <div class="compact-card-body three-col">
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Patient Information</div>
+                    <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">08/10/1975</span></div>
+                    <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-222-3334</span></div>
+                    <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I42.0, I10</span></div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">System Escalation</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
+                    <div class="compact-reason">Patient completed vital scan review. BP within normal range.</div>
+                </div>
+                <div class="compact-card-section">
+                    <div class="compact-card-section-title">Care Manager Resolution</div>
+                    <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Mar 9, 2026</span></div>
+                    <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
+                    <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Not Reachable</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="report-footer">
+            <p class="powered-by">Powered by SurveyHealth</p>
+        </div>
+    </div>
+</body>
+</html>
