@@ -4,281 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Care Management Summary - SurveyHealth</title>
+    <link rel="stylesheet" href="styles/shared.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background: #f8fafc;
-            color: #1e293b;
-            font-size: 13px;
-            line-height: 1.5;
-            padding: 40px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .page-break {
-            page-break-before: always;
-            padding-top: 20px;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .header-left h1 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 4px;
-        }
-
-        .header-left .subtitle {
-            font-size: 14px;
-            color: #64748b;
-        }
-
-        .header-right {
-            text-align: right;
-        }
-
-        .logo {
-            font-size: 18px;
-            font-weight: 700;
-            color: #94a3b8;
-            letter-spacing: 2px;
-        }
-
-        .print-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #475569;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        .print-btn:hover {
-            background: #e2e8f0;
-        }
-
-        /* Patient Info Bar */
-        .patient-info-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-        }
-
-        .patient-details {
-            display: flex;
-            gap: 32px;
-        }
-
-        .patient-detail {
-            display: flex;
-            gap: 6px;
-        }
-
-        .patient-detail label {
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .patient-detail span {
-            color: #0f172a;
-            font-weight: 600;
-        }
-
+        /* Page-specific styles */
         .enrolled-programs {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--spacing-md);
         }
 
         .enrolled-programs label {
-            color: #64748b;
+            color: var(--color-gray-500);
             font-weight: 500;
         }
 
-        .program-badge {
-            display: inline-flex;
-            padding: 4px 12px;
-            background: #dbeafe;
-            color: #1d4ed8;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .program-badge.apcm {
-            background: #fae8ff;
-            color: #a21caf;
-        }
-
-        /* Section Styles */
-        .section {
-            margin-bottom: 28px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .section-subtitle {
-            font-size: 14px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 10px;
-        }
-
-        /* Tables */
-        .table-container {
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: #f8fafc;
-            padding: 10px 14px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 11px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #f1f5f9;
-            color: #334155;
-            font-size: 13px;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover {
-            background: #f8fafc;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            gap: 24px;
-            padding: 12px 0;
-            margin-bottom: 24px;
-        }
-
-        .stat-item {
-            display: flex;
-            gap: 6px;
-            font-size: 13px;
-        }
-
-        .stat-item label {
-            color: #64748b;
-        }
-
-        .stat-item span {
-            color: #0f172a;
-            font-weight: 600;
-        }
-
-        /* Chart Container */
-        .chart-section {
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 16px;
-        }
-
-        .chart-stats {
-            display: flex;
-            gap: 20px;
-            font-size: 13px;
-        }
-
-        .chart-stats .stat {
-            display: flex;
-            gap: 4px;
-        }
-
-        .chart-stats label {
-            color: #64748b;
-        }
-
-        .chart-stats span {
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .chart-placeholder {
-            height: 180px;
-            background: linear-gradient(to right, #f8fafc, #f1f5f9);
-            border-radius: 8px;
+        .condition-cell {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .chart-placeholder::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            left: 5%;
-            right: 5%;
-            height: 2px;
-            background: repeating-linear-gradient(to right, #e2e8f0 0, #e2e8f0 4px, transparent 4px, transparent 8px);
+            gap: var(--spacing-sm);
         }
 
         .chart-line {
@@ -294,114 +37,22 @@
             height: 100%;
         }
 
-        .chart-legend {
-            display: flex;
-            gap: 20px;
-            margin-top: 12px;
-            font-size: 12px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #64748b;
-        }
-
-        .legend-line {
-            width: 20px;
-            height: 2px;
-        }
-
-        .legend-line.systolic {
-            background: #3b82f6;
-        }
-
-        .legend-line.diastolic {
-            background: #22c55e;
-        }
-
-        .legend-line.target {
-            background: #ef4444;
-            height: 1px;
-            border-top: 1px dashed #ef4444;
-        }
-
-        /* Clinical Notes */
-        .clinical-note {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-
-        .note-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .note-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .note-date {
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .note-program {
-            display: inline-flex;
-            padding: 2px 8px;
-            background: #dbeafe;
-            color: #1d4ed8;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .note-program.apcm {
-            background: #fae8ff;
-            color: #a21caf;
-        }
-
-        .note-type {
-            color: #64748b;
-            font-size: 12px;
-        }
-
-        .note-provider {
-            color: #64748b;
-            font-size: 13px;
-        }
-
         .note-vitals {
             font-size: 12px;
-            color: #64748b;
+            color: var(--color-gray-500);
             margin-bottom: 6px;
         }
 
         .note-vitals span {
-            color: #0f172a;
+            color: var(--color-gray-900);
             font-weight: 500;
         }
 
-        .note-content {
-            font-size: 13px;
-            color: #334155;
-            line-height: 1.6;
-        }
-
-        /* Follow-up Notes */
         .follow-up-note {
-            font-size: 13px;
-            color: #475569;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-600);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-gray-100);
         }
 
         .follow-up-note:last-child {
@@ -409,302 +60,29 @@
         }
 
         .follow-up-note strong {
-            color: #0f172a;
+            color: var(--color-gray-900);
         }
 
-        /* Page Header (for multi-page) */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .page-header-left {
-            display: flex;
-            gap: 16px;
-            font-size: 13px;
-        }
-
-        .page-header-left strong {
-            color: #0f172a;
-        }
-
-        .page-header-left span {
-            color: #64748b;
-        }
-
-        /* Appendix Styles */
-        .appendix-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 8px;
-        }
-
-        .appendix-subtitle {
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-
-        /* Assessment Questions */
-        .assessment-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
-        .assessment-header {
-            background: #f8fafc;
-            padding: 12px 16px;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .assessment-header h4 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .assessment-date {
-            font-size: 12px;
-            color: #64748b;
-        }
-
-        .assessment-questions {
-            padding: 16px;
-        }
-
-        .assessment-question {
-            display: grid;
-            grid-template-columns: 1fr repeat(4, 80px);
-            gap: 8px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 12px;
-        }
-
-        .assessment-question:last-child {
-            border-bottom: none;
-        }
-
-        .assessment-question.header {
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 0.05em;
-        }
-
-        .assessment-question .response {
-            text-align: center;
-        }
-
-        .assessment-question .response.selected {
-            background: #dbeafe;
-            color: #1d4ed8;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .assessment-total {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: #f8fafc;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .assessment-total label {
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .assessment-total span {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        /* Status Badges */
-        .status-met {
-            display: inline-flex;
-            padding: 2px 10px;
-            background: #dcfce7;
-            color: #16a34a;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .status-ongoing {
-            display: inline-flex;
-            padding: 2px 10px;
-            background: #fef3c7;
-            color: #d97706;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .status-required {
-            display: inline-flex;
-            padding: 2px 10px;
-            background: #fee2e2;
-            color: #dc2626;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .status-complete {
-            display: inline-flex;
-            padding: 2px 10px;
-            background: #dbeafe;
-            color: #2563eb;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        /* Calculations Box */
-        .calculations-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .calculations-box h4 {
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
-        }
-
-        .calculation-row {
-            font-size: 12px;
-            color: #475569;
-            padding: 4px 0;
-        }
-
-        .calculation-row strong {
-            color: #0f172a;
-        }
-
-        /* Footer */
-        .footer {
-            margin-top: 40px;
+        .page-break {
+            page-break-before: always;
             padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-        }
-
-        .disclaimer {
-            font-size: 11px;
-            color: #64748b;
-            line-height: 1.6;
-            margin-bottom: 16px;
-        }
-
-        .signatures {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin: 24px 0;
-        }
-
-        .signature-line {
-            border-top: 1px solid #cbd5e1;
-            padding-top: 8px;
-        }
-
-        .signature-line label {
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .cpt-codes {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
-
-        .powered-by {
-            font-size: 11px;
-            color: #94a3b8;
-            text-align: center;
-            margin-top: 16px;
-        }
-
-        /* Condition with icon */
-        .condition-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .condition-icon {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #94a3b8;
-        }
-
-        .condition-icon.hypertension { background: #ef4444; }
-        .condition-icon.depression { background: #8b5cf6; }
-        .condition-icon.anxiety { background: #f59e0b; }
-        .condition-icon.diabetes { background: #3b82f6; }
-
-        /* Device table specific */
-        .device-metric {
-            font-weight: 500;
-        }
-
-        .checkmark {
-            color: #22c55e;
-            font-weight: 600;
-        }
-
-        /* Print styles */
-        @media print {
-            body {
-                background: white;
-                padding: 20px;
-            }
-
-            .print-btn {
-                display: none;
-            }
-
-            .page-break {
-                page-break-before: always;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="report-container">
         <!-- Header -->
-        <div class="header">
-            <div class="header-left">
+        <div class="report-header">
+            <div class="report-header-left">
                 <h1>Monthly Care Management Summary</h1>
                 <div class="subtitle">RPM and APCM Services – 30-Day Reporting Period</div>
             </div>
-            <div class="header-right">
-                <div class="logo">LOGO</div>
-                <button class="print-btn" onclick="window.print()">
+            <div class="report-header-right">
+                <div class="logo">
+                    <img src="logo.jpg" alt="SurveyHealth">
+                    <span>SurveyHealth</span>
+                </div>
+                <button class="btn-print" onclick="window.print()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="6,9 6,2 18,2 18,9"></polyline>
                         <path d="M6,18 L4,18 C2.9,18 2,17.1 2,16 L2,11 C2,9.9 2.9,9 4,9 L20,9 C21.1,9 22,9.9 22,11 L22,16 C22,17.1 21.1,18 20,18 L18,18"></path>
@@ -736,8 +114,8 @@
                 </div>
             </div>
             <div class="enrolled-programs">
-                <label>Enrolled Programs:</label>
-                <span class="program-badge">RPM</span>
+                <label>Enrolled:</label>
+                <span class="program-badge rpm">RPM</span>
                 <span class="program-badge apcm">APCM</span>
             </div>
         </div>
@@ -797,33 +175,30 @@
         <!-- Blood Pressure Trend -->
         <div class="section">
             <h2 class="section-title">Blood Pressure Trend (60-Day) – RPM</h2>
-            <div class="chart-section">
+            <div class="chart-container">
                 <div class="chart-header">
                     <div class="chart-stats">
-                        <div class="stat"><label>Avg:</label><span>133/81 mmHg</span></div>
-                        <div class="stat"><label>Min:</label><span>126</span></div>
-                        <div class="stat"><label>Max:</label><span>142</span></div>
-                        <div class="stat"><label>Readings:</label><span>15</span></div>
+                        <div class="stat-item"><label>Avg:</label><span>133/81 mmHg</span></div>
+                        <div class="stat-item"><label>Min:</label><span>126</span></div>
+                        <div class="stat-item"><label>Max:</label><span>142</span></div>
+                        <div class="stat-item"><label>Readings:</label><span>15</span></div>
                     </div>
                 </div>
                 <div class="chart-placeholder">
                     <div class="chart-line">
                         <svg viewBox="0 0 400 100" preserveAspectRatio="none">
-                            <!-- Systolic line -->
                             <polyline fill="none" stroke="#3b82f6" stroke-width="2"
                                 points="0,30 50,35 100,25 150,28 200,20 250,22 300,18 350,15 400,12" />
-                            <!-- Diastolic line -->
                             <polyline fill="none" stroke="#22c55e" stroke-width="2"
                                 points="0,70 50,72 100,68 150,70 200,65 250,68 300,62 350,60 400,58" />
-                            <!-- Target line -->
                             <line x1="0" y1="40" x2="400" y2="40" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" />
                         </svg>
                     </div>
                 </div>
                 <div class="chart-legend">
-                    <div class="legend-item"><span class="legend-line systolic"></span>Systolic</div>
-                    <div class="legend-item"><span class="legend-line diastolic"></span>Diastolic</div>
-                    <div class="legend-item"><span class="legend-line target"></span>Target ≤130</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #3b82f6;"></span>Systolic</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #22c55e;"></span>Diastolic</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #ef4444; height: 1px; border-top: 1px dashed #ef4444;"></span>Target ≤130</div>
                 </div>
             </div>
         </div>
@@ -883,7 +258,10 @@
                 <strong>Maria Rodriguez</strong>
                 <span>EHR: SH-2025-0847</span>
             </div>
-            <div class="logo">LOGO</div>
+            <div class="logo">
+                <img src="logo.jpg" alt="SurveyHealth" style="width: 20px; height: 20px;">
+                <span style="font-size: 14px;">SurveyHealth</span>
+            </div>
         </div>
 
         <!-- Clinical Notes -->
@@ -894,7 +272,7 @@
                 <div class="note-header">
                     <div class="note-meta">
                         <span class="note-date">01/14/2025</span>
-                        <span class="note-program">RPM</span>
+                        <span class="program-badge rpm">RPM</span>
                         <span class="note-type">Phone • 12 min</span>
                     </div>
                     <span class="note-provider">Ryane Riddle, RN</span>
@@ -907,7 +285,7 @@
                 <div class="note-header">
                     <div class="note-meta">
                         <span class="note-date">01/10/2025</span>
-                        <span class="note-program apcm">APCM</span>
+                        <span class="program-badge apcm">APCM</span>
                         <span class="note-type">Video • 18 min</span>
                     </div>
                     <span class="note-provider">Ryane Riddle, RN</span>
@@ -920,7 +298,7 @@
                 <div class="note-header">
                     <div class="note-meta">
                         <span class="note-date">01/06/2025</span>
-                        <span class="note-program">RPM</span>
+                        <span class="program-badge rpm">RPM</span>
                         <span class="note-type">Phone • 8 min</span>
                     </div>
                     <span class="note-provider">Ryane Riddle, RN</span>
@@ -933,7 +311,7 @@
                 <div class="note-header">
                     <div class="note-meta">
                         <span class="note-date">01/02/2025</span>
-                        <span class="note-program">RPM</span>
+                        <span class="program-badge rpm">RPM</span>
                         <span class="note-type">Phone • 10 min</span>
                     </div>
                     <span class="note-provider">Ryane Riddle, RN</span>
@@ -965,7 +343,7 @@
                             <td>Memorial General Hospital</td>
                             <td>Chest pain - ruled out cardiac</td>
                             <td>Discharged same day, cardiac workup negative</td>
-                            <td><span class="status-required">Required</span></td>
+                            <td><span class="badge badge-required">Required</span></td>
                         </tr>
                         <tr>
                             <td>2024-12-05</td>
@@ -973,7 +351,7 @@
                             <td>St. Mary's Medical Center</td>
                             <td>Hypertensive crisis - BP 180/110</td>
                             <td>Admitted 2 days, medications adjusted, stabilized</td>
-                            <td><span class="status-required">Required</span></td>
+                            <td><span class="badge badge-required">Required</span></td>
                         </tr>
                         <tr>
                             <td>2024-11-15</td>
@@ -981,7 +359,7 @@
                             <td>Regional Surgical Center</td>
                             <td>Cataract extraction, left eye</td>
                             <td>Outpatient procedure, no complications</td>
-                            <td><span class="status-required">Required</span></td>
+                            <td><span class="badge badge-required">Required</span></td>
                         </tr>
                         <tr>
                             <td>2024-12-12</td>
@@ -989,7 +367,7 @@
                             <td>N/A</td>
                             <td>Cardiology referral follow-up</td>
                             <td>Stress test scheduled, EKG normal</td>
-                            <td><span class="status-complete">Complete</span></td>
+                            <td><span class="badge badge-complete">Complete</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1138,11 +516,14 @@
                     <strong>Maria Rodriguez</strong>
                     <span>EHR: SH-2025-0847</span>
                 </div>
-                <div class="logo">LOGO</div>
+                <div class="logo">
+                    <img src="logo.jpg" alt="SurveyHealth" style="width: 20px; height: 20px;">
+                    <span style="font-size: 14px;">SurveyHealth</span>
+                </div>
             </div>
 
-            <h2 class="appendix-title">Appendix: Vital Signs and Behavioral Assessments Log</h2>
-            <p class="appendix-subtitle">Behavioral health assessments conducted via Survey Health APCM module. All responses are patient-reported.</p>
+            <h2 class="section-title" style="font-size: 18px;">Appendix: Vital Signs and Behavioral Assessments Log</h2>
+            <p class="text-muted text-small" style="margin-bottom: 20px;">Behavioral health assessments conducted via Survey Health APCM module. All responses are patient-reported.</p>
 
             <!-- PHQ-9 Assessment -->
             <div class="assessment-card">
@@ -1231,7 +612,7 @@
             <!-- PHQ-9 Functional Impact -->
             <div class="section">
                 <h3 class="section-subtitle">PHQ-9 Functional Impact Question</h3>
-                <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">If you checked off any problems, how difficult have these made it for you to do your work, take care of things at home, or get along with other people?</p>
+                <p class="text-muted text-small" style="margin-bottom: 12px;">If you checked off any problems, how difficult have these made it for you to do your work, take care of things at home, or get along with other people?</p>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -1245,7 +626,7 @@
                         <tbody>
                             <tr>
                                 <td></td>
-                                <td style="background: #dbeafe; text-align: center;"><strong>X</strong></td>
+                                <td style="background: var(--color-primary-light); text-align: center;"><strong>X</strong></td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -1332,7 +713,10 @@
                     <strong>Maria Rodriguez</strong>
                     <span>EHR: SH-2025-0847</span>
                 </div>
-                <div class="logo">LOGO</div>
+                <div class="logo">
+                    <img src="logo.jpg" alt="SurveyHealth" style="width: 20px; height: 20px;">
+                    <span style="font-size: 14px;">SurveyHealth</span>
+                </div>
             </div>
 
             <div class="section">
@@ -1491,7 +875,10 @@
                     <strong>Maria Rodriguez</strong>
                     <span>EHR: SH-2025-0847</span>
                 </div>
-                <div class="logo">LOGO</div>
+                <div class="logo">
+                    <img src="logo.jpg" alt="SurveyHealth" style="width: 20px; height: 20px;">
+                    <span style="font-size: 14px;">SurveyHealth</span>
+                </div>
             </div>
 
             <div class="section">
@@ -1514,7 +901,7 @@
                                 <td>
                                     <div class="condition-cell">
                                         <span class="condition-icon hypertension"></span>
-                                        <div>Hypertension<br><small style="color: #64748b;">I10</small></div>
+                                        <div>Hypertension<br><small class="text-muted">I10</small></div>
                                     </div>
                                 </td>
                                 <td>RPM</td>
@@ -1522,13 +909,13 @@
                                 <td>Reduce average systolic BP by ≥5 mmHg from prior period OR achieve average ≤130 mmHg</td>
                                 <td>145 mmHg</td>
                                 <td>133 mmHg</td>
-                                <td><span class="status-met">Met</span></td>
+                                <td><span class="badge badge-met">Met</span></td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="condition-cell">
                                         <span class="condition-icon depression"></span>
-                                        <div>Major Depressive Disorder<br><small style="color: #64748b;">F32.1</small></div>
+                                        <div>Major Depressive Disorder<br><small class="text-muted">F32.1</small></div>
                                     </div>
                                 </td>
                                 <td>APCM</td>
@@ -1536,13 +923,13 @@
                                 <td>No increase in PHQ-9 score compared to prior 30-day period</td>
                                 <td>13</td>
                                 <td>11</td>
-                                <td><span class="status-met">Met</span></td>
+                                <td><span class="badge badge-met">Met</span></td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="condition-cell">
                                         <span class="condition-icon anxiety"></span>
-                                        <div>Major Anxiety Disorder<br><small style="color: #64748b;">F41.1</small></div>
+                                        <div>Major Anxiety Disorder<br><small class="text-muted">F41.1</small></div>
                                     </div>
                                 </td>
                                 <td>APCM</td>
@@ -1550,13 +937,13 @@
                                 <td>No increase in GAD-7 score compared to prior 30-day period</td>
                                 <td>9</td>
                                 <td>8</td>
-                                <td><span class="status-met">Met</span></td>
+                                <td><span class="badge badge-met">Met</span></td>
                             </tr>
                             <tr>
                                 <td>
                                     <div class="condition-cell">
                                         <span class="condition-icon diabetes"></span>
-                                        <div>Type 2 Diabetes Mellitus<br><small style="color: #64748b;">E11.9</small></div>
+                                        <div>Type 2 Diabetes Mellitus<br><small class="text-muted">E11.9</small></div>
                                     </div>
                                 </td>
                                 <td>RPM</td>
@@ -1564,7 +951,7 @@
                                 <td>Zero ED visits or hospitalizations related to diabetes in 30-day period</td>
                                 <td>1 event</td>
                                 <td>1 event</td>
-                                <td><span class="status-ongoing">Ongoing</span></td>
+                                <td><span class="badge badge-ongoing">Ongoing</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1580,7 +967,7 @@
             </div>
 
             <!-- Footer -->
-            <div class="footer">
+            <div class="report-footer">
                 <p class="disclaimer">RPM and/or APCM services summarized in this report were delivered by qualified clinical staff under the supervision of the billing practitioner, in accordance with CMS guidelines. Medical necessity was reviewed and maintained throughout the billing period.</p>
 
                 <div class="signatures">
@@ -1601,7 +988,7 @@
                 <p class="cpt-codes">RPM CPT: 99453, 99454, 99455, 99457, 99458 | APCM: G0556, G0557, G0558</p>
                 <p class="disclaimer">Physiologic data included in this report is collected via remote patient monitoring devices (RPM) and reviewed by qualified clinical staff. Behavioral health assessments are administered as part of APCM services.</p>
                 <p class="disclaimer">Goal determinations computed using 30-day rolling averages. All outcomes are deterministic and meet CMS documentation requirements.</p>
-                <p class="powered-by">Powered by Survey Health</p>
+                <p class="powered-by">Powered by SurveyHealth</p>
             </div>
         </div>
     </div>
