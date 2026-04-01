@@ -314,6 +314,133 @@
             </div>
           </div>
 
+          <!-- Call Transcript Section -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Call Transcript</span>
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400">1:11 duration</span>
+                <button onclick="toggleTranscript()" id="transcriptToggle" class="text-xs text-blue-600 hover:text-blue-700">Show Full ↓</button>
+              </div>
+            </div>
+
+            <div class="rounded-lg border border-gray-200 overflow-hidden">
+              <!-- Audio Player -->
+              <div class="p-3 bg-gray-50 border-b border-gray-200 flex items-center gap-3">
+                <button class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 flex-shrink-0">
+                  <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </button>
+                <div class="flex-1 h-1.5 bg-gray-200 rounded-full">
+                  <div class="w-0 h-full bg-blue-600 rounded-full"></div>
+                </div>
+                <span class="text-xs text-gray-500 flex-shrink-0">0:00 / 1:11</span>
+              </div>
+
+              <!-- Transcript Content -->
+              <div id="transcriptContent" class="max-h-48 overflow-hidden transition-all duration-300">
+                <div class="p-4 space-y-3 text-sm">
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:00</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Hello?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:02</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">Hello?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:03</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Hi, this is your care team calling from your provider's office. May I speak with Cecil?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:07</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">Yes, this is Cecil.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:08</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Hi Cecil, thanks for taking the call. Do you have about a minute for a quick health check?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:12</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">Sure, that's fine.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:13</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Great, thank you. I'll ask a few quick questions about how you've been doing. Just answer in your own words.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:18</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">In the past week, have you had any increased shortness of breath or a cough that's limited your normal activities?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:25</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">No, I haven't.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:27</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">That's good to hear, thanks for sharing.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:30</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">And in the past week, have you been able to take your medications as your doctor prescribed?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:36</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">Yes, I have.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:38</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Great, thank you for confirming.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:40</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Just to make sure I'm hearing you clearly, you've been taking them as directed this past week?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:45</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">Yes.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:46</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Perfect, I appreciate that.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:48</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">In the past week, have you felt like you needed medical help, even if you didn't end up reaching out?</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:54</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">No.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:55</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Okay, thanks for letting me know.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">0:57</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">We'll send you a quick text message shortly so you can complete a brief health check. It only takes about a minute and helps your care team stay up to date.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">1:05</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">If anything comes up or you have questions, you can always contact your provider's office directly.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">1:10</span>
+                    <div><span class="font-medium text-gray-900">Patient:</span> <span class="text-gray-700">Sounds good, thank you.</span></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">1:11</span>
+                    <div><span class="font-medium text-blue-700">Agent:</span> <span class="text-gray-700">Thank you, Cecil. Take care.</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gradient overlay when collapsed -->
+              <div id="transcriptGradient" class="h-12 bg-gradient-to-t from-white to-transparent -mt-12 relative pointer-events-none"></div>
+            </div>
+          </div>
+
           <!-- Vitals Section -->
           <div class="mb-8">
             <div class="flex items-center justify-between mb-4">
@@ -668,6 +795,26 @@
   </div>
 
 <script>
+  // Transcript toggle functionality
+  let transcriptExpanded = false;
+  function toggleTranscript() {
+    const content = document.getElementById('transcriptContent');
+    const toggle = document.getElementById('transcriptToggle');
+    const gradient = document.getElementById('transcriptGradient');
+
+    transcriptExpanded = !transcriptExpanded;
+
+    if (transcriptExpanded) {
+      content.style.maxHeight = 'none';
+      toggle.textContent = 'Collapse ↑';
+      gradient.style.display = 'none';
+    } else {
+      content.style.maxHeight = '12rem';
+      toggle.textContent = 'Show Full ↓';
+      gradient.style.display = 'block';
+    }
+  }
+
   // Dropdown functionality
   document.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', (e) => {
