@@ -415,6 +415,25 @@
                 <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="followUp"></div>
               </section>
             </div>
+
+            <!-- Clinical Notes (always visible, manual entry by staff) -->
+            <div class="border-t border-gray-200 bg-gray-50/50 p-6">
+              <div class="flex items-center justify-between mb-2">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500">Clinical Notes</div>
+                <div class="flex items-center gap-2 text-[10px] text-gray-400">
+                  <span id="manual-note-saved" class="hidden text-green-600">✓ Saved</span>
+                  <span>L. Goldenstein &middot; <span id="manual-note-time">now</span></span>
+                </div>
+              </div>
+              <textarea id="manual-note"
+                        rows="4"
+                        placeholder="Add context, corrections, or follow-up notes on top of the AI summary&#x2026;"
+                        class="w-full px-3 py-2.5 text-sm text-gray-800 leading-relaxed bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"></textarea>
+              <div class="flex items-center justify-between mt-2">
+                <span class="text-[11px] text-gray-400">Autosaves to this browser. Included when you Resolve &amp; save note.</span>
+                <button onclick="clearManualNote()" class="text-[11px] text-gray-400 hover:text-gray-600">Clear</button>
+              </div>
+            </div>
           </div>
 
           <!-- Resolve Ticket Section -->
@@ -1043,9 +1062,41 @@ function submitNote() {
   document.querySelectorAll('[data-field]').forEach(el => {
     note[el.dataset.field] = el.textContent;
   });
+  const manual = document.getElementById('manual-note').value;
   const key = 'demoCcm.saved.' + (lastCallId || Date.now());
-  localStorage.setItem(key, JSON.stringify({ savedAt: new Date().toISOString(), note }));
+  localStorage.setItem(key, JSON.stringify({
+    savedAt: new Date().toISOString(),
+    note,
+    clinicalNotes: manual,
+  }));
   toast("Saved to Claire Henderson's record");
+}
+
+// Manual Clinical Notes — autosave to localStorage, restore on load.
+const MANUAL_NOTE_KEY = 'demoCcm.manualNote';
+function wireManualNote() {
+  const ta = document.getElementById('manual-note');
+  const savedFlag = document.getElementById('manual-note-saved');
+  const timeEl = document.getElementById('manual-note-time');
+  const stored = localStorage.getItem(MANUAL_NOTE_KEY);
+  if (stored) ta.value = stored;
+  let saveTimer = null;
+  ta.addEventListener('input', () => {
+    clearTimeout(saveTimer);
+    savedFlag.classList.add('hidden');
+    saveTimer = setTimeout(() => {
+      localStorage.setItem(MANUAL_NOTE_KEY, ta.value);
+      timeEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      savedFlag.classList.remove('hidden');
+      setTimeout(() => savedFlag.classList.add('hidden'), 1500);
+    }, 500);
+  });
+}
+function clearManualNote() {
+  const ta = document.getElementById('manual-note');
+  if (ta.value && !confirm('Clear the clinical notes?')) return;
+  ta.value = '';
+  localStorage.removeItem(MANUAL_NOTE_KEY);
 }
 function toast(text) {
   const el = document.getElementById('toast');
@@ -1105,6 +1156,7 @@ async function prefillPreviousTouchpoint() {
 
 (function boot() {
   applySettings();
+  wireManualNote();
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
   const s = loadSettings();
