@@ -835,28 +835,25 @@ function setStatus(kind, detail = '') {
 }
 
 // =========================================================================
-// Render call payload into header + recording card
+// Render call payload. Split into:
+//   - renderCallCard(payload): fills transcript + extracted-responses card.
+//     Only called ONCE (at boot) to show the prior CCM touchpoint on this
+//     ticket. Live Quo polling never touches it.
+//   - renderCallMeta(payload): updates Ticket Info grid (duration, created,
+//     header time). Called for each new live call.
 // =========================================================================
-function renderCall(payload) {
+function renderCallCard(payload) {
   const callDetail = document.getElementById('call-detail');
   callDetail.style.display = 'block';
 
   const dur = payload.callMeta?.callDuration || '';
   document.getElementById('call-duration-pill').textContent = dur ? '· ' + dur : '';
-  document.getElementById('info-duration').textContent = dur || '—';
 
   if (payload.callMeta?.callEnded) {
     const d = new Date(payload.callMeta.callEnded);
     const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
     document.getElementById('call-timestamp').textContent = time;
-    document.getElementById('info-created').textContent = `${dateStr} · ${time}`;
-    document.getElementById('header-time').textContent = relativeTime(d);
   }
-
-  // Leave the top-level ticket Status untouched here — it represents the
-  // live ticket state (waiting for the new call), not the historical one.
-  // pollNow() will flip it to "Reviewed" when a real call arrives.
 
   // Transcript
   const turns = document.getElementById('transcript-turns');
@@ -890,6 +887,24 @@ function renderCall(payload) {
   }
 }
 
+// Called for each new live call. Updates only the Ticket Info grid fields —
+// never touches the transcript / extracted-responses card.
+function renderCallMeta(payload) {
+  const dur = payload.callMeta?.callDuration || '';
+  const durEl = document.getElementById('info-duration');
+  if (durEl) durEl.textContent = dur || '—';
+
+  if (payload.callMeta?.callEnded) {
+    const d = new Date(payload.callMeta.callEnded);
+    const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+    const created = document.getElementById('info-created');
+    const header = document.getElementById('header-time');
+    if (created) created.textContent = `${dateStr} · ${time}`;
+    if (header)  header.textContent = relativeTime(d);
+  }
+}
+
 function renderNote(note) {
   document.getElementById('note-empty').style.display = 'none';
   document.getElementById('note-populated').style.display = 'block';
@@ -903,7 +918,8 @@ function resetNote() {
   document.getElementById('note-empty').style.display = 'block';
   document.getElementById('note-populated').style.display = 'none';
   document.getElementById('regen-btn').classList.add('hidden');
-  document.getElementById('call-detail').style.display = 'none';
+  // NOTE: #call-detail (transcript + extracted responses) is the prior CCM
+  // touchpoint on this ticket — it stays visible across resets.
 }
 
 function relativeTime(d) {
@@ -1108,10 +1124,10 @@ async function pollNow() {
     lastCallId = payload.callId || null;
     lastSummaryStatus = payload.summaryStatus;
 
-    // Always re-render the top card (transcript + extracted responses can
-    // arrive before the summary). Only render the note if it actually has
-    // content — otherwise leave the empty-state waiting message.
-    renderCall(payload);
+    // Update only the Ticket Info grid (duration, created, header time).
+    // The transcript + extracted-responses card belongs to the prior CCM
+    // touchpoint and is NEVER overwritten by a new live call.
+    renderCallMeta(payload);
     if (payload.summaryStatus === 'completed') {
       renderNote(payload.note);
       const statusEl = document.getElementById('info-status');
@@ -1183,17 +1199,18 @@ function clearManualNote() {
   localStorage.removeItem(MANUAL_NOTE_KEY);
 }
 
-// Reset ticket to its fresh-load state: clear the current call, AI summary,
-// manual notes, and force the next poll tick to treat this as a new ticket.
-// Leaves your Quo settings (API key, line, number) intact.
+// Reset ticket to its fresh-load state: clear the AI summary, clinical
+// notes, and Ticket Info live-call fields. The prior CCM touchpoint
+// (transcript + extracted responses) is part of the patient's record
+// on this ticket and is NOT cleared.
 function resetTicket() {
-  if (!confirm('Reset this ticket?\n\nThis clears:\n  · The current call transcript + extracted responses\n  · The AI summary note\n  · The clinical notes\n\nYour Quo settings are kept. The next incoming call will populate a fresh ticket.')) return;
+  if (!confirm('Reset this ticket?\n\nThis clears:\n  · The AI summary note\n  · The clinical notes\n  · Live-call timing fields\n\nThe transcript + extracted responses from the prior CCM touchpoint stay on this ticket.\nYour Quo settings are kept.')) return;
 
   // Clear polling state
   lastCallId = null;
   lastSummaryStatus = null;
 
-  // Reset note + status UI
+  // Reset AI summary note + status UI
   resetNote();
   setStatus('idle');
 
@@ -1202,7 +1219,7 @@ function resetTicket() {
   if (ta) ta.value = '';
   localStorage.removeItem(MANUAL_NOTE_KEY);
 
-  // Reset Ticket Info grid fields populated by renderCall
+  // Reset Ticket Info grid fields
   const infoStatus = document.getElementById('info-status');
   if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span><span class="text-gray-900 font-medium">Waiting for call</span>`;
   const d = document.getElementById('info-duration'); if (d) d.textContent = '—';
@@ -1212,10 +1229,6 @@ function resetTicket() {
   // Hide the Live pill
   const pill = document.getElementById('live-pill');
   if (pill) pill.classList.add('hidden');
-
-  // Re-prefill the "previous touchpoint" card from the mock so the ticket
-  // still looks like a normal ticket with prior content.
-  prefillPreviousTouchpoint();
 
   closeSettings();
   toast('Ticket reset — ready for next call');
@@ -1271,7 +1284,7 @@ document.getElementById('regen-btn').addEventListener('click', () => {
 async function prefillPreviousTouchpoint() {
   try {
     const payload = await fetchMock();
-    renderCall(payload);
+    renderCallCard(payload);
   } catch (err) {
     console.warn('Could not load previous call:', err.message);
   }
