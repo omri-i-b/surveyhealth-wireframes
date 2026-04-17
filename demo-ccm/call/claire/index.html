@@ -792,9 +792,9 @@ function renderCall(payload) {
     document.getElementById('header-time').textContent = relativeTime(d);
   }
 
-  // Ticket Info status
-  const statusEl = document.getElementById('info-status');
-  statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+  // Leave the top-level ticket Status untouched here — it represents the
+  // live ticket state (waiting for the new call), not the historical one.
+  // pollNow() will flip it to "Reviewed" when a real call arrives.
 
   // Transcript
   const turns = document.getElementById('transcript-turns');
@@ -1009,8 +1009,21 @@ async function pollNow() {
     }
     if (payload.callId && payload.callId === lastCallId) return;
     lastCallId = payload.callId || null;
+    // A real call arrived — replace the "Previous touchpoint" card with
+    // this call's content, relabel it, and fill the AI summary note.
     renderCall(payload);
+    const card = document.getElementById('call-detail');
+    const label = card && card.querySelector('.touchpoint-label');
+    if (label) {
+      label.className = 'touchpoint-label px-4 py-1.5 bg-green-50 border-b border-green-200 text-[11px] text-green-800 font-medium';
+      const when = payload.callMeta?.callEnded
+        ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : '';
+      label.innerHTML = `<span class="uppercase tracking-wide">This call</span> · received ${when}`;
+    }
     renderNote(payload.note);
+    const statusEl = document.getElementById('info-status');
+    if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
   } catch (err) {
     console.error(err);
     setStatus('error', err.message || 'request failed');
@@ -1087,9 +1100,31 @@ document.getElementById('regen-btn').addEventListener('click', () => {
   pollNow();
 });
 
+// Prefill the top "previous touchpoint" section (call recording + transcript
+// + extracted responses) from the mock. This represents a prior call already
+// on file for this ticket and stays visible regardless of live polling.
+// The AI Summary Note below remains empty until a NEW Quo call arrives.
+async function prefillPreviousTouchpoint() {
+  try {
+    const payload = await fetchMock();
+    renderCall(payload);
+    // Mark the section as historical, not today's live call.
+    const card = document.getElementById('call-detail');
+    if (card && !card.querySelector('.touchpoint-label')) {
+      const label = document.createElement('div');
+      label.className = 'touchpoint-label px-4 py-1.5 bg-amber-50 border-b border-amber-200 text-[11px] text-amber-800 font-medium';
+      label.innerHTML = '<span class="uppercase tracking-wide">Previous touchpoint</span> · last CCM check-in';
+      card.insertBefore(label, card.firstChild);
+    }
+  } catch (err) {
+    console.warn('Could not load previous touchpoint:', err.message);
+  }
+}
+
 (function boot() {
   applySettings();
   populateQuoLineDropdown();
+  prefillPreviousTouchpoint();
   const s = loadSettings();
   const mockParam = new URLSearchParams(location.search).get('mock') === '1';
   if (!s.pnId && !s.number && !s.mock && !mockParam) {
