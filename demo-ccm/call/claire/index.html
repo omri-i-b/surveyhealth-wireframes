@@ -582,7 +582,7 @@
               <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
                 <div class="flex items-center justify-between">
                   <span class="text-gray-500">Cell</span>
-                  <a id="sidebar-call-btn" href="#" class="text-blue-600 hover:underline font-medium">(803) 233-4666</a>
+                  <a id="sidebar-call-btn" href="#" class="text-blue-600 hover:underline font-medium">(202) 210-9652</a>
                 </div>
               </div>
             </div>
@@ -631,7 +631,7 @@
       <div>
         <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Claire's phone number (E.164)</label>
         <input id="input-number" type="text" placeholder="+18032334666" class="mt-1 w-full px-3 py-2 text-sm font-mono border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-[11px] text-gray-500 mt-1">Displayed as "(803) 233-4666" in the patient sidebar. Default: +18032334666.</p>
+        <p class="text-[11px] text-gray-500 mt-1">Displayed as "(202) 210-9652" in the patient sidebar. Default: +12022109652.</p>
       </div>
       <div>
         <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Poll interval (seconds)</label>
@@ -665,14 +665,16 @@ const STORAGE = {
   apiKey:   'demoCcm.quoApiKey',
   base:     'demoCcm.quoBase',
   pnId:     'demoCcm.quoPhoneNumberId',
-  number:   'demoCcm.quoNumber.v2',   // v2: always defaults to DEFAULT_PATIENT_NUMBER
+  number:   'demoCcm.quoNumber.v3',   // v3: default is Claire's real cell +12022109652
   interval: 'demoCcm.quoPollSec',
   mock:     'demoCcm.quoMock',
 };
-// One-time cleanup of any stale number from earlier sessions.
+// One-time cleanup of any stale numbers from earlier sessions.
 localStorage.removeItem('demoCcm.quoNumber');
-// Default demo patient number — hard-coded per the Apr 16 debrief requirement.
-const DEFAULT_PATIENT_NUMBER = '+18032334666';
+localStorage.removeItem('demoCcm.quoNumber.v2');
+// Default demo patient number — Claire's cell. Outbound calls go FROM the
+// configured Quo line TO this number.
+const DEFAULT_PATIENT_NUMBER = '+12022109652';
 
 // Default Quo proxy base URL. When the page is served from GitHub Pages we point
 // at the Railway-hosted proxy; when served locally we point at the local one.
@@ -1104,17 +1106,26 @@ async function pollNow() {
       const ss = payload.summaryStatus;
       const endedMs = payload.callMeta?.callEnded ? (Date.now() - new Date(payload.callMeta.callEnded).getTime()) : 0;
       const STALE_AFTER_MS = 2 * 60 * 1000; // 2 minutes — Quo usually finishes in 30–90s
+      const FALLBACK_TO_MOCK = true; // Demo fallback when the plan tier doesn't include summaries
+
       if (ss === 'completed') {
         setStatus('received', `received at ${when}`);
-      } else if (ss === 'failed') {
-        setStatus('error', 'Quo could not generate a summary for this call');
-      } else if (ss === 'absent') {
-        setStatus('error', 'Call summary not available on this Quo plan');
-      } else if (endedMs > STALE_AFTER_MS) {
-        // Summary didn't arrive in a reasonable window — likely plan doesn't
-        // support it, or it was never going to be generated. Stop pretending
-        // we're still listening.
-        setStatus('idle', 'No AI summary was generated for the last call.');
+      } else if (ss === 'failed' || ss === 'absent' ||
+                 (endedMs > STALE_AFTER_MS && FALLBACK_TO_MOCK)) {
+        // Summary unavailable (plan tier, Quo failure, or timed out).
+        // For the demo, drop in the mock summary so the flow still works.
+        if (FALLBACK_TO_MOCK && payload.callId !== lastCallId) {
+          try {
+            const mock = await fetchMock();
+            payload.note = mock.note;
+            payload.summaryStatus = 'completed';
+            setStatus('received', `${when} · summary unavailable on this plan, showing mock`);
+          } catch (_) {
+            setStatus('idle', 'Summary unavailable; mock fallback failed to load.');
+          }
+        } else {
+          setStatus('idle', 'No AI summary was generated for the last call.');
+        }
       } else {
         // null (404) or 'in-progress' — summary still cooking
         setStatus('waiting', 'call ended, generating AI summary…');
