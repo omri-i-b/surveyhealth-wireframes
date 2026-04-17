@@ -971,6 +971,11 @@ function transformQuoResponse(call, summary, transcript) {
   return {
     callId: call.id,
     status: call.status,
+    // summaryStatus tells the poller whether to keep trying. Values from the
+    // OpenPhone docs: absent | in-progress | completed | failed.
+    // null = endpoint 404'd (not generated yet at all, keep polling).
+    summaryStatus: summary?.data?.status || (summary ? 'absent' : null),
+    transcriptStatus: transcript?.data?.status || (transcript ? 'absent' : null),
     callMeta: {
       patientName: 'Claire Henderson',
       callDirection: call.direction === 'outgoing' ? 'Outbound' : 'Inbound',
@@ -988,6 +993,8 @@ function transformQuoResponse(call, summary, transcript) {
       }))
     ),
     note: mapQuoSummaryToAmbientNote(summary?.data),
+    // Keep raw data so the poller can decide whether to re-render later.
+    _rawSummary: summary?.data || null,
   };
 }
 
@@ -1033,6 +1040,7 @@ async function fetchMock() {
 // =========================================================================
 let pollTimer = null;
 let lastCallId = null;
+let lastSummaryStatus = null;  // 'completed' means we can stop refreshing the note
 
 async function pollNow() {
   const s = loadSettings();
@@ -1062,16 +1070,41 @@ async function pollNow() {
       const when = payload.callMeta?.callEnded
         ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         : '';
-      setStatus('received', `received at ${when}`);
+      // Pick the right status based on whether the summary has finished.
+      const ss = payload.summaryStatus;
+      if (ss === 'completed') {
+        setStatus('received', `received at ${when}`);
+      } else if (ss === 'failed') {
+        setStatus('error', 'Quo could not generate a summary for this call');
+      } else if (ss === 'absent') {
+        setStatus('error', 'Call summary not available on this Quo plan');
+      } else {
+        // null (404) or 'in-progress' — summary still cooking
+        setStatus('waiting', 'call ended, generating AI summary…');
+      }
     }
-    if (payload.callId && payload.callId === lastCallId) return;
+
+    // Decide whether to re-render. Two cases that should update the UI:
+    //   1. A brand-new callId we haven't seen.
+    //   2. Same call, but the summary just finished (was in-progress, now completed).
+    const isNewCall = payload.callId !== lastCallId;
+    const summaryJustArrived = payload.callId === lastCallId
+                            && lastSummaryStatus !== 'completed'
+                            && payload.summaryStatus === 'completed';
+    if (!isNewCall && !summaryJustArrived) return;
+
     lastCallId = payload.callId || null;
-    // A real call arrived — replace the top card with this call's content
-    // and fill the AI summary note below.
+    lastSummaryStatus = payload.summaryStatus;
+
+    // Always re-render the top card (transcript + extracted responses can
+    // arrive before the summary). Only render the note if it actually has
+    // content — otherwise leave the empty-state waiting message.
     renderCall(payload);
-    renderNote(payload.note);
-    const statusEl = document.getElementById('info-status');
-    if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+    if (payload.summaryStatus === 'completed') {
+      renderNote(payload.note);
+      const statusEl = document.getElementById('info-status');
+      if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+    }
   } catch (err) {
     console.error(err);
     setStatus('error', err.message || 'request failed');
@@ -1092,6 +1125,7 @@ function restartPolling() {
 function discardNote() {
   if (!confirm('Discard this note? Your edits will be lost.')) return;
   lastCallId = null;
+  lastSummaryStatus = null;
   resetNote();
   pollNow();
 }
@@ -1176,6 +1210,7 @@ document.addEventListener('click', (e) => {
 // =========================================================================
 document.getElementById('regen-btn').addEventListener('click', () => {
   lastCallId = null;
+  lastSummaryStatus = null;
   resetNote();
   pollNow();
 });
