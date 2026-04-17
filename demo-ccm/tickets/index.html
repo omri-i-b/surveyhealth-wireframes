@@ -272,8 +272,12 @@ function renderStats(stats) {
 function renderTicket(t) {
   const typeCls = TYPE_PILL[t.type] || 'text-gray-700 bg-gray-100';
   const rowCls = `${hoverBg(t.severity)} cursor-pointer ${severityClass(t.severity)} ${t.isDemo ? 'demo-row' : ''}`;
-  return `<tr class="${rowCls}">
-    <td class="px-3 py-2.5"><input type="checkbox" class="rounded border-gray-300"></td>
+  // Make the whole row navigate when a href is set (e.g. Claire → call/claire/)
+  const rowAttrs = t.href
+    ? `class="${rowCls}" onclick="if(event.target.tagName!=='INPUT'&&event.target.tagName!=='BUTTON'&&!event.target.closest('button')){window.location='${t.href}'}"`
+    : `class="${rowCls}"`;
+  return `<tr ${rowAttrs}>
+    <td class="px-3 py-2.5" onclick="event.stopPropagation()"><input type="checkbox" class="rounded border-gray-300"></td>
     <td class="px-3 py-2.5">${patientCell(t)}</td>
     <td class="px-3 py-2.5">${pill(typeCls, t.type)}</td>
     <td class="px-3 py-2.5">${statusPill(t.status)}</td>
