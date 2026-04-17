@@ -1,0 +1,86 @@
+{
+  "_comment": "Fallback Ambient-AI-style note for Claire, loaded when ?mock=1 is present or when Quo returns no call. Ambient format references: Abridge, Nabla, DeepScribe public sample output.",
+  "callMeta": {
+    "patientName": "Claire Henderson",
+    "patientDob": "1948-03-22",
+    "patientAge": 77,
+    "callDirection": "Inbound",
+    "callDuration": "4:12",
+    "callStarted": "2026-04-17T14:06:00-05:00",
+    "callEnded": "2026-04-17T14:10:12-05:00",
+    "agentName": "SurveyHealth Voice AI"
+  },
+  "transcript": [
+    { "t": "0:00", "speaker": "agent",   "text": "Hello, this is SurveyHealth calling from Providence Family Clinic. May I speak with Claire?" },
+    { "t": "0:05", "speaker": "patient", "text": "Yes, this is Claire." },
+    { "t": "0:07", "speaker": "agent",   "text": "Hi Claire, this is your monthly check-in. Do you have about five minutes to go through a few questions?" },
+    { "t": "0:12", "speaker": "patient", "text": "Yes, go ahead." },
+    { "t": "0:14", "speaker": "agent",   "text": "Thank you. In the past week, have you had any new or worsening symptoms — anything like shortness of breath, chest pain, or dizziness?" },
+    { "t": "0:24", "speaker": "patient", "text": "Well, I have been more short of breath than usual. When I walk up the stairs at my daughter's house I have to stop halfway now. That's new." },
+    { "t": "0:38", "speaker": "agent",   "text": "I'm sorry to hear that. How long has that been going on?" },
+    { "t": "0:42", "speaker": "patient", "text": "About a week, maybe nine days." },
+    { "t": "0:46", "speaker": "agent",   "text": "Have you been taking all your medications on schedule?" },
+    { "t": "0:52", "speaker": "patient", "text": "Yes, my daughter sets them out for me. I take the water pill in the morning and the heart pill at dinner." },
+    { "t": "1:02", "speaker": "agent",   "text": "That's great to hear. Have you noticed any swelling in your legs or ankles?" },
+    { "t": "1:09", "speaker": "patient", "text": "A little bit in my ankles in the evenings, yes." },
+    { "t": "1:14", "speaker": "agent",   "text": "Have you been able to check your weight this week?" },
+    { "t": "1:18", "speaker": "patient", "text": "I weighed yesterday. 164, so up about three pounds from last week." },
+    { "t": "1:26", "speaker": "agent",   "text": "Thank you. How have you been sleeping?" },
+    { "t": "1:30", "speaker": "patient", "text": "Not great. I've been waking up needing to prop up on pillows to breathe easier." },
+    { "t": "1:40", "speaker": "agent",   "text": "Okay, I'm going to flag that for your care team. Have you had any chest pain or heart palpitations?" },
+    { "t": "1:48", "speaker": "patient", "text": "No chest pain. Heart feels normal." },
+    { "t": "1:52", "speaker": "agent",   "text": "Good. Any changes to your diet or appetite?" },
+    { "t": "1:57", "speaker": "patient", "text": "Appetite is fine. I've been trying to watch my salt like they said." },
+    { "t": "2:04", "speaker": "agent",   "text": "That's really good. Would you like to speak with a nurse today about the shortness of breath and weight gain?" },
+    { "t": "2:13", "speaker": "patient", "text": "Yes, I think that would be a good idea." },
+    { "t": "2:17", "speaker": "agent",   "text": "I'll have a nurse call you back within the next two hours. Is this the best number to reach you?" },
+    { "t": "2:24", "speaker": "patient", "text": "Yes, this is my home phone." },
+    { "t": "2:28", "speaker": "agent",   "text": "Perfect. Thank you for your time Claire, and we'll be in touch soon." },
+    { "t": "2:33", "speaker": "patient", "text": "Thank you, bye." }
+  ],
+  "extractedResponses": [
+    {
+      "question": "In the past week, have you had any NEW or WORSENING symptoms?",
+      "answer": "YES",
+      "answerClass": "bad",
+      "quote": "I have been more short of breath than usual. When I walk up the stairs I have to stop halfway now."
+    },
+    {
+      "question": "Have you noticed swelling in your legs or ankles?",
+      "answer": "YES",
+      "answerClass": "bad",
+      "quote": "A little bit in my ankles in the evenings, yes."
+    },
+    {
+      "question": "Any weight change since last check-in?",
+      "answer": "UP 3 LBS",
+      "answerClass": "bad",
+      "quote": "I weighed yesterday. 164, so up about three pounds from last week."
+    },
+    {
+      "question": "Are you taking medications as prescribed?",
+      "answer": "YES",
+      "answerClass": "good",
+      "quote": "Yes, my daughter sets them out for me."
+    },
+    {
+      "question": "Do you want to speak with a nurse?",
+      "answer": "YES",
+      "answerClass": "bad",
+      "quote": "Yes, I think that would be a good idea."
+    }
+  ],
+  "note": {
+    "chiefComplaint": "Increased dyspnea on exertion and bilateral ankle edema over the past 7–9 days, with a 3-lb weight gain from the prior week and new orthopnea.",
+    "hpi": "Ms. Henderson is a 77-year-old female with a history of heart failure and hypertension enrolled in CCM. She reports progressive shortness of breath when climbing stairs, now limiting her activity after half a flight. Symptoms began approximately 7–9 days ago. She notes mild bilateral ankle swelling in the evenings and a 3-pound weight gain over the last week. She is waking overnight with orthopnea and needing to prop up on pillows. She denies chest pain, palpitations, or new cough. Medication adherence reported as good (furosemide AM, lisinopril with dinner) with daughter assisting. Adherence to low-sodium diet reported.",
+    "reviewOfSystems": "CARDIOVASCULAR — positive for DOE and bilateral lower-extremity edema; negative for chest pain and palpitations. PULMONARY — positive for orthopnea; negative for cough and wheeze. GI — appetite intact, denies nausea. NEURO — denies dizziness or syncope. PSYCH — denies depressed mood; PHQ-2 not administered this visit.",
+    "assessment": "Likely early decompensation of chronic heart failure — weight gain, new orthopnea, worsening DOE, and ankle edema are consistent with volume overload. Medication adherence does not appear to be the driver. No red flags (no chest pain, no syncope) but pattern warrants same-day clinical review.",
+    "plan": "1. Nurse callback within 2 hours to assess need for diuretic dose adjustment vs. same-day clinic visit.\n2. Recommend daily AM weight log for next 7 days; alert threshold +2 lb/day or +5 lb/week.\n3. Reinforce strict 2g sodium diet and fluid intake guidance.\n4. Continue furosemide and lisinopril as prescribed pending nurse review.\n5. If symptoms worsen before callback (chest pain, severe SOB at rest, lightheadedness) — instruct patient to call 911.",
+    "patientEducation": "Discussed warning signs of heart failure decompensation. Reviewed daily weight monitoring rationale and when to call. Patient verbalized understanding and agreed to callback.",
+    "followUp": "Nurse callback today (< 2 hours). Next scheduled CCM check-in in 7 days. PCP informed via tasking."
+  },
+  "summary": {
+    "riskLevel": "moderate-high",
+    "oneLine": "Likely early CHF decompensation — 3-lb weight gain, new orthopnea, worsening DOE, mild ankle edema; nurse callback within 2 hours requested."
+  }
+}
