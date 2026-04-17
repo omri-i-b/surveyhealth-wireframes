@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tickets — Providence (CCM Demo)</title>
+  <title>Tickets — Providence</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -235,9 +235,7 @@ function patientCell(t) {
   const nameHTML = t.href
     ? `<a href="${t.href}" class="text-sm text-gray-900 hover:text-blue-700 hover:underline">${t.patient}</a>`
     : `<span class="text-sm text-gray-900">${t.patient}</span>`;
-  const demoBadge = t.isDemo
-    ? `<span class="ml-1 px-1.5 py-0.5 text-[9px] font-semibold text-cyan-700 bg-cyan-100 rounded uppercase tracking-wide">Live</span>`
-    : '';
+  const demoBadge = '';
   return `<div class="flex items-center gap-2">
     <div class="w-6 h-6 bg-${color}-100 rounded-full flex items-center justify-center text-[10px] font-semibold text-${color}-700">${t.initials}</div>
     ${nameHTML}
@@ -271,7 +269,7 @@ function renderStats(stats) {
 
 function renderTicket(t) {
   const typeCls = TYPE_PILL[t.type] || 'text-gray-700 bg-gray-100';
-  const rowCls = `${hoverBg(t.severity)} cursor-pointer ${severityClass(t.severity)} ${t.isDemo ? 'demo-row' : ''}`;
+  const rowCls = `${hoverBg(t.severity)} cursor-pointer ${severityClass(t.severity)}`;
   // Make the whole row navigate when a href is set (e.g. Claire → call/claire/)
   const rowAttrs = t.href
     ? `class="${rowCls}" onclick="if(event.target.tagName!=='INPUT'&&event.target.tagName!=='BUTTON'&&!event.target.closest('button')){window.location='${t.href}'}"`
