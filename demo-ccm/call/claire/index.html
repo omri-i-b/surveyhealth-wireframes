@@ -783,6 +783,11 @@ document.getElementById('settings-btn').addEventListener('click', openSettings);
 // Tiny status indicator on the gear icon. No Quo branding on the main UI.
 // =========================================================================
 function setStatus(kind, detail = '') {
+  // Early-out if nothing actually changed. Prevents every 5s poll tick
+  // from thrashing the empty-state DOM and making the UI flicker.
+  if (kind === lastStatusKind && detail === lastStatusDetail) return;
+  lastStatusKind = kind;
+  lastStatusDetail = detail;
   const dot = document.getElementById('status-dot');
   if (dot) {
     const map = {
@@ -1062,6 +1067,8 @@ async function fetchMock() {
 let pollTimer = null;
 let lastCallId = null;
 let lastSummaryStatus = null;  // 'completed' means we can stop refreshing the note
+let lastStatusKind = null;
+let lastStatusDetail = null;
 
 async function pollNow() {
   const s = loadSettings();
@@ -1077,7 +1084,9 @@ async function pollNow() {
         setStatus('idle');
         return;
       }
-      setStatus('waiting', `polling Quo for ${s.number}…`);
+      // Quiet fetch — do NOT flip the UI state just because we're polling.
+      // The user doesn't care about the HTTP round-trip; only the *result*
+      // should change the visible state.
       payload = await fetchQuoLatest();
       if (!payload) {
         setStatus('idle', `No recent calls between ${s.number} and ${s.pnId}.`);
@@ -1209,6 +1218,8 @@ function resetTicket() {
   // Clear polling state
   lastCallId = null;
   lastSummaryStatus = null;
+  lastStatusKind = null;
+  lastStatusDetail = null;
 
   // Reset AI summary note + status UI
   resetNote();
