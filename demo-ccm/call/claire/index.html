@@ -169,7 +169,7 @@
           <span class="font-medium text-gray-900">Ticket #CH-042</span>
           <span class="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
           <span class="text-gray-500 text-sm">Inbound Call · CCM Monthly</span>
-          <span class="px-1.5 py-0.5 text-[10px] font-semibold text-cyan-700 bg-cyan-100 rounded uppercase tracking-wide ml-1">Live</span>
+          <span id="live-pill" class="hidden px-1.5 py-0.5 text-[10px] font-semibold text-cyan-700 bg-cyan-100 rounded uppercase tracking-wide ml-1">Live</span>
         </div>
         <div class="flex items-center gap-3 text-sm text-gray-400">
           <span id="header-time">—</span>
@@ -369,20 +369,20 @@
               <button id="regen-btn" class="text-xs text-blue-600 hover:text-blue-800 font-medium hidden">↻ Regenerate from latest call</button>
             </div>
 
-            <!-- Empty state (skeleton) -->
+            <!-- Empty state — passive by default, animates only during a live call -->
             <div id="note-empty" class="p-8">
               <div class="flex items-center justify-center gap-3 mb-6 text-gray-500 text-sm">
-                <span class="w-2 h-2 bg-blue-500 rounded-full pulse-dot"></span>
-                <span id="note-empty-text">Waiting for AI summary from latest call…</span>
+                <span id="note-empty-dot" class="w-2 h-2 bg-gray-300 rounded-full"></span>
+                <span id="note-empty-text">No active call &mdash; AI summary will appear here when a new call is received.</span>
               </div>
-              <div class="space-y-3 opacity-60">
-                <div class="skeleton h-3 w-1/4"></div>
-                <div class="skeleton h-3 w-full"></div>
-                <div class="skeleton h-3 w-11/12"></div>
-                <div class="skeleton h-3 w-3/4"></div>
-                <div class="skeleton h-3 w-1/4 mt-6"></div>
-                <div class="skeleton h-3 w-full"></div>
-                <div class="skeleton h-3 w-5/6"></div>
+              <div id="note-empty-skeleton" class="space-y-3 opacity-30">
+                <div class="h-3 w-1/4 bg-gray-200 rounded"></div>
+                <div class="h-3 w-full bg-gray-200 rounded"></div>
+                <div class="h-3 w-11/12 bg-gray-200 rounded"></div>
+                <div class="h-3 w-3/4 bg-gray-200 rounded"></div>
+                <div class="h-3 w-1/4 bg-gray-200 rounded mt-6"></div>
+                <div class="h-3 w-full bg-gray-200 rounded"></div>
+                <div class="h-3 w-5/6 bg-gray-200 rounded"></div>
               </div>
             </div>
 
@@ -781,16 +781,52 @@ document.getElementById('settings-btn').addEventListener('click', openSettings);
 // =========================================================================
 function setStatus(kind, detail = '') {
   const dot = document.getElementById('status-dot');
-  if (!dot) return;
-  const map = {
-    idle:     { cls: 'bg-gray-300',  tip: 'Idle' },
-    waiting:  { cls: 'bg-blue-500 pulse-dot', tip: 'Listening for call' },
-    received: { cls: 'bg-green-500', tip: 'Summary received' },
-    error:    { cls: 'bg-red-500',   tip: 'Polling error' },
-  };
-  const m = map[kind] || map.idle;
-  dot.className = `absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full ring-2 ring-white ${m.cls}`;
-  dot.title = detail ? `${m.tip} — ${detail}` : m.tip;
+  if (dot) {
+    const map = {
+      idle:     { cls: 'bg-gray-300',  tip: 'Idle' },
+      waiting:  { cls: 'bg-blue-500 pulse-dot', tip: 'Listening for call' },
+      received: { cls: 'bg-green-500', tip: 'Summary received' },
+      error:    { cls: 'bg-red-500',   tip: 'Polling error' },
+    };
+    const m = map[kind] || map.idle;
+    dot.className = `absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full ring-2 ring-white ${m.cls}`;
+    dot.title = detail ? `${m.tip} — ${detail}` : m.tip;
+  }
+
+  // Reveal the "Live" pill once a summary has been received at least once.
+  if (kind === 'received') {
+    const pill = document.getElementById('live-pill');
+    if (pill) pill.classList.remove('hidden');
+  }
+
+  // Flip the note empty-state copy/animation based on polling activity.
+  // - idle:    passive "No active call — AI summary will appear here…"
+  // - waiting: active "Waiting for AI summary from current call…" + pulsing dot + shimmer
+  // - error:   passive, red dot
+  const emptyDot = document.getElementById('note-empty-dot');
+  const emptyText = document.getElementById('note-empty-text');
+  const skeleton = document.getElementById('note-empty-skeleton');
+  if (emptyDot && emptyText && skeleton) {
+    if (kind === 'waiting') {
+      emptyDot.className = 'w-2 h-2 bg-blue-500 rounded-full pulse-dot';
+      emptyText.textContent = 'Waiting for AI summary from current call…';
+      skeleton.classList.remove('opacity-30');
+      skeleton.classList.add('opacity-60');
+      skeleton.querySelectorAll('div').forEach(d => {
+        d.classList.remove('bg-gray-200');
+        d.classList.add('skeleton');
+      });
+    } else {
+      emptyDot.className = 'w-2 h-2 bg-gray-300 rounded-full';
+      emptyText.innerHTML = 'No active call &mdash; AI summary will appear here when a new call is received.';
+      skeleton.classList.remove('opacity-60');
+      skeleton.classList.add('opacity-30');
+      skeleton.querySelectorAll('div').forEach(d => {
+        d.classList.remove('skeleton');
+        d.classList.add('bg-gray-200');
+      });
+    }
+  }
 }
 
 // =========================================================================
