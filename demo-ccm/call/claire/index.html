@@ -1102,30 +1102,18 @@ async function pollNow() {
       const when = payload.callMeta?.callEnded
         ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         : '';
-      // Pick the right status based on whether the summary has finished.
       const ss = payload.summaryStatus;
       const endedMs = payload.callMeta?.callEnded ? (Date.now() - new Date(payload.callMeta.callEnded).getTime()) : 0;
-      const STALE_AFTER_MS = 2 * 60 * 1000; // 2 minutes — Quo usually finishes in 30–90s
-      const FALLBACK_TO_MOCK = true; // Demo fallback when the plan tier doesn't include summaries
+      const STALE_AFTER_MS = 3 * 60 * 1000; // 3 minutes — Quo summaries usually finish in 30–90s
 
       if (ss === 'completed') {
         setStatus('received', `received at ${when}`);
-      } else if (ss === 'failed' || ss === 'absent' ||
-                 (endedMs > STALE_AFTER_MS && FALLBACK_TO_MOCK)) {
-        // Summary unavailable (plan tier, Quo failure, or timed out).
-        // For the demo, drop in the mock summary so the flow still works.
-        if (FALLBACK_TO_MOCK && payload.callId !== lastCallId) {
-          try {
-            const mock = await fetchMock();
-            payload.note = mock.note;
-            payload.summaryStatus = 'completed';
-            setStatus('received', `${when} · summary unavailable on this plan, showing mock`);
-          } catch (_) {
-            setStatus('idle', 'Summary unavailable; mock fallback failed to load.');
-          }
-        } else {
-          setStatus('idle', 'No AI summary was generated for the last call.');
-        }
+      } else if (ss === 'failed') {
+        setStatus('error', 'Quo failed to generate a summary for this call');
+      } else if (ss === 'absent') {
+        setStatus('error', 'No summary — call recording + AI transcription must be enabled on the Quo line');
+      } else if (endedMs > STALE_AFTER_MS) {
+        setStatus('error', 'No summary after 3 min. Check recording + transcription settings on the Quo line.');
       } else {
         // null (404) or 'in-progress' — summary still cooking
         setStatus('waiting', 'call ended, generating AI summary…');
