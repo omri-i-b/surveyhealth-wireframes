@@ -793,10 +793,12 @@ function setStatus(kind, detail = '') {
     dot.title = detail ? `${m.tip} — ${detail}` : m.tip;
   }
 
-  // Reveal the "Live" pill once a summary has been received at least once.
-  if (kind === 'received') {
-    const pill = document.getElementById('live-pill');
-    if (pill) pill.classList.remove('hidden');
+  // "Live" pill: shown only while a call is actually in progress.
+  // Hidden when idle / received / error.
+  const pill = document.getElementById('live-pill');
+  if (pill) {
+    if (kind === 'waiting') pill.classList.remove('hidden');
+    else pill.classList.add('hidden');
   }
 
   // Flip the note empty-state copy/animation based on polling activity.
