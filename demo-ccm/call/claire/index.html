@@ -386,35 +386,63 @@
               </div>
             </div>
 
-            <!-- Populated state -->
-            <div id="note-populated" class="p-6 space-y-5" style="display:none;">
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Chief Complaint</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="chiefComplaint"></div>
+            <!-- Populated state — CCM care interaction note format -->
+            <div id="note-populated" class="p-6 space-y-3" style="display:none;">
+              <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
+                <div class="text-gray-500 font-medium">Patient Name:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="patientName"></div>
+
+                <div class="text-gray-500 font-medium">Patient Date of Birth:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="patientDob"></div>
+
+                <div class="text-gray-500 font-medium">PCP:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="pcp"></div>
+
+                <div class="text-gray-500 font-medium">Date of Engagement:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="dateOfEngagement"></div>
+
+                <div class="text-gray-500 font-medium">Care Manager:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="careManager"></div>
+
+                <div class="text-gray-500 font-medium">Interaction Type:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="interactionType"></div>
               </section>
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">History of Present Illness</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="hpi"></div>
+
+              <div class="h-px bg-gray-200 my-2"></div>
+
+              <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
+                <div class="text-gray-500 font-medium">Intervention Category:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="interventionCategory"></div>
+
+                <div class="text-gray-500 font-medium">Conditions Monitored:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="conditionsMonitored"></div>
+
+                <div class="text-gray-500 font-medium">Goals:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="goals"></div>
               </section>
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Review of Systems</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="reviewOfSystems"></div>
+
+              <div class="h-px bg-gray-200 my-2"></div>
+
+              <section class="space-y-3 text-sm">
+                <div>
+                  <div class="text-gray-500 font-medium mb-1">Evaluation Reason:</div>
+                  <div class="note-section text-gray-900 leading-relaxed" contenteditable="true" data-field="evaluationReason"></div>
+                </div>
+                <div>
+                  <div class="text-gray-500 font-medium mb-1">Summary of Interaction:</div>
+                  <div class="note-section text-gray-900 leading-relaxed" contenteditable="true" data-field="summaryOfInteraction"></div>
+                </div>
+                <div>
+                  <div class="text-gray-500 font-medium mb-1">Plan:</div>
+                  <div class="note-section text-gray-900 leading-relaxed whitespace-pre-wrap" contenteditable="true" data-field="plan"></div>
+                </div>
               </section>
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Assessment</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="assessment"></div>
-              </section>
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Plan</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed whitespace-pre-wrap" contenteditable="true" data-field="plan"></div>
-              </section>
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Patient Education</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="patientEducation"></div>
-              </section>
-              <section>
-                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Follow-up</div>
-                <div class="note-section text-sm text-gray-800 leading-relaxed" contenteditable="true" data-field="followUp"></div>
+
+              <div class="h-px bg-gray-200 my-2"></div>
+
+              <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
+                <div class="text-gray-500 font-medium">Time Spent:</div>
+                <div class="note-section text-gray-900" contenteditable="true" data-field="timeSpent"></div>
               </section>
             </div>
 
@@ -970,27 +998,48 @@ function secondsToMMSS(s) {
   return `${m}:${String(r).padStart(2, '0')}`;
 }
 
-function mapQuoSummaryToAmbientNote(quoSummary) {
-  const bullet = arr => (Array.isArray(arr) && arr.length)
-    ? arr.map(x => '• ' + x).join('\n')
-    : '';
-  const summaryText = bullet(quoSummary && quoSummary.summary);
-  const plan = bullet(quoSummary && quoSummary.nextSteps);
-  const HINT = '(not captured — click to add)';
-  return {
-    chiefComplaint:   summaryText ? summaryText.split('\n')[0].replace(/^•\s*/, '') : HINT,
-    hpi:              summaryText || HINT,
-    reviewOfSystems:  HINT,
-    assessment:       summaryText || HINT,
-    plan:             plan || HINT,
-    patientEducation: HINT,
-    followUp:         (Array.isArray(quoSummary?.nextSteps) && quoSummary.nextSteps.length)
-                        ? quoSummary.nextSteps[quoSummary.nextSteps.length - 1]
-                        : HINT,
-  };
+// Hardcoded Claire patient context (loaded from data/claire-patient.json on boot)
+let CLAIRE_CONTEXT = null;
+async function loadPatientContext() {
+  try {
+    const res = await fetch('../../data/claire-patient.json', { cache: 'no-store' });
+    CLAIRE_CONTEXT = await res.json();
+  } catch (err) {
+    console.warn('Could not load patient context:', err.message);
+    CLAIRE_CONTEXT = {
+      patientName: 'Claire Henderson',
+      patientDob: 'March 22, 1948',
+      pcp: 'Dr. Henderson, Providence Family Practice',
+      careManager: 'Survey Health Patient Engagement Solution, Lily',
+      interactionType: 'Telephonic Wellness Check Evaluation',
+      interventionCategory: 'Chronic Care Management (CCM) + Remote Patient Monitoring (RPM)',
+      conditionsMonitored: 'Heart Failure, Hypertension',
+      goals: 'No ED visits and hospitalizations this calendar year',
+    };
+  }
 }
 
-function transformQuoResponse(call, summary, transcript) {
+// Generate the structured CCM note via our Railway-hosted LLM summarizer.
+// Falls back to a marker note if the summarizer isn't reachable so the UI
+// stays honest about the failure mode.
+async function generateNoteFromCall(callId) {
+  const s = loadSettings();
+  const base = s.base.replace(/\/v1\/?$/, '').replace(/\/$/, '');
+  const url = `${base}/summarize/${encodeURIComponent(callId)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ patient: CLAIRE_CONTEXT || {} }),
+  });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`summarize ${res.status}: ${body.slice(0, 200)}`);
+  }
+  const { note } = await res.json();
+  return note;
+}
+
+function transformQuoResponse(call, transcript) {
   const turns = (transcript?.data?.dialogue || []).map(d => ({
     t: secondsToMMSS(d.start),
     speaker: d.userId ? 'agent' : 'patient',
@@ -999,11 +1048,13 @@ function transformQuoResponse(call, summary, transcript) {
   return {
     callId: call.id,
     status: call.status,
-    // summaryStatus tells the poller whether to keep trying. Values from the
-    // OpenPhone docs: absent | in-progress | completed | failed.
-    // null = endpoint 404'd (not generated yet at all, keep polling).
-    summaryStatus: summary?.data?.status || (summary ? 'absent' : null),
-    transcriptStatus: transcript?.data?.status || (transcript ? 'absent' : null),
+    // transcriptStatus governs when we fire /summarize. We only summarize once
+    // Quo has a full transcript — that's our source of truth.
+    //   null     = /call-transcripts 404'd (not generated yet)
+    //   'absent' = endpoint returned status=absent (plan / settings issue)
+    //   'in-progress' = Quo still transcribing
+    //   'completed' = ready, fire /summarize
+    transcriptStatus: transcript?.data?.status || (transcript === null ? null : 'absent'),
     callMeta: {
       patientName: 'Claire Henderson',
       callDirection: call.direction === 'outgoing' ? 'Outbound' : 'Inbound',
@@ -1012,17 +1063,7 @@ function transformQuoResponse(call, summary, transcript) {
       callEnded: call.completedAt || call.updatedAt,
     },
     transcript: turns,
-    extractedResponses: (summary?.data?.jobs || []).flatMap(job =>
-      (job.result?.data || []).map(d => ({
-        question: d.name,
-        answer: String(d.value ?? ''),
-        answerClass: ['yes','worse','true'].includes(String(d.value).toLowerCase()) ? 'bad' : 'good',
-        quote: '',
-      }))
-    ),
-    note: mapQuoSummaryToAmbientNote(summary?.data),
-    // Keep raw data so the poller can decide whether to re-render later.
-    _rawSummary: summary?.data || null,
+    extractedResponses: [],  // no longer sourced from Quo's summary jobs
   };
 }
 
@@ -1051,11 +1092,9 @@ async function fetchQuoLatest() {
   const calls = list?.data || [];
   if (!calls.length) return null;
   const call = calls[0];
-  const [summary, transcript] = await Promise.all([
-    quoGet(`/call-summaries/${call.id}`).catch(() => null),
-    quoGet(`/call-transcripts/${call.id}`).catch(() => null),
-  ]);
-  return transformQuoResponse(call, summary, transcript);
+  // Only fetch the transcript — we generate our own summary via the LLM.
+  const transcript = await quoGet(`/call-transcripts/${call.id}`).catch(() => null);
+  return transformQuoResponse(call, transcript);
 }
 
 async function fetchMock() {
@@ -1068,7 +1107,7 @@ async function fetchMock() {
 // =========================================================================
 let pollTimer = null;
 let lastCallId = null;
-let lastSummaryStatus = null;  // 'completed' means we can stop refreshing the note
+let noteGenerated = false;    // true once the LLM summary has been rendered for lastCallId
 let lastStatusKind = null;
 let lastStatusDetail = null;
 
@@ -1102,44 +1141,56 @@ async function pollNow() {
       const when = payload.callMeta?.callEnded
         ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         : '';
-      const ss = payload.summaryStatus;
+      const ts = payload.transcriptStatus;
       const endedMs = payload.callMeta?.callEnded ? (Date.now() - new Date(payload.callMeta.callEnded).getTime()) : 0;
-      const STALE_AFTER_MS = 3 * 60 * 1000; // 3 minutes — Quo summaries usually finish in 30–90s
+      const STALE_AFTER_MS = 3 * 60 * 1000; // 3 minutes — Quo transcripts usually finish in 30–90s
 
-      if (ss === 'completed') {
+      // Reset the generation flag when the call changes
+      if (payload.callId !== lastCallId) noteGenerated = false;
+
+      if (ts === 'completed') {
         setStatus('received', `received at ${when}`);
-      } else if (ss === 'failed') {
-        setStatus('error', 'Quo failed to generate a summary for this call');
-      } else if (ss === 'absent') {
-        setStatus('error', 'No summary — call recording + AI transcription must be enabled on the Quo line');
+      } else if (ts === 'failed') {
+        setStatus('error', 'Quo failed to generate a transcript for this call');
+      } else if (ts === 'absent') {
+        setStatus('error', 'No transcript — call recording + AI transcription must be enabled on the Quo line');
       } else if (endedMs > STALE_AFTER_MS) {
-        setStatus('error', 'No summary after 3 min. Check recording + transcription settings on the Quo line.');
+        setStatus('error', 'No transcript after 3 min. Check recording + transcription settings on the Quo line.');
       } else {
-        // null (404) or 'in-progress' — summary still cooking
-        setStatus('waiting', 'call ended, generating AI summary…');
+        // null (404) or 'in-progress' — transcript still cooking
+        setStatus('waiting', 'call ended, awaiting transcript…');
       }
     }
 
-    // Decide whether to re-render. Two cases that should update the UI:
-    //   1. A brand-new callId we haven't seen.
-    //   2. Same call, but the summary just finished (was in-progress, now completed).
     const isNewCall = payload.callId !== lastCallId;
-    const summaryJustArrived = payload.callId === lastCallId
-                            && lastSummaryStatus !== 'completed'
-                            && payload.summaryStatus === 'completed';
-    if (!isNewCall && !summaryJustArrived) return;
+    const transcriptJustArrived = payload.callId === lastCallId
+                               && !noteGenerated
+                               && payload.transcriptStatus === 'completed';
+
+    if (!isNewCall && !transcriptJustArrived) return;
 
     lastCallId = payload.callId || null;
-    lastSummaryStatus = payload.summaryStatus;
-
-    // Update only the Ticket Info grid (duration, created, header time).
-    // The transcript + extracted-responses card belongs to the prior CCM
-    // touchpoint and is NEVER overwritten by a new live call.
     renderCallMeta(payload);
-    if (payload.summaryStatus === 'completed') {
-      renderNote(payload.note);
-      const statusEl = document.getElementById('info-status');
-      if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+
+    // Once transcript is ready and we haven't generated a note yet for this
+    // call, fire the LLM summarizer. Guard so we only fire once per callId.
+    if (payload.transcriptStatus === 'completed' && !noteGenerated) {
+      noteGenerated = true;  // set BEFORE the await so retries don't dupe
+      setStatus('waiting', 'generating AI note…');
+      try {
+        const note = await generateNoteFromCall(payload.callId);
+        renderNote(note);
+        const finalWhen = payload.callMeta?.callEnded
+          ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          : '';
+        setStatus('received', `note ready, based on call at ${finalWhen}`);
+        const statusEl = document.getElementById('info-status');
+        if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+      } catch (err) {
+        console.error('summarize failed:', err);
+        noteGenerated = false;  // allow retry on next poll
+        setStatus('error', `LLM summarization failed: ${err.message}`);
+      }
     }
   } catch (err) {
     console.error(err);
@@ -1161,7 +1212,7 @@ function restartPolling() {
 function discardNote() {
   if (!confirm('Discard this note? Your edits will be lost.')) return;
   lastCallId = null;
-  lastSummaryStatus = null;
+  noteGenerated = false;
   resetNote();
   pollNow();
 }
@@ -1216,7 +1267,7 @@ function resetTicket() {
 
   // Clear polling state
   lastCallId = null;
-  lastSummaryStatus = null;
+  noteGenerated = false;
   lastStatusKind = null;
   lastStatusDetail = null;
 
@@ -1283,7 +1334,7 @@ document.addEventListener('click', (e) => {
 // =========================================================================
 document.getElementById('regen-btn').addEventListener('click', () => {
   lastCallId = null;
-  lastSummaryStatus = null;
+  noteGenerated = false;
   resetNote();
   pollNow();
 });
@@ -1303,6 +1354,7 @@ async function prefillPreviousTouchpoint() {
 (function boot() {
   applySettings();
   wireManualNote();
+  loadPatientContext();
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
   const s = loadSettings();
