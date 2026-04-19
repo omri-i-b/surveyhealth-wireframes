@@ -230,7 +230,7 @@
                 <div class="text-gray-500 mb-1">Status</div>
                 <div id="info-status" class="flex items-center gap-1.5">
                   <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
-                  <span class="text-gray-900 font-medium">Waiting for call</span>
+                  <span class="text-gray-900 font-medium">Open</span>
                 </div>
               </div>
             </div>
@@ -365,7 +365,7 @@
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                 <span class="text-sm font-semibold text-gray-900">AI Summary</span>
               </div>
-              <button id="regen-btn" class="text-xs text-blue-600 hover:text-blue-800 font-medium hidden">↻ Regenerate from latest call</button>
+              <button id="regen-btn" class="text-xs text-blue-600 hover:text-blue-800 font-medium">↻ Regenerate from latest call</button>
             </div>
 
             <!-- Empty state — passive by default, animates only during a live call -->
@@ -936,7 +936,6 @@ function renderCallMeta(payload) {
 function renderNote(note) {
   document.getElementById('note-empty').style.display = 'none';
   document.getElementById('note-populated').style.display = 'block';
-  document.getElementById('regen-btn').classList.remove('hidden');
   Object.entries(note).forEach(([k, v]) => {
     const el = document.querySelector(`[data-field="${k}"]`);
     if (el) el.textContent = v;
@@ -945,9 +944,9 @@ function renderNote(note) {
 function resetNote() {
   document.getElementById('note-empty').style.display = 'block';
   document.getElementById('note-populated').style.display = 'none';
-  document.getElementById('regen-btn').classList.add('hidden');
-  // NOTE: #call-detail (transcript + extracted responses) is the prior CCM
-  // touchpoint on this ticket — it stays visible across resets.
+  // Regenerate button stays visible — it's the only way to pull a previously
+  // reset call back. #call-detail (transcript + extracted responses) is the
+  // prior CCM touchpoint on this ticket and stays visible across resets.
 }
 
 function relativeTime(d) {
@@ -1103,8 +1102,12 @@ let lastCallId = null;
 let noteGenerated = false;    // true once the LLM summary has been rendered for lastCallId
 let lastStatusKind = null;
 let lastStatusDetail = null;
+// Call IDs the user explicitly dismissed (via Reset ticket). Polling will
+// silently ignore these until the user clicks "Regenerate from latest call".
+const suppressedCallIds = new Set();
+const CALL_FRESHNESS_MS = 60 * 60 * 1000;  // 1 hour — older calls don't populate the ticket
 
-async function pollNow() {
+async function pollNow(forceRender = false) {
   const s = loadSettings();
   const isMock = s.mock || new URLSearchParams(location.search).get('mock') === '1';
   try {
@@ -1129,6 +1132,20 @@ async function pollNow() {
       const IN_PROGRESS = ['queued','initiated','ringing','in-progress'];
       if (IN_PROGRESS.includes(payload.status)) {
         setStatus('waiting', `call ${payload.status} — awaiting completion`);
+        return;
+      }
+      // Freshness gate: completed calls older than CALL_FRESHNESS_MS (1h) do
+      // not auto-populate the ticket. Bypassed when the user explicitly asks
+      // via the Regenerate button.
+      const endedTs = payload.callMeta?.callEnded ? new Date(payload.callMeta.callEnded).getTime() : null;
+      if (endedTs && (Date.now() - endedTs) > CALL_FRESHNESS_MS && !forceRender) {
+        setStatus('idle', `Last call ended >1 hour ago — no active ticket.`);
+        return;
+      }
+      // Suppression gate: the user reset this ticket for this specific call.
+      // Skip silently until they click "Regenerate from latest call".
+      if (payload.callId && suppressedCallIds.has(payload.callId) && !forceRender) {
+        setStatus('idle', `Ticket reset — click "Regenerate from latest call" to pull this call back.`);
         return;
       }
       const when = payload.callMeta?.callEnded
@@ -1289,7 +1306,10 @@ function clearManualNote() {
 // (transcript + extracted responses) is part of the patient's record
 // on this ticket and is NOT cleared.
 function resetTicket() {
-  if (!confirm('Reset this ticket?\n\nThis clears:\n  · The AI summary note\n  · The clinical notes\n  · Live-call timing fields\n\nThe transcript + extracted responses from the prior CCM touchpoint stay on this ticket.\nYour Quo settings are kept.')) return;
+  if (!confirm('Reset this ticket?\n\nThis clears:\n  · The AI summary note\n  · The clinical notes\n  · Live-call timing fields\n\nThe last call will NOT repopulate the ticket automatically — click "Regenerate from latest call" if you want to pull it back.')) return;
+
+  // Suppress the call we just dismissed so polling won't re-render it
+  if (lastCallId) suppressedCallIds.add(lastCallId);
 
   // Clear polling state
   lastCallId = null;
@@ -1306,9 +1326,12 @@ function resetTicket() {
   if (ta) ta.value = '';
   localStorage.removeItem(MANUAL_NOTE_KEY);
 
+  // Clear the resolution so Claire drops out of today's Daily Report
+  localStorage.removeItem('demoCcm.claireResolution');
+
   // Reset Ticket Info grid fields
   const infoStatus = document.getElementById('info-status');
-  if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span><span class="text-gray-900 font-medium">Waiting for call</span>`;
+  if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span><span class="text-gray-900 font-medium">Open</span>`;
   const d = document.getElementById('info-duration'); if (d) d.textContent = '—';
   const c = document.getElementById('info-created');  if (c) c.textContent = '—';
   const h = document.getElementById('header-time');   if (h) h.textContent = '—';
@@ -1357,10 +1380,16 @@ document.addEventListener('click', (e) => {
 // Regen + Boot
 // =========================================================================
 document.getElementById('regen-btn').addEventListener('click', () => {
+  // Explicit user intent to pull the latest call back — clear suppression
+  // and the "saw it already" guard so pollNow re-renders from scratch.
+  suppressedCallIds.clear();
   lastCallId = null;
   noteGenerated = false;
+  lastStatusKind = null;
+  lastStatusDetail = null;
   resetNote();
-  pollNow();
+  toast('Pulling latest call…');
+  pollNow(true);  // bypass freshness + suppression gates
 });
 
 // Prefill the top section (call recording + transcript + extracted responses)
