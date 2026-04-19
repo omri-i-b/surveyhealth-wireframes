@@ -139,7 +139,6 @@
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Callback</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Assigned</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Assessment</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">RPM</th>
               <th class="px-3 py-2.5 w-28"></th>
             </tr>
           </thead>
@@ -240,7 +239,6 @@ function patientCell(t) {
     <div class="w-6 h-6 bg-${color}-100 rounded-full flex items-center justify-center text-[10px] font-semibold text-${color}-700">${t.initials}</div>
     ${nameHTML}
     ${demoBadge}
-    ${iconHTML(t.icon)}
   </div>`;
 }
 
@@ -284,7 +282,6 @@ function renderTicket(t) {
     <td class="px-3 py-2.5">${textOrDash(t.callback, 'text-xs text-gray-700')}</td>
     <td class="px-3 py-2.5">${assigneeCell(t)}</td>
     <td class="px-3 py-2.5">${textOrDash(t.assessment, 'text-xs text-gray-700')}</td>
-    <td class="px-3 py-2.5">${textOrDash(t.rpm, 'text-xs text-gray-700')}</td>
     <td class="px-3 py-2.5">${actionsCell(t)}</td>
   </tr>`;
 }
