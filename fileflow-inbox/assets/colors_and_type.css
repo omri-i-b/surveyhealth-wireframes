@@ -1,0 +1,196 @@
+/* ============================================================
+   Veritec AI — Design Tokens
+   Updated from live product capture (portal-dev-new.veritec.ai).
+   Uses the product's OKLCH + Tailwind-compatible neutrals so
+   components match production exactly.
+   ============================================================ */
+
+:root {
+  /* --- Brand ------------------------------------------------- */
+  --brand-primary:       #0044DD;       /* Veritec royal blue (logo) */
+  --brand-primary-deep:  #0039AA;
+
+  /* --- Primary (interactive) -------------------------------- */
+  --primary:             #1E40AF;       /* blue-800 — CTA, active links */
+  --primary-hover:       #1D3A98;
+  --primary-foreground:  #FFFFFF;
+  --primary-soft:        #DBEAFE;       /* blue-100 */
+  --primary-softer:      #EFF6FF;       /* blue-50 */
+  --primary-border:      #BFDBFE;       /* blue-200 */
+  --primary-accent:      #2563EB;       /* blue-600 */
+
+  /* --- Neutrals (from production capture) ------------------ */
+  /* oklch(0.97 0 0) ≈ #F5F5F5 — page muted bg */
+  --background:          #FFFFFF;
+  --background-muted:    #F5F5F5;       /* was #FAFAFA — now matches prod */
+  --background-subtle:   #FAFAFA;
+  --surface:             #FFFFFF;
+  --surface-alt:         #F3F4F6;
+
+  --foreground:          #252525;       /* oklch(0.145 0 0) body */
+  --fg-1:                #252525;       /* primary text (was #18181B) */
+  --fg-2:                #3F3F46;
+  --fg-3:                #374151;
+  --fg-4:                #71717A;
+  --fg-5:                #475569;
+  --fg-muted:            #737373;       /* muted-foreground */
+  --fg-placeholder:      #9CA3AF;
+  --fg-inverse:          #FFFFFF;
+
+  --border:              #EBEBEB;       /* oklch(0.922 0 0) — prod border */
+  --border-strong:       #D1D5DB;
+  --border-subtle:       #F1F5F9;
+  --input:               #EBEBEB;
+  --input-bg:            rgba(235,235,235,.3);
+
+  --accent:              #F5F5F5;       /* sidebar active pill */
+  --accent-foreground:   #252525;
+
+  --ring:                #2563EB;
+
+  /* --- Semantic (badge palette — lifted from prod) --------- */
+  --badge-blue-bg:       #EFF6FF;  --badge-blue-border: #BFDBFE;  --badge-blue-text:   #1E40AF;
+  --badge-red-bg:        #FEF2F2;  --badge-red-border:  #FECACA;  --badge-red-text:    #B91C1C;
+  --badge-amber-bg:      #FFFBEB;  --badge-amber-border:#FDE68A;  --badge-amber-text:  #92400E;
+  --badge-green-bg:      #F0FDF4;  --badge-green-border:#BBF7D0;  --badge-green-text:  #15803D;
+  --badge-violet-bg:     #F5F3FF;  --badge-violet-border:#E9D5FF; --badge-violet-text: #6D28D9;
+  --badge-gray-bg:       #F4F4F5;  --badge-gray-border: #E4E4E7;  --badge-gray-text:   #3F3F46;
+
+  --success:             #16A34A;
+  --warning:             #D97706;
+  --danger:              #DC2626;
+  --info:                #2563EB;
+
+  /* --- Shadows --------------------------------------------- */
+  --shadow-xs:  0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-sm:  0 1px 3px 0 rgba(0,0,0,0.10), 0 1px 2px -1px rgba(0,0,0,0.10);
+  --shadow-md:  0 4px 6px -1px rgba(0,0,0,0.10), 0 2px 4px -2px rgba(0,0,0,0.06);
+  --shadow-pop: 0 12px 32px -8px rgba(15,23,42,0.18);
+
+  /* --- Radii ----------------------------------------------- */
+  --radius-sm: 4px;
+  --radius:    6px;
+  --radius-md: 6px;
+  --radius-lg: 8px;         /* cards, inputs, buttons (prod) */
+  --radius-xl: 12px;
+  --radius-4xl: 9999px;     /* prod pill filters */
+  --radius-full: 9999px;
+
+  /* --- Spacing --------------------------------------------- */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+
+  /* --- Typography ------------------------------------------ */
+  --font-sans:    "Inter", "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Inter", "Inter Variable", system-ui, sans-serif;
+  --font-mono:    Menlo, ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
+
+  --fs-xs:   11px;
+  --fs-sm:   12px;
+  --fs-base: 14px;
+  --fs-md:   16px;
+  --fs-lg:   18px;
+  --fs-xl:   20px;
+  --fs-2xl:  24px;
+
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700;
+  --lh-tight: 1.2;  --lh-snug: 1.35;  --lh-normal: 1.5;
+
+  /* --- Sidebar (prod-accurate) ----------------------------- */
+  --sidebar-bg:            #FAFAFA;
+  --sidebar-border:        #EBEBEB;
+  --sidebar-width:         200px;       /* prod is 199px */
+  --sidebar-item:          #3F3F46;
+  --sidebar-item-hover-bg: #F4F4F5;
+  --sidebar-accent-bg:     #F4F4F5;     /* active pill */
+  --sidebar-accent-fg:     #1E40AF;     /* active text = primary */
+}
+
+html, body {
+  font-family: var(--font-sans);
+  font-size:   var(--fs-base);
+  color:       var(--fg-1);
+  background:  var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Shared type helpers */
+.t-h1 { font-size: 24px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; color: var(--fg-1); }
+.t-h2 { font-size: 20px; font-weight: 600; line-height: 1.35; color: var(--fg-1); }
+.t-page-title { font-size: 16px; font-weight: 600; color: var(--fg-1); }
+.t-body      { font-size: 14px; font-weight: 400; line-height: 1.5; color: var(--fg-2); }
+.t-body-sm   { font-size: 13px; font-weight: 400; line-height: 1.5; color: var(--fg-2); }
+.t-meta      { font-size: 13px; font-weight: 400; color: var(--fg-muted); }
+.t-label     { font-size: 14px; font-weight: 500; color: var(--fg-1); }
+
+/* ============================================================
+   Shared product components — lifted 1:1 from prod capture.
+   Use these in every Veritec screen.
+   ============================================================ */
+
+/* Pill filter button — rounded-4xl, h-8, bg-input/30 */
+.vt-filter-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 32px; padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: rgba(235,235,235,.3);
+  font-size: 14px; font-weight: 500; color: var(--fg-1);
+  cursor: pointer; white-space: nowrap;
+  transition: background-color .15s, color .15s;
+  font-family: inherit;
+}
+.vt-filter-btn:hover { background: rgba(235,235,235,.55); }
+.vt-filter-btn[aria-expanded="true"] { background: var(--background-muted); }
+.vt-filter-btn i { font-size: 14px; color: var(--fg-1); }
+.vt-filter-btn.icon-only { width: 32px; padding: 0; justify-content: center; }
+
+/* Primary CTA — rounded-lg, h-8 sm / h-9 default */
+.vt-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font: inherit; font-size: 14px; font-weight: 500;
+  border-radius: 8px; padding: 0 14px; height: 36px;
+  border: 1px solid transparent; cursor: pointer;
+  transition: background-color .15s;
+}
+.vt-btn.sm   { height: 32px; padding: 0 12px; font-size: 13px; }
+.vt-btn.primary { background: var(--primary); color: #fff; }
+.vt-btn.primary:hover { background: var(--primary-hover); }
+.vt-btn.outline { background: rgba(235,235,235,.3); color: var(--fg-1); border-color: var(--border); }
+.vt-btn.outline:hover { background: rgba(235,235,235,.55); }
+.vt-btn.ghost  { background: transparent; color: var(--fg-2); }
+.vt-btn.ghost:hover { background: var(--background-muted); }
+
+/* Search input — h-8, rounded-lg */
+.vt-search {
+  position: relative; display: inline-flex; align-items: center;
+}
+.vt-search > i {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--fg-muted); font-size: 14px; pointer-events: none;
+}
+.vt-search > input {
+  height: 32px; padding: 0 12px 0 30px;
+  width: 224px; min-width: 0;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--background); font: inherit; font-size: 14px;
+  color: var(--fg-1); outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.vt-search > input:focus { border-color: var(--ring); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+.vt-search > input::placeholder { color: var(--fg-muted); }
+
+/* Badge — rounded-lg, h-5 */
+.vt-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 4px; height: 20px; padding: 0 8px;
+  border: 1px solid transparent; border-radius: 8px;
+  font-size: 12px; font-weight: 500; white-space: nowrap;
+  max-width: 100%;
+}
+.vt-badge.blue   { background: var(--badge-blue-bg);   border-color: var(--badge-blue-border);   color: var(--badge-blue-text); }
+.vt-badge.red    { background: var(--badge-red-bg);    border-color: var(--badge-red-border);    color: var(--badge-red-text); }
+.vt-badge.amber  { background: var(--badge-amber-bg);  border-color: var(--badge-amber-border);  color: var(--badge-amber-text); }
+.vt-badge.green  { background: var(--badge-green-bg);  border-color: var(--badge-green-border);  color: var(--badge-green-text); }
+.vt-badge.violet { background: var(--badge-violet-bg); border-color: var(--badge-violet-border); color: var(--badge-violet-text); }
+.vt-badge.gray   { background: var(--badge-gray-bg);   border-color: var(--badge-gray-border);   color: var(--badge-gray-text); }

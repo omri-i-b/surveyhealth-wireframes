@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Veritec AI — FileFlow Inbox</title>
+<meta name="viewport" content="width=1440">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:#F5F5F5;font-family:var(--font-sans);color:var(--fg-1);font-size:14px}
+  *{box-sizing:border-box}
+  button{font-family:inherit}
+
+  .app{display:flex;height:100vh;min-height:820px;background:#F5F5F5}
+
+  /* ============ SIDEBAR ============ */
+  .sb{width:200px;background:#FAFAFA;border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+  .sb-header{padding:8px;border-bottom:0}
+  .sb-org{display:flex;align-items:center;gap:8px;padding:8px 6px;border-radius:8px;cursor:pointer;height:36px}
+  .sb-org:hover{background:#F4F4F5}
+  .sb-org-tile{width:20px;height:20px;border-radius:4px;background:var(--primary);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-weight:700;font-size:11px}
+  .sb-org-name{font-size:14px;font-weight:600;color:var(--fg-1);flex:1}
+  .sb-org-chev{color:var(--fg-muted);font-size:14px;opacity:.5}
+
+  .sb-content{padding:8px;flex:1;overflow:auto;display:flex;flex-direction:column;gap:4px}
+  .sb-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:14px;color:var(--fg-2);cursor:pointer;user-select:none;height:36px;text-decoration:none;transition:background-color .15s}
+  .sb-item:hover{background:#F4F4F5;color:var(--fg-1)}
+  .sb-item.active{background:#F4F4F5;color:var(--primary);font-weight:600}
+  .sb-item i{font-size:16px;flex-shrink:0}
+
+  .sb-footer{padding:8px;border-top:0}
+
+  /* ============ MAIN ============ */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;background:#F5F5F5}
+  .topbar{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;background:#fff;border-bottom:1px solid var(--border)}
+  .topbar-title{font-size:14px;font-weight:400;color:var(--fg-1);line-height:1.5}
+
+  .page{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;padding:16px}
+  .page-card{flex:1;display:flex;flex-direction:column;min-height:0;gap:16px;overflow:hidden;background:#fff;border-radius:8px;padding:16px;border:1px solid var(--border)}
+
+  .page-header{display:flex;align-items:center;justify-content:space-between;min-height:32px}
+  .page-title{font-size:16px;font-weight:600;color:var(--fg-1);margin:0}
+
+  .toolbar{display:flex;align-items:center;gap:12px}
+  .toolbar-filters{display:flex;flex:1;flex-wrap:wrap;align-items:center;gap:12px}
+
+  /* ============ TABLE — matches prod exactly ============ */
+  .tbl-wrap{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);border-radius:8px;background:#fff}
+  .tbl-scroll{flex:1;min-height:0;overflow:auto}
+  .tbl{width:1854px;min-width:100%;border-collapse:separate;border-spacing:0;font-size:14px;table-layout:fixed}
+
+  /* thead: h-10 bg-muted px-2 text-xs font-medium */
+  .tbl thead{position:sticky;top:0;z-index:10}
+  .tbl thead th{
+    height:40px;padding:0 8px;
+    font-size:12px;font-weight:500;color:var(--fg-1);
+    text-align:left;white-space:nowrap;
+    border-bottom:1px solid var(--border);
+    background:#F5F5F5;
+    position:relative;
+  }
+  .tbl thead th.th-sticky{
+    position:sticky;right:0;
+    border-left:1px solid var(--border);
+    z-index:11;
+  }
+  .tbl thead th .th-inner{display:flex;align-items:center;gap:6px;min-width:0}
+  .tbl thead th .th-ico{font-size:14px;color:var(--fg-muted);flex-shrink:0}
+  .tbl thead th .th-label{overflow:hidden;text-overflow:ellipsis}
+  .tbl thead th .sort-i{font-size:12px;color:var(--fg-1);margin-left:auto;flex-shrink:0}
+  .tbl thead th .col-resize{position:absolute;right:-4px;top:0;z-index:10;width:12px;height:100%;cursor:col-resize}
+  .tbl thead th .col-resize:hover{background:rgba(37,99,235,.3)}
+
+  /* tbody: h-[42px] px-2 */
+  .tbl tbody td{
+    height:42px;padding:0 8px;
+    vertical-align:middle;white-space:nowrap;
+    color:var(--fg-1);
+    border-bottom:1px solid var(--border);
+    font-size:14px;
+    overflow:hidden;
+  }
+  .tbl tbody td.td-sticky{
+    position:sticky;right:0;
+    background:#fff;
+    border-left:1px solid var(--border);
+    overflow:visible;
+    z-index:1;
+  }
+  .tbl tbody tr:last-child td{border-bottom:none}
+  .tbl tbody tr{cursor:pointer;transition:background-color .15s}
+  .tbl tbody tr:hover td{background:rgba(245,245,245,.5)}
+  .tbl tbody tr:hover td.td-sticky{background:#F9F9F9}
+
+  /* plain truncated cell text (block truncate text-sm) */
+  .cell-trunc{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;color:var(--fg-1)}
+
+  /* Outline date badge — border-border bg-input/30 rounded-lg h-5 text-xs */
+  .date-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    height:20px;padding:0 8px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:rgba(235,235,235,.3);
+    color:var(--fg-1);
+    font-size:12px;font-weight:500;white-space:nowrap;
+  }
+
+  /* sticky-col row-actions: two ghost icon buttons, rounded-4xl */
+  .row-actions{display:flex;align-items:center;justify-content:center;gap:4px}
+  .rowbtn{
+    width:32px;height:32px;border-radius:9999px;
+    border:1px solid transparent;background:transparent;
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--fg-2);
+    font-size:14px;font-family:inherit;
+    transition:background-color .15s,color .15s;
+    padding:0;
+  }
+  .rowbtn:hover{background:var(--background-muted);color:var(--fg-1)}
+  .rowbtn i{font-size:16px}
+
+  /* ============ PAGINATION ============ */
+  .pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border);background:#fff;flex-shrink:0}
+  .pg-info{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-muted)}
+  .pg-right{display:flex;align-items:center;gap:8px}
+  .pg-select{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:rgba(235,235,235,.3);font-size:13px;color:var(--fg-1);cursor:pointer;min-width:70px;justify-content:space-between}
+  .pg-select i{font-size:12px;color:var(--fg-muted)}
+  .pg-btn{height:32px;padding:0 14px;border:1px solid var(--border);border-radius:9999px;background:rgba(235,235,235,.3);font-size:13px;font-weight:500;color:var(--fg-1);cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:background-color .15s}
+  .pg-btn:hover:not(:disabled){background:rgba(235,235,235,.55)}
+  .pg-btn:disabled{opacity:.5;cursor:not-allowed}
+
+  /* ============ TOAST ============ */
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#18181B;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:100}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <rect width="100" height="100" fill="#0044DD"/>
+    <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" transform="translate(30 28)">
+      <path d="M4 0 h24 l8 8 v32 a2 2 0 0 1 -2 2 H4 a2 2 0 0 1 -2 -2 V2 a2 2 0 0 1 2 -2 z"/>
+      <path d="M28 0 v8 h8"/>
+      <line x1="9"  y1="20" x2="29" y2="20"/>
+      <line x1="9"  y1="28" x2="29" y2="28"/>
+      <line x1="9"  y1="36" x2="22" y2="36"/>
+    </g>
+  </svg>
+</template>
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/ProdSidebar.jsx"></script>
+<script type="text/babel" src="components/FileFlowScreen.jsx"></script>
+<script type="text/babel" src="components/FileFlowApp.jsx"></script>
+</body>
+</html>
