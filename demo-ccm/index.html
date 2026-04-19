@@ -20,7 +20,7 @@
       <p class="text-gray-600 max-w-2xl">Demo flow for the Wednesday Apr 22 walkthrough with Lisa. Tickets view is populated from scraped Providence demo-env data (swap the seed <code>tickets.json</code> before the demo). Claire&rsquo;s call page polls Quo directly for the most recent call to a configurable number, then drops the AI summary into an editable ambient-style note.</p>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-3 gap-6">
       <a href="tickets/" class="group bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-cyan-300 transition-all">
         <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-cyan-200 transition-colors">
           <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -48,6 +48,21 @@
           <span class="px-2 py-1 bg-cyan-100 text-cyan-700 text-xs rounded-full">Polling</span>
           <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">Ambient AI</span>
           <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">?mock=1</span>
+        </div>
+      </a>
+
+      <a href="reports/daily/" class="group bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg hover:border-green-300 transition-all">
+        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+        </div>
+        <h2 class="text-lg font-semibold text-gray-900 mb-1">Daily Escalation Report</h2>
+        <p class="text-sm text-gray-600 mb-3">Providence Family Practice daily report with Claire&rsquo;s CCM escalation + existing RPM cases. Print / Save PDF retained.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Emergent</span>
+          <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">Urgent</span>
+          <span class="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">Print</span>
         </div>
       </a>
     </div>
