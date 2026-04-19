@@ -1215,18 +1215,38 @@ function discardNote() {
   pollNow();
 }
 function submitNote() {
+  // Require an outcome so the Daily Report knows which bucket to put Claire in
+  const selected = document.querySelector('#outcome-dropdown .dropdown-item.selected');
+  if (!selected) {
+    toast('Select an outcome before saving');
+    return;
+  }
+
   const note = {};
   document.querySelectorAll('[data-field]').forEach(el => {
     note[el.dataset.field] = el.textContent;
   });
   const manual = document.getElementById('manual-note').value;
-  const key = 'demoCcm.saved.' + (lastCallId || Date.now());
-  localStorage.setItem(key, JSON.stringify({
+  const outcome = selected.dataset.value;
+  const outcomeLabel = selected.querySelector('.dropdown-item-title').textContent;
+  const appointmentDate = document.querySelector('#appointment-picker input')?.value || null;
+
+  const resolution = {
     savedAt: new Date().toISOString(),
+    outcome,            // 'emergent' | 'urgent' | 'immediate' | 'routine' | 'resolved' | 'no-intervention'
+    outcomeLabel,       // human-readable (e.g. "Urgent", "Resolved on Phone")
+    appointmentDate,
     note,
     clinicalNotes: manual,
-  }));
-  toast("Saved to Claire Henderson's record");
+    callId: lastCallId || null,
+  };
+  // Primary key the Daily Report reads
+  localStorage.setItem('demoCcm.claireResolution', JSON.stringify(resolution));
+  // Audit trail by call id
+  const key = 'demoCcm.saved.' + (lastCallId || Date.now());
+  localStorage.setItem(key, JSON.stringify(resolution));
+
+  toast(`Ticket resolved as ${outcomeLabel} — now in today's Daily Report`);
 }
 
 // Manual Clinical Notes — autosave to localStorage, restore on load.

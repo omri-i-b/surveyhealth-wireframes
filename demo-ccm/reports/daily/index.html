@@ -306,30 +306,23 @@
                                     <th>Contacted Clinic</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbody-escalation">
                                 <tr>
                                     <td>1</td>
-                                    <td>Claire Henderson</td>
-                                    <td>Dr. Henderson</td>
-                                    <td><span class="badge badge-urgent">Urgent</span><span class="recommendation-text">Providence Family visit within 48 hrs</span></td>
-                                    <td>No</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
                                     <td>Jane Smith</td>
                                     <td>Dr. Sarah Chen</td>
                                     <td><span class="badge badge-emergent">Emergent</span><span class="recommendation-text">Recommended ED visit</span></td>
                                     <td>No</td>
                                 </tr>
                                 <tr>
-                                    <td>3</td>
+                                    <td>2</td>
                                     <td>Michael Davis</td>
                                     <td>Dr. James Wilson</td>
                                     <td><span class="badge badge-urgent">Urgent</span><span class="recommendation-text">Needs visit by Apr 21</span></td>
                                     <td>No</td>
                                 </tr>
                                 <tr>
-                                    <td>4</td>
+                                    <td>3</td>
                                     <td>Test User</td>
                                     <td>Nurse Alice Thompson</td>
                                     <td><span class="badge badge-immediate">Immediate</span><span class="recommendation-text">Needs visit by Apr 26</span></td>
@@ -354,7 +347,7 @@
                                     <th>Contacted Clinic</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbody-routine">
                                 <tr>
                                     <td>1</td>
                                     <td>Emma Wilson</td>
@@ -380,51 +373,45 @@
                                     <th>Disposition</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbody-interactions">
                                 <tr>
                                     <td>1</td>
-                                    <td>Claire Henderson</td>
-                                    <td>Dr. Henderson</td>
-                                    <td>Urgent Escalation</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
                                     <td>Jane Smith</td>
                                     <td>Dr. Sarah Chen</td>
                                     <td>No Intervention Needed</td>
                                 </tr>
                                 <tr>
-                                    <td>3</td>
+                                    <td>2</td>
                                     <td>Robert Williams</td>
                                     <td>Dr. James Wilson</td>
                                     <td>Resolved on Phone</td>
                                 </tr>
                                 <tr>
-                                    <td>4</td>
+                                    <td>3</td>
                                     <td>John Doe</td>
                                     <td>Dr. Sarah Chen</td>
                                     <td>No Intervention Needed</td>
                                 </tr>
                                 <tr>
-                                    <td>5</td>
+                                    <td>4</td>
                                     <td>Mary Johnson</td>
                                     <td>Dr. Sarah Chen</td>
                                     <td>Not Reachable</td>
                                 </tr>
                                 <tr>
-                                    <td>6</td>
+                                    <td>5</td>
                                     <td>Robert Williams</td>
                                     <td>Dr. James Wilson</td>
                                     <td>No Intervention Needed</td>
                                 </tr>
                                 <tr>
-                                    <td>7</td>
+                                    <td>6</td>
                                     <td>Robert Williams</td>
                                     <td>Dr. James Wilson</td>
                                     <td>Resolved on Phone</td>
                                 </tr>
                                 <tr>
-                                    <td>8</td>
+                                    <td>7</td>
                                     <td>Sarah Anderson</td>
                                     <td>Dr. James Wilson</td>
                                     <td>Not Reachable</td>
@@ -438,43 +425,7 @@
 
                 <!-- Escalation Details -->
                 <h2 class="details-header">Escalation Details</h2>
-
-                <!-- Claire Henderson - Urgent (CCM) -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Claire Henderson <span class="badge badge-urgent">Urgent</span></h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">CCM Wellness Check</span>
-                            <span>Dr. Henderson</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body four-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/22/1948</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(202) 210-9652</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9, I10</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">CCM + RPM</span></div>
-                            <div class="compact-reason">Increased shortness of breath on exertion; 3-lb weight gain in past week.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">L. Goldenstein</span></div>
-                            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Urgent</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Recommendation</div>
-                            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Urgent Evaluation</span></div>
-                            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Visit within 48 hrs</span></div>
-                        </div>
-                    </div>
-                </div>
+                <div id="escalation-details-anchor"></div>
 
                 <!-- Jane Smith - Emergent -->
                 <div class="compact-card">
@@ -628,6 +579,7 @@
 
                 <!-- Resolution Details -->
                 <h2 class="details-header">Resolution Details</h2>
+                <div id="resolution-details-anchor"></div>
 
                 <!-- Jane Smith - No Intervention -->
                 <div class="compact-card">
@@ -854,6 +806,206 @@
         </div>
     </main>
 </div>
+
+<script>
+// =========================================================================
+// Claire Henderson — conditionally inject her into the report based on
+// the outcome she was resolved as on /demo-ccm/call/claire/.
+//
+// Keyed off localStorage.demoCcm.claireResolution:
+//   outcome = 'emergent' | 'urgent' | 'immediate' | 'routine'
+//           | 'resolved' | 'no-intervention'
+//
+// If no resolution is saved, Claire does NOT appear in the report at all.
+// =========================================================================
+(function renderClaireInReport() {
+  let res;
+  try {
+    res = JSON.parse(localStorage.getItem('demoCcm.claireResolution') || 'null');
+  } catch { res = null; }
+  if (!res || !res.outcome) return;
+
+  // Map outcome → report placement & copy
+  const map = {
+    emergent: {
+      summaryTable: 'tbody-escalation',
+      badge: '<span class="badge badge-emergent">Emergent</span>',
+      recText: 'Recommended ED visit',
+      disposition: 'Emergent Escalation',
+      detailSection: 'escalation',
+      reasonText: 'Increased shortness of breath on exertion; 3-lb weight gain in past week.',
+      recCategory: 'Emergent Evaluation',
+      recRequest: 'ED visit',
+    },
+    urgent: {
+      summaryTable: 'tbody-escalation',
+      badge: '<span class="badge badge-urgent">Urgent</span>',
+      recText: 'Providence Family visit within 48 hrs',
+      disposition: 'Urgent Escalation',
+      detailSection: 'escalation',
+      reasonText: 'Increased shortness of breath on exertion; 3-lb weight gain in past week.',
+      recCategory: 'Urgent Evaluation',
+      recRequest: 'Visit within 48 hrs',
+    },
+    immediate: {
+      summaryTable: 'tbody-escalation',
+      badge: '<span class="badge badge-immediate">Immediate</span>',
+      recText: 'Needs visit within 24-48 hrs',
+      disposition: 'Immediate Escalation',
+      detailSection: 'escalation',
+      reasonText: 'Increased shortness of breath on exertion; 3-lb weight gain in past week.',
+      recCategory: 'Immediate Evaluation',
+      recRequest: 'Visit within 24–48 hrs',
+    },
+    routine: {
+      summaryTable: 'tbody-routine',
+      badge: '<span class="badge badge-routine">Routine</span>',
+      recText: 'Needs visit at next scheduled appointment',
+      disposition: 'Routine Escalation',
+      detailSection: 'escalation',
+      reasonText: 'Wellness check completed. Flagged for routine follow-up at next scheduled visit.',
+      recCategory: 'Routine Evaluation',
+      recRequest: 'Next scheduled visit',
+    },
+    resolved: {
+      summaryTable: null,  // resolved calls don't appear in escalation tables
+      disposition: 'Resolved on Phone',
+      detailSection: 'resolution',
+      ticketType: 'Resolved on Phone',
+      reasonText: 'Issue addressed during the call. No further escalation required.',
+      reason: 'Resolved on Phone',
+    },
+    'no-intervention': {
+      summaryTable: null,
+      disposition: 'No Intervention Needed',
+      detailSection: 'resolution',
+      ticketType: 'No Intervention Needed',
+      reasonText: 'Wellness check completed. Patient stable; no intervention needed at this time.',
+      reason: 'No Intervention Needed',
+    },
+  };
+  const data = map[res.outcome];
+  if (!data) return;
+
+  // --- Renumber helper: rewrite the "#" column after prepending Claire ---
+  function renumber(tbody) {
+    [...tbody.querySelectorAll('tr')].forEach((tr, i) => {
+      const firstCell = tr.querySelector('td');
+      if (firstCell && /^\d+$/.test(firstCell.textContent.trim())) {
+        firstCell.textContent = (i + 1).toString();
+      }
+    });
+  }
+
+  // --- 1. Summary table (if this outcome warrants it) ---
+  if (data.summaryTable) {
+    const tb = document.getElementById(data.summaryTable);
+    if (tb) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>1</td>
+        <td>Claire Henderson</td>
+        <td>Dr. Henderson</td>
+        <td>${data.badge}<span class="recommendation-text">${data.recText}</span></td>
+        <td>No</td>`;
+      tb.insertBefore(tr, tb.firstChild);
+      renumber(tb);
+    }
+  }
+
+  // --- 2. Net Interactions table (ALWAYS — every call is an interaction) ---
+  const interactions = document.getElementById('tbody-interactions');
+  if (interactions) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>1</td>
+      <td>Claire Henderson</td>
+      <td>Dr. Henderson</td>
+      <td>${data.disposition}</td>`;
+    interactions.insertBefore(tr, interactions.firstChild);
+    renumber(interactions);
+  }
+
+  // --- 3. Detail card: either Escalation Details or Resolution Details ---
+  if (data.detailSection === 'escalation') {
+    const anchor = document.getElementById('escalation-details-anchor');
+    if (anchor) {
+      const card = document.createElement('div');
+      card.className = 'compact-card';
+      card.innerHTML = `
+        <div class="compact-card-header">
+          <h3>Claire Henderson ${data.badge}</h3>
+          <div class="compact-card-meta">
+            <span class="ticket-type">CCM Wellness Check</span>
+            <span>Dr. Henderson</span>
+          </div>
+        </div>
+        <div class="compact-card-body four-col">
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">Patient Information</div>
+            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/22/1948</span></div>
+            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(202) 210-9652</span></div>
+            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9, I10</span></div>
+          </div>
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">System Escalation</div>
+            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
+            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">CCM + RPM</span></div>
+            <div class="compact-reason">${data.reasonText}</div>
+          </div>
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">Care Manager Escalation</div>
+            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
+            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">L. Goldenstein</span></div>
+            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">${res.outcomeLabel}</span></div>
+          </div>
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">Recommendation</div>
+            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">${data.recCategory}</span></div>
+            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
+            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">${data.recRequest}</span></div>
+          </div>
+        </div>`;
+      anchor.parentNode.insertBefore(card, anchor.nextSibling);
+    }
+  } else if (data.detailSection === 'resolution') {
+    const anchor = document.getElementById('resolution-details-anchor');
+    if (anchor) {
+      const card = document.createElement('div');
+      card.className = 'compact-card';
+      card.innerHTML = `
+        <div class="compact-card-header">
+          <h3>Claire Henderson</h3>
+          <div class="compact-card-meta">
+            <span class="ticket-type">${data.ticketType}</span>
+            <span>Dr. Henderson</span>
+          </div>
+        </div>
+        <div class="compact-card-body three-col">
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">Patient Information</div>
+            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/22/1948</span></div>
+            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(202) 210-9652</span></div>
+            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9, I10</span></div>
+          </div>
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">System Escalation</div>
+            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
+            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">CCM + RPM</span></div>
+            <div class="compact-reason">${data.reasonText}</div>
+          </div>
+          <div class="compact-card-section">
+            <div class="compact-card-section-title">Care Manager Resolution</div>
+            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
+            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">L. Goldenstein</span></div>
+            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">${data.reason}</span></div>
+          </div>
+        </div>`;
+      anchor.parentNode.insertBefore(card, anchor.nextSibling);
+    }
+  }
+})();
+</script>
 
 </body>
 </html>
