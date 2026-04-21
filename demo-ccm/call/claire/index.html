@@ -675,8 +675,6 @@
     </div>
   </div>
 
-  <!-- Toast -->
-  <div id="toast" class="toast hidden"></div>
 
 <script>
 // =========================================================================
@@ -1263,14 +1261,24 @@ function submitNote() {
   const key = 'demoCcm.saved.' + (lastCallId || Date.now());
   localStorage.setItem(key, JSON.stringify(resolution));
 
-  // Success feedback: green toast (longer) + briefly swap button label
-  toast(`✓ Resolved as ${outcomeLabel} — now in today's Daily Report`, 4000);
+  // Flip the Ticket Info "Status" row + the header's OPEN pill to Resolved
+  const infoStatus = document.getElementById('info-status');
+  if (infoStatus) {
+    infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Resolved &middot; ${outcomeLabel}</span>`;
+  }
+  const headerPill = document.querySelector('.h-12 .bg-red-500.rounded-full');
+  if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
+  const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
+  if (headerMeta) headerMeta.textContent = `Resolved · ${outcomeLabel} · CCM Monthly`;
+
+  // Visually confirm on the button itself (no toast)
   const btn = document.querySelector('button[onclick="submitNote()"]');
   if (btn) {
     const original = btn.innerHTML;
     btn.innerHTML = '✓ Resolved';
     btn.style.background = '#059669';
-    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; }, 2500);
+    btn.disabled = true;
+    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; btn.disabled = false; }, 2500);
   }
 }
 
@@ -1340,17 +1348,20 @@ function resetTicket() {
   const pill = document.getElementById('live-pill');
   if (pill) pill.classList.add('hidden');
 
+  // Restore the header pill + meta text to the Escalation/High state
+  const headerPill = document.querySelector('.h-12 .w-1\\.5.h-1\\.5.rounded-full');
+  if (headerPill) {
+    headerPill.classList.remove('bg-green-500');
+    headerPill.classList.add('bg-red-500');
+  }
+  const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
+  if (headerMeta) headerMeta.textContent = 'Escalation · High · CCM Monthly';
+
   closeSettings();
   toast('Ticket reset — ready for next call');
 }
-let toastTimer = null;
-function toast(text, durationMs = 2500) {
-  const el = document.getElementById('toast');
-  el.textContent = text;
-  el.classList.remove('hidden');
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.add('hidden'), durationMs);
-}
+// Toasts removed — keep the function as a no-op so existing callers don't break.
+function toast(_text, _durationMs) { /* intentionally silent */ }
 
 // =========================================================================
 // Outcome dropdown (copied from /escalations/)
