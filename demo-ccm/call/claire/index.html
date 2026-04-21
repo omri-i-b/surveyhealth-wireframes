@@ -460,8 +460,19 @@
             </div>
           </div>
 
+          <!-- Resolved banner (shown after submitNote, hidden otherwise) -->
+          <div id="resolved-banner" class="mt-8 mb-4 rounded-xl border border-green-200 bg-green-50 p-4 flex items-center gap-3" style="display:none;">
+            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div class="flex-1 text-sm">
+              <div class="font-semibold text-green-800">Ticket resolved &mdash; <span id="resolved-outcome">—</span></div>
+              <div class="text-green-700 text-xs mt-0.5">Resolved at <span id="resolved-time">—</span> by L. Goldenstein. Added to today&rsquo;s Daily Report.</div>
+            </div>
+          </div>
+
           <!-- Resolve Ticket Section -->
-          <div class="mt-8">
+          <div id="resolve-section" class="mt-8">
             <div class="flex items-center gap-3 mb-6">
               <div class="h-px flex-1 bg-gray-200"></div>
               <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Resolve Ticket</span>
@@ -1271,14 +1282,15 @@ function submitNote() {
   const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
   if (headerMeta) headerMeta.textContent = `Resolved · ${outcomeLabel} · CCM Monthly`;
 
-  // Visually confirm on the button itself (no toast)
-  const btn = document.querySelector('button[onclick="submitNote()"]');
-  if (btn) {
-    const original = btn.innerHTML;
-    btn.innerHTML = '✓ Resolved';
-    btn.style.background = '#059669';
-    btn.disabled = true;
-    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; btn.disabled = false; }, 2500);
+  // Hide the whole Resolve Ticket section — a ticket can only be resolved
+  // once. Show the green "Ticket resolved" banner in its place.
+  const resolveSection = document.getElementById('resolve-section');
+  if (resolveSection) resolveSection.style.display = 'none';
+  const banner = document.getElementById('resolved-banner');
+  if (banner) {
+    document.getElementById('resolved-outcome').textContent = outcomeLabel;
+    document.getElementById('resolved-time').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    banner.style.display = 'flex';
   }
 }
 
@@ -1357,6 +1369,21 @@ function resetTicket() {
   const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
   if (headerMeta) headerMeta.textContent = 'Escalation · High · CCM Monthly';
 
+  // Bring the Resolve Ticket section back and hide the resolved banner so
+  // the ticket is actionable again (demo can be re-run).
+  const resolveSection = document.getElementById('resolve-section');
+  if (resolveSection) resolveSection.style.display = '';
+  const banner = document.getElementById('resolved-banner');
+  if (banner) banner.style.display = 'none';
+  // Also clear the outcome selection so user picks fresh
+  document.querySelectorAll('#outcome-dropdown .dropdown-item.selected').forEach(i => i.classList.remove('selected'));
+  const trigger = document.querySelector('#outcome-dropdown .custom-dropdown-trigger span');
+  if (trigger) {
+    trigger.innerHTML = 'Select outcome...';
+    trigger.classList.remove('text-gray-900');
+    trigger.classList.add('text-gray-400');
+  }
+
   closeSettings();
   toast('Ticket reset — ready for next call');
 }
@@ -1421,6 +1448,31 @@ async function prefillPreviousTouchpoint() {
   loadPatientContext();
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
+
+  // If this ticket was already resolved in a prior session, restore the
+  // resolved state so the user can't double-resolve on refresh.
+  try {
+    const prior = JSON.parse(localStorage.getItem('demoCcm.claireResolution') || 'null');
+    if (prior && prior.outcome) {
+      const rs = document.getElementById('resolve-section');
+      if (rs) rs.style.display = 'none';
+      const banner = document.getElementById('resolved-banner');
+      if (banner) {
+        document.getElementById('resolved-outcome').textContent = prior.outcomeLabel || prior.outcome;
+        document.getElementById('resolved-time').textContent = prior.savedAt
+          ? new Date(prior.savedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          : '—';
+        banner.style.display = 'flex';
+      }
+      const infoStatus = document.getElementById('info-status');
+      if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Resolved &middot; ${prior.outcomeLabel || prior.outcome}</span>`;
+      const headerPill = document.querySelector('.h-12 .bg-red-500.rounded-full');
+      if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
+      const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
+      if (headerMeta) headerMeta.textContent = `Resolved · ${prior.outcomeLabel || prior.outcome} · CCM Monthly`;
+    }
+  } catch (_) { /* ignore */ }
+
   const s = loadSettings();
   const mockParam = new URLSearchParams(location.search).get('mock') === '1';
   if (!s.pnId && !s.number && !s.mock && !mockParam) {
