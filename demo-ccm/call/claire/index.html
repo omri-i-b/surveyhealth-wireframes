@@ -219,10 +219,6 @@
                 <div id="info-created" class="text-gray-900">—</div>
               </div>
               <div>
-                <div class="text-gray-500 mb-1">Call Duration</div>
-                <div id="info-duration" class="text-gray-900 font-semibold">—</div>
-              </div>
-              <div>
                 <div class="text-gray-500 mb-1">Status</div>
                 <div id="info-status" class="flex items-center gap-1.5">
                   <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
@@ -1292,6 +1288,12 @@ function submitNote() {
     document.getElementById('resolved-time').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     banner.style.display = 'flex';
   }
+  // Flip the right-sidebar OPEN pill to RESOLVED (green)
+  const sidebarPill = document.getElementById('sidebar-status-pill');
+  if (sidebarPill) {
+    sidebarPill.className = 'px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-semibold rounded';
+    sidebarPill.textContent = 'RESOLVED';
+  }
 }
 
 // Manual Clinical Notes — autosave to localStorage, restore on load.
@@ -1375,6 +1377,12 @@ function resetTicket() {
   if (resolveSection) resolveSection.style.display = '';
   const banner = document.getElementById('resolved-banner');
   if (banner) banner.style.display = 'none';
+  // Restore the right-sidebar pill to OPEN (gray)
+  const sidebarPill = document.getElementById('sidebar-status-pill');
+  if (sidebarPill) {
+    sidebarPill.className = 'px-1.5 py-0.5 bg-gray-100 text-gray-600 text-[10px] font-semibold rounded';
+    sidebarPill.textContent = 'OPEN';
+  }
   // Also clear the outcome selection so user picks fresh
   document.querySelectorAll('#outcome-dropdown .dropdown-item.selected').forEach(i => i.classList.remove('selected'));
   const trigger = document.querySelector('#outcome-dropdown .custom-dropdown-trigger span');
@@ -1470,6 +1478,11 @@ async function prefillPreviousTouchpoint() {
       if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
       const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
       if (headerMeta) headerMeta.textContent = `Resolved · ${prior.outcomeLabel || prior.outcome} · CCM Monthly`;
+      const sidebarPill = document.getElementById('sidebar-status-pill');
+      if (sidebarPill) {
+        sidebarPill.className = 'px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-semibold rounded';
+        sidebarPill.textContent = 'RESOLVED';
+      }
     }
   } catch (_) { /* ignore */ }
 
