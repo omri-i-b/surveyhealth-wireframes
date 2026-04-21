@@ -250,19 +250,22 @@
           <div id="call-detail" class="mb-8 rounded-xl border border-gray-200 overflow-hidden" style="display:none;">
             <!-- Audio Player Header -->
             <div class="p-3 bg-gray-100 border-b border-gray-200 flex items-center gap-3">
-              <button class="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 flex-shrink-0 shadow-sm">
-                <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <button onclick="toggleCallAudio()" class="w-9 h-9 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 flex-shrink-0 shadow-sm">
+                <svg id="audio-play-icon" class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="audio-pause-icon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
               </button>
               <div class="flex-1">
                 <div class="flex items-center gap-2 mb-1">
                   <span class="text-xs font-medium text-gray-700">Call Recording</span>
-                  <span id="call-duration-pill" class="text-[10px] text-gray-400"></span>
+                  <span id="call-duration-pill" class="text-[10px] text-gray-400">· 2:47</span>
                 </div>
-                <div class="h-1.5 bg-gray-300 rounded-full">
-                  <div class="w-0 h-full bg-blue-600 rounded-full"></div>
+                <div id="audio-progress-track" class="h-1.5 bg-gray-300 rounded-full cursor-pointer" onclick="seekCallAudio(event)">
+                  <div id="audio-progress-bar" class="h-full bg-blue-600 rounded-full" style="width:0%"></div>
                 </div>
               </div>
-              <span id="call-timestamp" class="text-xs text-gray-500 flex-shrink-0"></span>
+              <span id="audio-time-display" class="text-xs text-gray-500 flex-shrink-0 font-mono tabular-nums">0:00 / 2:47</span>
+              <audio id="call-audio" src="../../data/claire-call.mp3" preload="metadata"
+                     ontimeupdate="callAudioTimeUpdate()" onended="callAudioEnded()"></audio>
             </div>
 
             <!-- Transcript (Collapsible) -->
@@ -905,15 +908,8 @@ function setStatus(kind, detail = '') {
 function renderCallCard(payload) {
   const callDetail = document.getElementById('call-detail');
   callDetail.style.display = 'block';
-
-  const dur = payload.callMeta?.callDuration || '';
-  document.getElementById('call-duration-pill').textContent = dur ? '· ' + dur : '';
-
-  if (payload.callMeta?.callEnded) {
-    const d = new Date(payload.callMeta.callEnded);
-    const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('call-timestamp').textContent = time;
-  }
+  // Duration pill + timestamp are now driven by the real <audio> element
+  // (fixed at 2:47 for Claire's recording). No dynamic override needed.
 
   // Transcript
   const turns = document.getElementById('transcript-turns');
@@ -999,6 +995,55 @@ function escapeHtml(s) {
 // Transcript toggle
 // =========================================================================
 let transcriptExpanded = false;
+// =========================================================================
+// Call recording audio playback
+// =========================================================================
+function fmtAudioTime(s) {
+  if (!isFinite(s) || s < 0) return '0:00';
+  const m = Math.floor(s / 60);
+  const r = Math.floor(s % 60);
+  return m + ':' + String(r).padStart(2, '0');
+}
+function toggleCallAudio() {
+  const a = document.getElementById('call-audio');
+  if (!a) return;
+  const playIc = document.getElementById('audio-play-icon');
+  const pauseIc = document.getElementById('audio-pause-icon');
+  if (a.paused) {
+    a.play().catch(err => {
+      console.warn('Audio play failed:', err.message);
+    });
+    playIc.classList.add('hidden');
+    pauseIc.classList.remove('hidden');
+  } else {
+    a.pause();
+    playIc.classList.remove('hidden');
+    pauseIc.classList.add('hidden');
+  }
+}
+function callAudioTimeUpdate() {
+  const a = document.getElementById('call-audio');
+  if (!a) return;
+  const dur = isFinite(a.duration) && a.duration > 0 ? a.duration : 167; // fallback 2:47
+  const pct = Math.min(100, (a.currentTime / dur) * 100);
+  const bar = document.getElementById('audio-progress-bar');
+  if (bar) bar.style.width = pct + '%';
+  const disp = document.getElementById('audio-time-display');
+  if (disp) disp.textContent = fmtAudioTime(a.currentTime) + ' / ' + fmtAudioTime(dur);
+}
+function callAudioEnded() {
+  document.getElementById('audio-play-icon').classList.remove('hidden');
+  document.getElementById('audio-pause-icon').classList.add('hidden');
+}
+function seekCallAudio(event) {
+  const track = document.getElementById('audio-progress-track');
+  const a = document.getElementById('call-audio');
+  if (!track || !a || !isFinite(a.duration)) return;
+  const rect = track.getBoundingClientRect();
+  const pct = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+  a.currentTime = pct * a.duration;
+}
+
 function toggleTranscript() {
   const content = document.getElementById('transcriptContent');
   const toggle = document.getElementById('transcriptToggle');
