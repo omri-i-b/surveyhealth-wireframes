@@ -6,6 +6,6 @@
   "careManager": "L. Goldenstein",
   "interactionType": "Telephonic Wellness Check Evaluation",
   "interventionCategory": "Chronic Care Management (CCM) + Remote Patient Monitoring (RPM)",
-  "conditionsMonitored": "Heart Failure, Hypertension",
+  "conditionsMonitored": "Heart Failure",
   "goals": "No ED visits and hospitalizations this calendar year"
 }
