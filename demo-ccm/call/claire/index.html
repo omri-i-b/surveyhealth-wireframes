@@ -929,13 +929,10 @@ function renderCallMeta(payload) {
 
   if (payload.callMeta?.callEnded) {
     const d = new Date(payload.callMeta.callEnded);
-    const time = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const dateStr = d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
-    const created = document.getElementById('info-created');
     const header = document.getElementById('header-time');
-    if (created) created.textContent = `${dateStr} · ${time}`;
-    if (header)  header.textContent = relativeTime(d);
+    if (header) header.textContent = relativeTime(d);
   }
+  // Created row is a ticket-creation date, not the call-end time — pinned to today.
 }
 
 function renderNote(note) {
@@ -954,6 +951,9 @@ function resetNote() {
   // prior CCM touchpoint on this ticket and stays visible across resets.
 }
 
+function todayDateStr() {
+  return new Date().toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+}
 function relativeTime(d) {
   const diffMs = Date.now() - d.getTime();
   const mins = Math.round(diffMs / 60000);
@@ -1355,7 +1355,7 @@ function resetTicket() {
   const infoStatus = document.getElementById('info-status');
   if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span><span class="text-gray-900 font-medium">Open</span>`;
   const d = document.getElementById('info-duration'); if (d) d.textContent = '—';
-  const c = document.getElementById('info-created');  if (c) c.textContent = '—';
+  const c = document.getElementById('info-created');  if (c) c.textContent = todayDateStr();
   const h = document.getElementById('header-time');   if (h) h.textContent = '—';
 
   // Hide the Live pill
@@ -1456,6 +1456,8 @@ async function prefillPreviousTouchpoint() {
   loadPatientContext();
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
+  const createdEl = document.getElementById('info-created');
+  if (createdEl) createdEl.textContent = todayDateStr();
 
   // If this ticket was already resolved in a prior session, restore the
   // resolved state so the user can't double-resolve on refresh.
