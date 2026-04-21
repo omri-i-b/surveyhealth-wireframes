@@ -14,6 +14,11 @@
     .severity-medium { border-left: 3px solid #f59e0b; }
     .severity-low { border-left: 3px solid #3b82f6; }
     .severity-none { border-left: 3px solid transparent; }
+    /* Escalation tab severity colors */
+    .severity-emergent { border-left: 3px solid #ef4444; }
+    .severity-urgent { border-left: 3px solid #f97316; }
+    .severity-immediate { border-left: 3px solid #eab308; }
+    .severity-routine { border-left: 3px solid #22c55e; }
     .row-actions { opacity: 0; transition: opacity 0.1s; }
     tr:hover .row-actions { opacity: 1; }
     .demo-row { background: linear-gradient(to right, rgba(6,182,212,0.04), transparent 50%); }
@@ -42,10 +47,6 @@
         <a href="../reports/daily/" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
           Daily Report
-        </a>
-        <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          Adhoc
         </a>
         <a href="#" class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -84,34 +85,31 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-6">
             <h1 class="text-xl font-semibold text-gray-900">Tickets</h1>
-            <div id="stats-container" class="flex items-center gap-3 text-xs"></div>
           </div>
-          <button class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            New Ticket
-          </button>
         </div>
       </div>
 
       <!-- Tab Bar -->
       <div class="px-6 bg-white border-b border-gray-200 flex items-center gap-6">
-        <button class="tab-btn py-3 text-sm font-medium border-b-2 border-blue-600 text-blue-600" data-tab="evaluation" onclick="switchTab('evaluation')">Evaluation</button>
-        <button class="tab-btn py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-800" data-tab="consent" onclick="switchTab('consent')">Consent</button>
-        <button class="tab-btn py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-800" data-tab="escalation" onclick="switchTab('escalation')">Escalation</button>
+        <button class="tab-btn py-3 text-sm font-medium border-b-2 border-blue-600 text-blue-600 flex items-center gap-1.5" data-tab="evaluation" onclick="switchTab('evaluation')">
+          Evaluation <span class="tab-count px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-[10px] font-semibold" data-count-for="evaluation">—</span>
+        </button>
+        <button class="tab-btn py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-800 flex items-center gap-1.5" data-tab="consent" onclick="switchTab('consent')">
+          Consent <span class="tab-count px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-[10px] font-semibold" data-count-for="consent">—</span>
+        </button>
+        <button class="tab-btn py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-800 flex items-center gap-1.5" data-tab="escalation" onclick="switchTab('escalation')">
+          Escalation <span class="tab-count px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-[10px] font-semibold" data-count-for="escalation">—</span>
+        </button>
       </div>
 
       <!-- Filter Bar -->
       <div class="px-6 py-2.5 bg-white border-b border-gray-200 flex items-center gap-3">
-        <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50">
-          Type: All
-          <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
         <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-blue-200 bg-blue-50 text-blue-700 rounded-lg">
-          Status: Open + 2
+          Status: Open
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50">
-          Assignee: All
+          Assignee
           <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </button>
         <button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-lg hover:bg-gray-50">
@@ -183,9 +181,15 @@ const STATUS_PILL = {
   'Closed':      'text-green-700 bg-green-50 border-green-200',
 };
 const PRIORITY_COLOR = {
-  'High':   { dot: 'bg-red-500',   text: 'text-red-600'   },
-  'Medium': { dot: 'bg-amber-500', text: 'text-amber-600' },
-  'Low':    { dot: 'bg-blue-500',  text: 'text-blue-600'  },
+  // Evaluation / Consent priorities
+  'High':      { dot: 'bg-red-500',    text: 'text-red-600'    },
+  'Medium':    { dot: 'bg-amber-500',  text: 'text-amber-600'  },
+  'Low':       { dot: 'bg-blue-500',   text: 'text-blue-600'   },
+  // Escalation-tab priorities use the clinical severity terminology
+  'Emergent':  { dot: 'bg-red-500',    text: 'text-red-600'    },
+  'Urgent':    { dot: 'bg-orange-500', text: 'text-orange-600' },
+  'Immediate': { dot: 'bg-yellow-500', text: 'text-yellow-600' },
+  'Routine':   { dot: 'bg-green-500',  text: 'text-green-600'  },
 };
 
 function pill(cls, text) {
@@ -288,13 +292,26 @@ function renderTicket(t, activeTab) {
     ? `class="${rowCls}" onclick="if(event.target.tagName!=='INPUT'&&event.target.tagName!=='BUTTON'&&!event.target.closest('button')){window.location='${t.href}'}"`
     : `class="${rowCls}"`;
 
-  // Per-tab extra column: Consent shows conditions count, Escalation shows date.
+  // Per-tab extra column
   let extraCell = '';
   if (activeTab === 'consent') {
     const n = t.conditionsCount ?? 0;
     extraCell = `<td class="px-3 py-2.5 text-xs text-gray-700">${n} ${n === 1 ? 'condition' : 'conditions'}</td>`;
   } else if (activeTab === 'escalation') {
     extraCell = `<td class="px-3 py-2.5 text-xs text-gray-700">${t.escalatedAt ? new Date(t.escalatedAt + 'T00:00:00').toLocaleDateString([], { month: 'short', day: 'numeric' }) : '—'}</td>`;
+  } else if (activeTab === 'evaluation') {
+    const m = t.createdMinutesAgo;
+    let label = '—';
+    if (typeof m === 'number') {
+      if (m < 1) label = 'just now';
+      else if (m < 60) label = `${m} min ago`;
+      else {
+        const h = Math.floor(m / 60);
+        const r = m % 60;
+        label = r ? `${h} hr ${r} min ago` : `${h} hr ago`;
+      }
+    }
+    extraCell = `<td class="px-3 py-2.5 text-xs text-gray-500">${label}</td>`;
   }
 
   return `<tr ${rowAttrs}>
@@ -329,13 +346,13 @@ function applyClaireResolution(tickets) {
   // into the Escalation dataset so she shows up on the Escalation tab.
   if (resolution?.outcome) {
     const ESC_PRIORITY = {
-      emergent: 'High',
-      urgent: 'Medium',
-      immediate: 'Low',
-      routine: 'Low',
+      emergent:  { label: 'Emergent',  sev: 'emergent' },
+      urgent:    { label: 'Urgent',    sev: 'urgent' },
+      immediate: { label: 'Immediate', sev: 'immediate' },
+      routine:   { label: 'Routine',   sev: 'routine' },
     };
-    const pr = ESC_PRIORITY[resolution.outcome];
-    if (pr && !next.some(t => t.id === 'claire-escalation')) {
+    const m = ESC_PRIORITY[resolution.outcome];
+    if (m && !next.some(t => t.id === 'claire-escalation')) {
       next = [...next, {
         id: 'claire-escalation',
         patient: 'Claire Henderson',
@@ -343,11 +360,11 @@ function applyClaireResolution(tickets) {
         avatarColor: 'cyan',
         type: 'Escalation',
         status: 'Open',
-        priority: pr,
+        priority: m.label,
         assignee: assignee || null,
         assigneeInitials: assignee ? 'LG' : null,
         assigneeColor: assignee ? 'blue' : null,
-        severity: pr === 'High' ? 'high' : pr === 'Medium' ? 'medium' : 'low',
+        severity: m.sev,
         escalatedAt: new Date().toISOString().slice(0, 10),
         href: '../call/claire/',
       }];
@@ -356,7 +373,10 @@ function applyClaireResolution(tickets) {
   return next;
 }
 
-const PRIORITY_RANK = { 'High': 0, 'Medium': 1, 'Low': 2 };
+const PRIORITY_RANK = {
+  'High': 0, 'Medium': 1, 'Low': 2,
+  'Emergent': 0, 'Urgent': 1, 'Immediate': 2, 'Routine': 3,
+};
 
 // Per-tab filter + sort
 function ticketsForTab(allTickets, tab) {
@@ -377,10 +397,24 @@ function ticketsForTab(allTickets, tab) {
   }
   if (tab === 'escalation') {
     const escs = allTickets.filter(t => t.type === 'Escalation');
-    // Organize by date (oldest first — aging queue for the RM)
-    return escs.sort((a, b) => (a.escalatedAt || '').localeCompare(b.escalatedAt || ''));
+    // All escalations are same-day; sort by escalation severity
+    return escs.sort((a, b) => {
+      const ap = PRIORITY_RANK[a.priority] ?? 99;
+      const bp = PRIORITY_RANK[b.priority] ?? 99;
+      return ap - bp;
+    });
   }
   return [];
+}
+
+// Count tickets per tab — used to populate the pill next to each tab label
+function updateTabCounts() {
+  const withClaire = applyClaireResolution(ALL_TICKETS);
+  ['evaluation', 'consent', 'escalation'].forEach(tab => {
+    const n = ticketsForTab(withClaire, tab).length;
+    const el = document.querySelector(`[data-count-for="${tab}"]`);
+    if (el) el.textContent = n;
+  });
 }
 
 // Active tab state + data cache
@@ -404,17 +438,21 @@ function renderActiveTab() {
   }
   if (ACTIVE_TAB === 'evaluation') {
     if (priorityHeader) priorityHeader.innerHTML = 'Priority' + SORT_ARROW;
+    extraTh.innerHTML = 'Created';
+    extraTh.classList.remove('hidden');
   } else if (ACTIVE_TAB === 'consent') {
     extraTh.innerHTML = 'Conditions' + SORT_ARROW;
     extraTh.classList.remove('hidden');
   } else if (ACTIVE_TAB === 'escalation') {
-    extraTh.innerHTML = 'Escalated' + SORT_ARROW;
+    if (priorityHeader) priorityHeader.innerHTML = 'Priority' + SORT_ARROW;
+    extraTh.innerHTML = 'Escalated';
     extraTh.classList.remove('hidden');
   }
 
   tbody.innerHTML = list.map(t => renderTicket(t, ACTIVE_TAB)).join('');
   const fc = document.getElementById('footer-count');
   if (fc) fc.textContent = `Showing ${list.length} ${ACTIVE_TAB} ticket${list.length === 1 ? '' : 's'}`;
+  updateTabCounts();
 }
 
 function switchTab(tab) {
@@ -435,7 +473,6 @@ async function load() {
   try {
     const res = await fetch('../data/tickets.json', { cache: 'no-store' });
     const data = await res.json();
-    renderStats(data.stats);
     ALL_TICKETS = data.tickets || [];
     renderActiveTab();
   } catch (err) {

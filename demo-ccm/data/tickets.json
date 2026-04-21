@@ -18,7 +18,8 @@
       "assignee": null,
       "severity": "high",
       "href": "../call/claire/",
-      "isDemo": true
+      "isDemo": true,
+      "createdMinutesAgo": 2
     },
     {
       "id": "e-01",
@@ -29,7 +30,8 @@
       "status": "Open",
       "priority": "High",
       "assignee": null,
-      "severity": "high"
+      "severity": "high",
+      "createdMinutesAgo": 12
     },
     {
       "id": "e-02",
@@ -40,7 +42,8 @@
       "status": "Open",
       "priority": "Medium",
       "assignee": null,
-      "severity": "medium"
+      "severity": "medium",
+      "createdMinutesAgo": 25
     },
     {
       "id": "e-03",
@@ -51,7 +54,8 @@
       "status": "Open",
       "priority": "Medium",
       "assignee": null,
-      "severity": "medium"
+      "severity": "medium",
+      "createdMinutesAgo": 38
     },
     {
       "id": "e-04",
@@ -62,7 +66,8 @@
       "status": "Open",
       "priority": "Medium",
       "assignee": null,
-      "severity": "medium"
+      "severity": "medium",
+      "createdMinutesAgo": 52
     },
     {
       "id": "e-05",
@@ -73,7 +78,8 @@
       "status": "Open",
       "priority": "Medium",
       "assignee": null,
-      "severity": "medium"
+      "severity": "medium",
+      "createdMinutesAgo": 68
     },
     {
       "id": "e-06",
@@ -84,7 +90,8 @@
       "status": "Open",
       "priority": "Medium",
       "assignee": null,
-      "severity": "medium"
+      "severity": "medium",
+      "createdMinutesAgo": 85
     },
     {
       "id": "e-07",
@@ -95,7 +102,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 105
     },
     {
       "id": "e-08",
@@ -106,7 +114,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 128
     },
     {
       "id": "e-09",
@@ -117,7 +126,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 150
     },
     {
       "id": "e-10",
@@ -128,7 +138,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 172
     },
     {
       "id": "e-11",
@@ -139,7 +150,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 195
     },
     {
       "id": "e-12",
@@ -150,7 +162,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 220
     },
     {
       "id": "e-13",
@@ -161,7 +174,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 245
     },
     {
       "id": "e-14",
@@ -172,7 +186,8 @@
       "status": "Open",
       "priority": "Low",
       "assignee": null,
-      "severity": "low"
+      "severity": "low",
+      "createdMinutesAgo": 270
     },
     {
       "id": "c-01",
@@ -241,10 +256,10 @@
       "avatarColor": "stone",
       "type": "Escalation",
       "status": "Open",
-      "priority": "High",
+      "priority": "Emergent",
       "assignee": null,
-      "severity": "high",
-      "escalatedAt": "2026-04-18"
+      "severity": "emergent",
+      "escalatedAt": "2026-04-21"
     },
     {
       "id": "x-02",
@@ -253,10 +268,10 @@
       "avatarColor": "slate",
       "type": "Escalation",
       "status": "Open",
-      "priority": "Medium",
+      "priority": "Urgent",
       "assignee": null,
-      "severity": "medium",
-      "escalatedAt": "2026-04-19"
+      "severity": "urgent",
+      "escalatedAt": "2026-04-21"
     },
     {
       "id": "x-03",
@@ -265,10 +280,10 @@
       "avatarColor": "zinc",
       "type": "Escalation",
       "status": "Open",
-      "priority": "Medium",
+      "priority": "Urgent",
       "assignee": null,
-      "severity": "medium",
-      "escalatedAt": "2026-04-20"
+      "severity": "urgent",
+      "escalatedAt": "2026-04-21"
     },
     {
       "id": "x-04",
@@ -277,10 +292,10 @@
       "avatarColor": "neutral",
       "type": "Escalation",
       "status": "Open",
-      "priority": "Low",
+      "priority": "Immediate",
       "assignee": null,
-      "severity": "low",
-      "escalatedAt": "2026-04-20"
+      "severity": "immediate",
+      "escalatedAt": "2026-04-21"
     },
     {
       "id": "x-05",
@@ -289,9 +304,9 @@
       "avatarColor": "gray",
       "type": "Escalation",
       "status": "Open",
-      "priority": "Low",
+      "priority": "Routine",
       "assignee": null,
-      "severity": "low",
+      "severity": "routine",
       "escalatedAt": "2026-04-21"
     }
   ]
