@@ -304,9 +304,9 @@
       "avatarColor": "gray",
       "type": "Escalation",
       "status": "Open",
-      "priority": "Routine",
+      "priority": "Immediate",
       "assignee": null,
-      "severity": "routine",
+      "severity": "immediate",
       "escalatedAt": "2026-04-21"
     }
   ]
