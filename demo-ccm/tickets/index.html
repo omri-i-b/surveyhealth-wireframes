@@ -141,7 +141,9 @@
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Patient</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Type</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-              <th id="col-priority" class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Priority</th>
+              <th id="col-priority" class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+                <span id="priority-header">Priority</span>
+              </th>
               <th id="col-extra" class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider hidden">Extra</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Assigned</th>
               <th class="px-3 py-2.5 w-28"></th>
@@ -307,16 +309,51 @@ function renderTicket(t, activeTab) {
   </tr>`;
 }
 
-// If Claire's ticket has been resolved via her call page (localStorage),
-// flip her status to 'Closed' before rendering.
+// Pull Claire's live state (assignment + resolution) from localStorage and
+// fold it into the ticket list before rendering.
+function claireResolution() {
+  try { return JSON.parse(localStorage.getItem('demoCcm.claireResolution') || 'null'); }
+  catch { return null; }
+}
 function applyClaireResolution(tickets) {
-  let resolution = null;
-  try { resolution = JSON.parse(localStorage.getItem('demoCcm.claireResolution') || 'null'); }
-  catch { /* ignore */ }
-  if (!resolution || !resolution.outcome) return tickets;
-  return tickets.map(t => t.id === 'claire'
-    ? { ...t, status: 'Closed' }
+  const resolution = claireResolution();
+  const assignee = localStorage.getItem('demoCcm.claireAssignee');
+  const assigneePatch = assignee
+    ? { assignee, assigneeInitials: 'LG', assigneeColor: 'blue' }
+    : {};
+  let next = tickets.map(t => t.id === 'claire'
+    ? { ...t, ...assigneePatch, ...(resolution?.outcome ? { status: 'Closed' } : {}) }
     : t);
+
+  // If Claire was resolved with an escalation outcome, inject a mirror row
+  // into the Escalation dataset so she shows up on the Escalation tab.
+  if (resolution?.outcome) {
+    const ESC_PRIORITY = {
+      emergent: 'High',
+      urgent: 'Medium',
+      immediate: 'Low',
+      routine: 'Low',
+    };
+    const pr = ESC_PRIORITY[resolution.outcome];
+    if (pr && !next.some(t => t.id === 'claire-escalation')) {
+      next = [...next, {
+        id: 'claire-escalation',
+        patient: 'Claire Henderson',
+        initials: 'CH',
+        avatarColor: 'cyan',
+        type: 'Escalation',
+        status: 'Open',
+        priority: pr,
+        assignee: assignee || null,
+        assigneeInitials: assignee ? 'LG' : null,
+        assigneeColor: assignee ? 'blue' : null,
+        severity: pr === 'High' ? 'high' : pr === 'Medium' ? 'medium' : 'low',
+        escalatedAt: new Date().toISOString().slice(0, 10),
+        href: '../call/claire/',
+      }];
+    }
+  }
+  return next;
 }
 
 const PRIORITY_RANK = { 'High': 0, 'Medium': 1, 'Low': 2 };
@@ -350,22 +387,31 @@ function ticketsForTab(allTickets, tab) {
 let ALL_TICKETS = [];
 let ACTIVE_TAB = 'evaluation';
 
+// Small down-arrow used to mark the active sort column
+const SORT_ARROW = '<svg class="inline w-3 h-3 text-gray-500 ml-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>';
+
 function renderActiveTab() {
   const tbody = document.getElementById('tickets-tbody');
   const list = ticketsForTab(applyClaireResolution(ALL_TICKETS), ACTIVE_TAB);
-  // Update the "extra" column header depending on tab
+
+  // Update the "extra" column header + sort-arrow placement for each tab
   const extraTh = document.getElementById('col-extra');
+  const priorityHeader = document.getElementById('priority-header');
+  if (priorityHeader) priorityHeader.innerHTML = 'Priority';
   if (extraTh) {
-    if (ACTIVE_TAB === 'consent') {
-      extraTh.textContent = 'Conditions';
-      extraTh.classList.remove('hidden');
-    } else if (ACTIVE_TAB === 'escalation') {
-      extraTh.textContent = 'Escalated';
-      extraTh.classList.remove('hidden');
-    } else {
-      extraTh.classList.add('hidden');
-    }
+    extraTh.classList.add('hidden');
+    extraTh.innerHTML = '';
   }
+  if (ACTIVE_TAB === 'evaluation') {
+    if (priorityHeader) priorityHeader.innerHTML = 'Priority' + SORT_ARROW;
+  } else if (ACTIVE_TAB === 'consent') {
+    extraTh.innerHTML = 'Conditions' + SORT_ARROW;
+    extraTh.classList.remove('hidden');
+  } else if (ACTIVE_TAB === 'escalation') {
+    extraTh.innerHTML = 'Escalated' + SORT_ARROW;
+    extraTh.classList.remove('hidden');
+  }
+
   tbody.innerHTML = list.map(t => renderTicket(t, ACTIVE_TAB)).join('');
   const fc = document.getElementById('footer-count');
   if (fc) fc.textContent = `Showing ${list.length} ${ACTIVE_TAB} ticket${list.length === 1 ? '' : 's'}`;
