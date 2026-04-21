@@ -928,13 +928,21 @@ function renderCallCard(payload) {
   const rows = (payload.extractedResponses || []);
   if (rows.length) {
     extracted.innerHTML = rows.map(r => {
-      const bg = r.answerClass === 'bad' ? 'bg-red-50' : 'bg-green-50';
-      const badgeBg = r.answerClass === 'bad' ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800';
+      const isBad = r.answerClass === 'bad';
+      const bg = isBad ? 'bg-red-50' : 'bg-green-50';
+      const badgeBg = isBad ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800';
+      const flagged = isBad
+        ? `<div class="flex items-center gap-1 mt-1.5 mb-2">
+             <svg class="w-3 h-3 text-red-600" fill="currentColor" viewBox="0 0 24 24"><path d="M4 2h2v20H4V2zm3 3h13l-2 4 2 4H7V5z"/></svg>
+             <span class="text-[11px] font-semibold text-red-700 uppercase tracking-wide">Flagged</span>
+           </div>`
+        : '';
       return `<div class="${bg} rounded-lg p-3">
-        <div class="flex items-start justify-between gap-3 mb-1.5">
-          <span class="text-gray-800 font-medium text-sm">${escapeHtml(r.question)}</span>
-          <span class="px-2 py-0.5 ${badgeBg} text-xs font-semibold rounded flex-shrink-0">${escapeHtml(r.answer)}</span>
+        <div class="flex items-start justify-between gap-3">
+          <span class="text-gray-800 font-medium text-sm leading-snug">${escapeHtml(r.question)}</span>
+          <span class="px-2 py-0.5 ${badgeBg} text-xs font-semibold rounded flex-shrink-0 whitespace-nowrap">Answer: ${escapeHtml(r.answer)}</span>
         </div>
+        ${flagged}
         ${r.quote ? `<p class="text-gray-600 text-sm italic">&ldquo;${escapeHtml(r.quote)}&rdquo;</p>` : ''}
       </div>`;
     }).join('');

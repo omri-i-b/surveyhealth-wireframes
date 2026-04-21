@@ -31,34 +31,34 @@
   ],
   "extractedResponses": [
     {
-      "question": "In the past week, have you had any NEW or WORSENING symptoms?",
-      "answer": "YES",
+      "question": "In the past week, have you had any increased shortness of breath and/or hacking cough that limits your normal activities?",
+      "answer": "Yes",
       "answerClass": "bad",
-      "quote": "I have been more short of breath than usual. When I walk up the stairs I have to stop halfway now."
+      "quote": "I do. I've been coughing up a lot more, and it doesn't look good at all."
     },
     {
-      "question": "Have you noticed swelling in your legs or ankles?",
-      "answer": "YES",
+      "question": "In the past week, have you been taking your medications like your doctor ordered?",
+      "answer": "Not Sure",
       "answerClass": "bad",
-      "quote": "A little bit in my ankles in the evenings, yes."
+      "quote": "I'm not sure if I'm taking the right doses or the right medications. I'm a little confused on that."
     },
     {
-      "question": "Any weight change since last check-in?",
-      "answer": "UP 3 LBS",
+      "question": "In the past week, have you felt like you needed medical help, even if you didn't end up asking for help?",
+      "answer": "Yes",
       "answerClass": "bad",
-      "quote": "I weighed yesterday. 164, so up about three pounds from last week."
+      "quote": "I think there was one time where I really did need help. I didn't wanna go to emergency room, but maybe I should have."
     },
     {
-      "question": "Are you taking medications as prescribed?",
-      "answer": "YES",
+      "question": "Compared to last month, is your general wellness better, worse or the same?",
+      "answer": "Worse",
+      "answerClass": "bad",
+      "quote": "It's worse. I'm not feeling better. I need to be seen."
+    },
+    {
+      "question": "In the past month, have you experienced any NEW or UNBEARABLE symptoms that limit your normal activities, such as pain, fever, nausea, diarrhea, or vomiting?",
+      "answer": "No",
       "answerClass": "good",
-      "quote": "Yes, my daughter sets them out for me."
-    },
-    {
-      "question": "Do you want to speak with a nurse?",
-      "answer": "YES",
-      "answerClass": "bad",
-      "quote": "Yes, I think that would be a good idea."
+      "quote": "None of those. It's mainly the shortness of breath that's bothering me."
     }
   ],
   "note": {
