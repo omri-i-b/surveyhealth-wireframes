@@ -138,7 +138,6 @@
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Calls</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Callback</th>
               <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Assigned</th>
-              <th class="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Assessment</th>
               <th class="px-3 py-2.5 w-28"></th>
             </tr>
           </thead>
@@ -280,7 +279,6 @@ function renderTicket(t) {
     <td class="px-3 py-2.5">${textOrDash(t.calls, 'text-xs text-gray-700')}</td>
     <td class="px-3 py-2.5">${textOrDash(t.callback, 'text-xs text-gray-700')}</td>
     <td class="px-3 py-2.5">${assigneeCell(t)}</td>
-    <td class="px-3 py-2.5">${textOrDash(t.assessment, 'text-xs text-gray-700')}</td>
     <td class="px-3 py-2.5">${actionsCell(t)}</td>
   </tr>`;
 }
