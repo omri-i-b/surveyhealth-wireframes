@@ -227,12 +227,22 @@ function actionsCell(t) {
   const assigned = !!t.assignee;
   const primary = assigned
     ? '<button class="px-2 py-1 text-[11px] font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200">Snooze</button>'
-    : '<button class="px-2 py-1 text-[11px] font-medium text-blue-600 bg-blue-50 rounded hover:bg-blue-100">Assign</button>';
+    : `<button onclick="event.stopPropagation(); assignToLisa('${t.id}')" class="px-2 py-1 text-[11px] font-medium text-blue-600 bg-blue-50 rounded hover:bg-blue-100">Assign</button>`;
   return `<div class="row-actions flex items-center gap-1">
     ${primary}
-    <button class="px-2 py-1 text-[11px] font-medium text-green-600 bg-green-50 rounded hover:bg-green-100">Resolve</button>
     <button class="p-1 text-gray-400 rounded hover:bg-gray-100"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
   </div>`;
+}
+
+// Click-to-assign: sets the clicked ticket's assignee to L. Goldenstein (in-memory)
+// and re-renders the current tab. No persistence across reloads — demo behavior.
+function assignToLisa(ticketId) {
+  const t = ALL_TICKETS.find(x => x.id === ticketId);
+  if (!t) return;
+  t.assignee = 'L. Goldenstein';
+  t.assigneeInitials = 'LG';
+  t.assigneeColor = 'blue';
+  renderActiveTab();
 }
 function patientCell(t) {
   const color = t.avatarColor || 'gray';
