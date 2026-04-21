@@ -1206,9 +1206,12 @@ async function pollNow(forceRender = false) {
       }
       // Freshness gate: completed calls older than CALL_FRESHNESS_MS (1h) do
       // not auto-populate the ticket. Bypassed when the user explicitly asks
-      // via the Regenerate button.
+      // via the Regenerate button, OR when this call is already rendered
+      // (restored from a prior session via localStorage) — no reason to
+      // disturb a populated summary on page refresh.
       const endedTs = payload.callMeta?.callEnded ? new Date(payload.callMeta.callEnded).getTime() : null;
-      if (endedTs && (Date.now() - endedTs) > CALL_FRESHNESS_MS && !forceRender) {
+      const alreadyRendered = payload.callId && payload.callId === lastCallId && noteGenerated;
+      if (endedTs && (Date.now() - endedTs) > CALL_FRESHNESS_MS && !forceRender && !alreadyRendered) {
         setStatus('idle', `Last call ended >1 hour ago — no active ticket.`);
         return;
       }
@@ -1267,6 +1270,16 @@ async function pollNow(forceRender = false) {
         setStatus('received', `note ready, based on call at ${finalWhen}`);
         const statusEl = document.getElementById('info-status');
         if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+        // Persist the rendered state so page refreshes keep the summary visible
+        try {
+          localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
+            callId: payload.callId,
+            callMeta: payload.callMeta,
+            transcript: payload.transcript,
+            note,
+            savedAt: new Date().toISOString(),
+          }));
+        } catch (_) { /* quota or disabled — not critical */ }
       } catch (err) {
         console.error('summarize failed:', err);
         noteGenerated = false;  // allow retry on next poll
@@ -1417,6 +1430,7 @@ function resetTicket() {
   // Clear the resolution so Claire drops out of today's Daily Report
   localStorage.removeItem('demoCcm.claireResolution');
   localStorage.removeItem('demoCcm.claireAssignee');
+  localStorage.removeItem('demoCcm.claireLastRender');
   renderAssignmentState();
 
   // Reset Ticket Info grid fields
@@ -1479,6 +1493,37 @@ function renderAssignmentState() {
       : 'text-xs font-medium text-blue-600 hover:text-blue-800 px-2 py-1 rounded hover:bg-blue-50';
   }
 }
+// Restore a previously-rendered AI summary from localStorage so page
+// reloads keep the populated state until the user hits Reset.
+function restoreLastRender() {
+  let prior;
+  try { prior = JSON.parse(localStorage.getItem('demoCcm.claireLastRender') || 'null'); }
+  catch { prior = null; }
+  if (!prior || !prior.note || !prior.callId) return false;
+
+  // Rebuild the payload shape renderCallMeta expects
+  renderCallMeta({ callMeta: prior.callMeta || {} });
+  renderNote(prior.note);
+  renderLiveTranscript(prior.transcript || []);
+
+  // Update Ticket Info status if not already resolved
+  const res = claireResolutionLocal();
+  if (!res?.outcome) {
+    const statusEl = document.getElementById('info-status');
+    if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+  }
+
+  // Block the poller from re-fetching or flipping state for this same call
+  lastCallId = prior.callId;
+  noteGenerated = true;
+  setStatus('received', 'note restored from previous session');
+  return true;
+}
+function claireResolutionLocal() {
+  try { return JSON.parse(localStorage.getItem('demoCcm.claireResolution') || 'null'); }
+  catch { return null; }
+}
+
 function assignToMe() {
   const current = localStorage.getItem('demoCcm.claireAssignee');
   if (current) {
@@ -1549,6 +1594,9 @@ async function prefillPreviousTouchpoint() {
   loadPatientContext();
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
+  // Rehydrate a previously-rendered AI summary so a page reload keeps the
+  // populated state until the user explicitly resets the ticket.
+  restoreLastRender();
   const createdEl = document.getElementById('info-created');
   if (createdEl) createdEl.textContent = todayDateStr();
 
