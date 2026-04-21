@@ -163,8 +163,8 @@
             </svg>
           </a>
           <span class="font-medium text-gray-900">Ticket #CH-042</span>
-          <span class="w-1.5 h-1.5 bg-teal-500 rounded-full"></span>
-          <span class="text-gray-500 text-sm">Inbound Call · CCM Monthly</span>
+          <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+          <span class="text-gray-500 text-sm">Escalation · High · CCM Monthly</span>
           <span id="live-pill" class="hidden px-1.5 py-0.5 text-[10px] font-semibold text-cyan-700 bg-cyan-100 rounded uppercase tracking-wide ml-1">Live</span>
         </div>
         <div class="flex items-center gap-3 text-sm text-gray-400">
@@ -199,20 +199,20 @@
             <div class="mt-3 grid grid-cols-3 gap-4 text-sm">
               <div>
                 <div class="text-gray-500 mb-1">Type</div>
-                <div class="text-gray-900 font-medium">Inbound Call</div>
+                <div class="text-gray-900 font-medium">
+                  <span class="px-2 py-0.5 text-[11px] font-medium text-orange-700 bg-orange-100 rounded-full">Escalation</span>
+                </div>
+              </div>
+              <div>
+                <div class="text-gray-500 mb-1">Priority</div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                  <span class="text-red-600 font-medium">High</span>
+                </div>
               </div>
               <div>
                 <div class="text-gray-500 mb-1">Program</div>
                 <div class="text-gray-900 font-medium">CCM Monthly</div>
-              </div>
-              <div>
-                <div class="text-gray-500 mb-1">Channel</div>
-                <div class="text-gray-900 font-medium flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                  </svg>
-                  Voice
-                </div>
               </div>
               <div>
                 <div class="text-gray-500 mb-1">Created</div>
@@ -484,28 +484,28 @@
                       <span class="dropdown-dot" style="background: #ef4444;"></span>
                       <div class="dropdown-item-content">
                         <div class="dropdown-item-title">Emergent</div>
-                        <div class="dropdown-item-desc">911 / ER</div>
+                        <div class="dropdown-item-desc">Recommended ED visit</div>
                       </div>
                     </div>
                     <div class="dropdown-item" data-value="urgent">
                       <span class="dropdown-dot" style="background: #f97316;"></span>
                       <div class="dropdown-item-content">
                         <div class="dropdown-item-title">Urgent</div>
-                        <div class="dropdown-item-desc">Same day</div>
+                        <div class="dropdown-item-desc">Recommend visit within 48 hours</div>
                       </div>
                     </div>
                     <div class="dropdown-item" data-value="immediate">
                       <span class="dropdown-dot" style="background: #eab308;"></span>
                       <div class="dropdown-item-content">
                         <div class="dropdown-item-title">Immediate</div>
-                        <div class="dropdown-item-desc">24-48 hours</div>
+                        <div class="dropdown-item-desc">Recommend visit between 3-7 days</div>
                       </div>
                     </div>
                     <div class="dropdown-item" data-value="routine">
                       <span class="dropdown-dot" style="background: #22c55e;"></span>
                       <div class="dropdown-item-content">
                         <div class="dropdown-item-title">Routine</div>
-                        <div class="dropdown-item-desc">Next scheduled visit</div>
+                        <div class="dropdown-item-desc">Recommend visit between 8-30 days</div>
                       </div>
                     </div>
                     <div class="dropdown-divider"></div>
@@ -514,14 +514,18 @@
                       <span class="dropdown-dot" style="background: #3b82f6;"></span>
                       <div class="dropdown-item-content">
                         <div class="dropdown-item-title">Resolved on Phone</div>
-                        <div class="dropdown-item-desc">Issue addressed during call</div>
                       </div>
                     </div>
                     <div class="dropdown-item" data-value="no-intervention">
                       <span class="dropdown-dot" style="background: #6b7280;"></span>
                       <div class="dropdown-item-content">
                         <div class="dropdown-item-title">No Intervention Needed</div>
-                        <div class="dropdown-item-desc">False positive / patient stable</div>
+                      </div>
+                    </div>
+                    <div class="dropdown-item" data-value="not-reachable">
+                      <span class="dropdown-dot" style="background: #9ca3af;"></span>
+                      <div class="dropdown-item-content">
+                        <div class="dropdown-item-title">Not Reachable</div>
                       </div>
                     </div>
                   </div>
