@@ -440,6 +440,17 @@
                 <div class="text-gray-500 font-medium">Time Spent:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="timeSpent"></div>
               </section>
+
+              <!-- Full call transcript (accordion, collapsed by default) -->
+              <section class="mt-2 rounded-lg border border-gray-200 overflow-hidden">
+                <button type="button" onclick="toggleLiveTranscript()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Transcript</span>
+                  <span id="liveTranscriptToggle" class="text-xs text-blue-600">Show &darr;</span>
+                </button>
+                <div id="liveTranscriptContent" class="max-h-0 overflow-hidden transition-all duration-300">
+                  <div id="live-transcript-turns" class="p-4 space-y-2.5 text-sm bg-white border-t border-gray-100"></div>
+                </div>
+              </section>
             </div>
 
             <!-- Clinical Notes (always visible, manual entry by staff) -->
@@ -990,6 +1001,44 @@ function toggleTranscript() {
   }
 }
 
+// Second transcript accordion — lives inside the AI Summary card and shows
+// the LIVE call's transcript (the one the LLM summarized from).
+let liveTranscriptExpanded = false;
+function toggleLiveTranscript() {
+  const content = document.getElementById('liveTranscriptContent');
+  const toggle = document.getElementById('liveTranscriptToggle');
+  liveTranscriptExpanded = !liveTranscriptExpanded;
+  if (liveTranscriptExpanded) {
+    content.style.maxHeight = content.scrollHeight + 'px';
+    toggle.textContent = 'Hide \u2191';
+  } else {
+    content.style.maxHeight = '0';
+    toggle.textContent = 'Show \u2193';
+  }
+}
+function renderLiveTranscript(turns) {
+  const turnsEl = document.getElementById('live-transcript-turns');
+  if (!turnsEl) return;
+  if (!Array.isArray(turns) || turns.length === 0) {
+    turnsEl.innerHTML = '<div class="text-xs text-gray-400 text-center py-3">No transcript was captured for this call.</div>';
+    return;
+  }
+  turnsEl.innerHTML = turns.map(turn => {
+    const isAgent = turn.speaker === 'agent';
+    const label = isAgent ? 'Agent' : 'Patient';
+    const labelCls = isAgent ? 'font-medium text-blue-700' : 'font-medium text-gray-900';
+    return `<div class="flex gap-3">
+      <span class="text-[10px] text-gray-400 w-8 flex-shrink-0 pt-0.5">${turn.t || ''}</span>
+      <div><span class="${labelCls}">${label}:</span> <span class="text-gray-600">${escapeHtml(turn.text)}</span></div>
+    </div>`;
+  }).join('');
+  // If the accordion is already open, re-measure so the new content fits
+  if (liveTranscriptExpanded) {
+    const content = document.getElementById('liveTranscriptContent');
+    if (content) content.style.maxHeight = content.scrollHeight + 'px';
+  }
+}
+
 // =========================================================================
 // OpenPhone ("Quo") adapter
 // =========================================================================
@@ -1200,6 +1249,7 @@ async function pollNow(forceRender = false) {
       try {
         const note = await generateNoteFromCall(payload.callId);
         renderNote(note);
+        renderLiveTranscript(payload.transcript);
         const finalWhen = payload.callMeta?.callEnded
           ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           : '';
