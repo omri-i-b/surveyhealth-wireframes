@@ -294,10 +294,7 @@ function renderTicket(t, activeTab) {
 
   // Per-tab extra column
   let extraCell = '';
-  if (activeTab === 'consent') {
-    const n = t.conditionsCount ?? 0;
-    extraCell = `<td class="px-3 py-2.5 text-xs text-gray-700">${n} ${n === 1 ? 'condition' : 'conditions'}</td>`;
-  } else if (activeTab === 'escalation') {
+  if (activeTab === 'escalation') {
     extraCell = `<td class="px-3 py-2.5 text-xs text-gray-700">${t.escalatedAt ? new Date(t.escalatedAt + 'T00:00:00').toLocaleDateString([], { month: 'short', day: 'numeric' }) : '—'}</td>`;
   } else if (activeTab === 'evaluation') {
     const m = t.createdMinutesAgo;
@@ -392,8 +389,12 @@ function ticketsForTab(allTickets, tab) {
   }
   if (tab === 'consent') {
     const consents = allTickets.filter(t => t.type === 'Consent');
-    // Rank by number of conditions desc (more conditions = higher up)
-    return consents.sort((a, b) => (b.conditionsCount ?? 0) - (a.conditionsCount ?? 0));
+    // Sort by priority (High → Medium → Low)
+    return consents.sort((a, b) => {
+      const ap = PRIORITY_RANK[a.priority] ?? 99;
+      const bp = PRIORITY_RANK[b.priority] ?? 99;
+      return ap - bp;
+    });
   }
   if (tab === 'escalation') {
     const escs = allTickets.filter(t => t.type === 'Escalation');
@@ -441,8 +442,8 @@ function renderActiveTab() {
     extraTh.innerHTML = 'Created';
     extraTh.classList.remove('hidden');
   } else if (ACTIVE_TAB === 'consent') {
-    extraTh.innerHTML = 'Conditions' + SORT_ARROW;
-    extraTh.classList.remove('hidden');
+    if (priorityHeader) priorityHeader.innerHTML = 'Priority' + SORT_ARROW;
+    extraTh.classList.add('hidden');
   } else if (ACTIVE_TAB === 'escalation') {
     if (priorityHeader) priorityHeader.innerHTML = 'Priority' + SORT_ARROW;
     extraTh.innerHTML = 'Escalated';
