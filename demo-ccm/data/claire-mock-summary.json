@@ -11,7 +11,7 @@
     "agentName": "SurveyHealth Voice AI"
   },
   "transcript": [
-    { "t": "0:00", "speaker": "agent",   "text": "Hello, this is SurveyHealth calling from Providence Family Clinic. May I speak with Claire?" },
+    { "t": "0:00", "speaker": "agent",   "text": "Hello, this is SurveyHealth calling from Everyday Health Clinic. May I speak with Claire?" },
     { "t": "0:05", "speaker": "patient", "text": "Yes, this is Claire." },
     { "t": "0:07", "speaker": "agent",   "text": "Hi Claire, this is your monthly check-in. Do you have about five minutes to go through a few questions?" },
     { "t": "0:12", "speaker": "patient", "text": "Yes, go ahead." },
@@ -72,12 +72,12 @@
   ],
   "note": {
     "chiefComplaint": "Increased dyspnea on exertion and bilateral ankle edema over the past 7–9 days, with a 3-lb weight gain from the prior week and new orthopnea.",
-    "hpi": "Ms. Henderson is a 77-year-old female with a history of heart failure enrolled in CCM. She reports progressive shortness of breath when climbing stairs, now limiting her activity after half a flight. Symptoms began approximately 7–9 days ago. She notes mild bilateral ankle swelling in the evenings and a 3-pound weight gain over the last week. She is waking overnight with orthopnea and needing to prop up on pillows. She denies chest pain, palpitations, or new cough. Medication adherence reported as good (furosemide AM) with daughter assisting. Adherence to low-sodium diet reported.",
+    "hpi": "Ms. Henderson is a 77-year-old female with a history of heart failure enrolled in APCM + RPM. She reports progressive shortness of breath when climbing stairs, now limiting her activity after half a flight. Symptoms began approximately 7–9 days ago. She notes mild bilateral ankle swelling in the evenings and a 3-pound weight gain over the last week. She is waking overnight with orthopnea and needing to prop up on pillows. She denies chest pain, palpitations, or new cough. Medication adherence reported as good (furosemide AM) with daughter assisting. Adherence to low-sodium diet reported.",
     "reviewOfSystems": "CARDIOVASCULAR — positive for DOE and bilateral lower-extremity edema; negative for chest pain and palpitations. PULMONARY — positive for orthopnea; negative for cough and wheeze. GI — appetite intact, denies nausea. NEURO — denies dizziness or syncope. PSYCH — denies depressed mood; PHQ-2 not administered this visit.",
     "assessment": "Likely early decompensation of chronic heart failure — weight gain, new orthopnea, worsening DOE, and ankle edema are consistent with volume overload. Medication adherence does not appear to be the driver. No red flags (no chest pain, no syncope) but pattern warrants same-day clinical review.",
     "plan": "1. Nurse callback within 2 hours to assess need for diuretic dose adjustment vs. same-day clinic visit.\n2. Recommend daily AM weight log for next 7 days; alert threshold +2 lb/day or +5 lb/week.\n3. Reinforce strict 2g sodium diet and fluid intake guidance.\n4. Continue furosemide and lisinopril as prescribed pending nurse review.\n5. If symptoms worsen before callback (chest pain, severe SOB at rest, lightheadedness) — instruct patient to call 911.",
     "patientEducation": "Discussed warning signs of heart failure decompensation. Reviewed daily weight monitoring rationale and when to call. Patient verbalized understanding and agreed to callback.",
-    "followUp": "Nurse callback today (< 2 hours). Next scheduled CCM check-in in 7 days. PCP informed via tasking."
+    "followUp": "Nurse callback today (< 2 hours). Next scheduled RPM check-in in 7 days. PCP informed via tasking."
   },
   "summary": {
     "riskLevel": "moderate-high",

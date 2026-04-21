@@ -103,7 +103,7 @@
     <div class="w-48 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
       <div class="p-3 border-b border-gray-200 flex items-center gap-2">
         <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white text-xs font-bold">PF</div>
-        <span class="text-sm font-semibold text-gray-900 truncate">Providence Fa...</span>
+        <span class="text-sm font-semibold text-gray-900 truncate">Everyday Heal...</span>
         <svg class="w-3 h-3 text-gray-400 ml-auto flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/></svg>
       </div>
       <nav class="flex-1 p-2 space-y-0.5">
@@ -164,7 +164,7 @@
           </a>
           <span class="font-medium text-gray-900">Ticket #CH-042</span>
           <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-          <span class="text-gray-500 text-sm">Evaluation · High · CCM Monthly</span>
+          <span class="text-gray-500 text-sm">Evaluation · High · RPM</span>
           <span id="live-pill" class="hidden px-1.5 py-0.5 text-[10px] font-semibold text-cyan-700 bg-cyan-100 rounded uppercase tracking-wide ml-1">Live</span>
         </div>
         <div class="flex items-center gap-3 text-sm text-gray-400">
@@ -212,7 +212,7 @@
               </div>
               <div>
                 <div class="text-gray-500 mb-1">Program</div>
-                <div class="text-gray-900 font-medium">CCM Monthly</div>
+                <div class="text-gray-900 font-medium">RPM</div>
               </div>
               <div>
                 <div class="text-gray-500 mb-1">Created</div>
@@ -608,7 +608,7 @@
                 <div class="flex justify-between"><span class="text-gray-500">Response Rate</span><span class="text-gray-900">84%</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">30-Day Evaluation Rate</span><span class="text-green-600 font-medium">92%</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">30-Day Escalation Rate</span><span class="text-yellow-600 font-medium">17%</span></div>
-                <div class="flex justify-between pt-2 border-t border-gray-200"><span class="text-gray-500">Enrolled Programs</span><span class="text-gray-900 font-medium">CCM, RPM</span></div>
+                <div class="flex justify-between pt-2 border-t border-gray-200"><span class="text-gray-500">Enrolled Programs</span><span class="text-gray-900 font-medium">APCM + RPM</span></div>
               </div>
             </div>
 
@@ -616,7 +616,7 @@
               <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">Provider</div>
               <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
                 <div class="flex justify-between"><span class="text-gray-500">Name</span><span class="text-gray-900 font-medium">Dr. Henderson</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Practice</span><span class="text-gray-900">Providence Family</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Practice</span><span class="text-gray-900">Everyday Health Clinic</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">Phone</span><a href="#" class="text-blue-600 hover:underline font-medium">(512) 555-0199</a></div>
               </div>
             </div>
@@ -1060,10 +1060,10 @@ async function loadPatientContext() {
     CLAIRE_CONTEXT = {
       patientName: 'Claire Henderson',
       patientDob: 'March 22, 1948',
-      pcp: 'Dr. Henderson, Providence Family Practice',
+      pcp: 'Dr. Henderson, Everyday Health Clinic',
       careManager: 'L. Goldenstein',
       interactionType: 'Telephonic Wellness Check Evaluation',
-      interventionCategory: 'Chronic Care Management (CCM) + Remote Patient Monitoring (RPM)',
+      interventionCategory: 'APCM + RPM',
       conditionsMonitored: 'Heart Failure',
       goals: 'No ED visits and hospitalizations this calendar year',
     };
@@ -1331,7 +1331,7 @@ function submitNote() {
   const headerPill = document.querySelector('.h-12 .bg-red-500.rounded-full');
   if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
   const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
-  if (headerMeta) headerMeta.textContent = `Resolved · ${outcomeLabel} · CCM Monthly`;
+  if (headerMeta) headerMeta.textContent = `Resolved · ${outcomeLabel} · RPM`;
 
   // Hide the whole Resolve Ticket section — a ticket can only be resolved
   // once. Show the green "Ticket resolved" banner in its place.
@@ -1424,7 +1424,7 @@ function resetTicket() {
     headerPill.classList.add('bg-red-500');
   }
   const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
-  if (headerMeta) headerMeta.textContent = 'Evaluation · High · CCM Monthly';
+  if (headerMeta) headerMeta.textContent = 'Evaluation · High · RPM';
 
   // Bring the Resolve Ticket section back and hide the resolved banner so
   // the ticket is actionable again (demo can be re-run).
@@ -1534,7 +1534,7 @@ async function prefillPreviousTouchpoint() {
       const headerPill = document.querySelector('.h-12 .bg-red-500.rounded-full');
       if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
       const headerMeta = document.querySelector('.h-12 .text-gray-500.text-sm');
-      if (headerMeta) headerMeta.textContent = `Resolved · ${prior.outcomeLabel || prior.outcome} · CCM Monthly`;
+      if (headerMeta) headerMeta.textContent = `Resolved · ${prior.outcomeLabel || prior.outcome} · RPM`;
       const sidebarPill = document.getElementById('sidebar-status-pill');
       if (sidebarPill) {
         sidebarPill.className = 'px-1.5 py-0.5 bg-green-100 text-green-700 text-[10px] font-semibold rounded';

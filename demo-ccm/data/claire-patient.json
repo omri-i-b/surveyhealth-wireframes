@@ -2,10 +2,10 @@
   "_comment": "Claire's patient context — sent to the LLM-based summarizer to fill static template fields. Update here when demoing a different patient.",
   "patientName": "Claire Henderson",
   "patientDob": "March 22, 1948",
-  "pcp": "Dr. Henderson, Providence Family Practice",
+  "pcp": "Dr. Henderson, Everyday Health Clinic",
   "careManager": "L. Goldenstein",
   "interactionType": "Telephonic Wellness Check Evaluation",
-  "interventionCategory": "Chronic Care Management (CCM) + Remote Patient Monitoring (RPM)",
+  "interventionCategory": "APCM + RPM",
   "conditionsMonitored": "Heart Failure",
   "goals": "No ED visits and hospitalizations this calendar year"
 }

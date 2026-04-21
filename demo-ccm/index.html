@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CCM Demo &middot; SurveyHealth</title>
+  <title>Demo &middot; SurveyHealth</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
@@ -15,9 +15,9 @@
       <a href="../" class="text-xs text-blue-600 hover:underline">&larr; Back to portal</a>
       <div class="mt-3 flex items-center gap-3 mb-2">
         <span class="px-2 py-0.5 text-[10px] font-semibold text-cyan-800 bg-cyan-200 rounded uppercase tracking-wide">Live Demo</span>
-        <h1 class="text-3xl font-bold text-gray-900">CCM Prospect Walkthrough</h1>
+        <h1 class="text-3xl font-bold text-gray-900">Demo Walkthrough</h1>
       </div>
-      <p class="text-gray-600 max-w-2xl">Demo flow for the Wednesday Apr 22 walkthrough with Lisa. Tickets view is populated from scraped Providence demo-env data (swap the seed <code>tickets.json</code> before the demo). Claire&rsquo;s call page polls Quo directly for the most recent call to a configurable number, then drops the AI summary into an editable ambient-style note.</p>
+      <p class="text-gray-600 max-w-2xl">Demo flow for the Wednesday Apr 22 walkthrough with Lisa. Tickets view is populated from scraped Everyday Health Clinic demo-env data (swap the seed <code>tickets.json</code> before the demo). Claire&rsquo;s call page polls Quo directly for the most recent call to a configurable number, then drops the AI summary into an editable ambient-style note.</p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
@@ -58,7 +58,7 @@
           </svg>
         </div>
         <h2 class="text-lg font-semibold text-gray-900 mb-1">Daily Escalation Report</h2>
-        <p class="text-sm text-gray-600 mb-3">Providence Family Practice daily report with Claire&rsquo;s CCM escalation + existing RPM cases. Print / Save PDF retained.</p>
+        <p class="text-sm text-gray-600 mb-3">Everyday Health Clinic daily report with Claire&rsquo;s APCM + RPM escalation + existing RPM cases. Print / Save PDF retained.</p>
         <div class="flex flex-wrap gap-2">
           <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Emergent</span>
           <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">Urgent</span>
@@ -70,7 +70,7 @@
     <div class="mt-8 bg-white rounded-xl border border-gray-200 p-5 text-sm text-gray-700">
       <div class="font-semibold mb-2">Before the demo</div>
       <ol class="list-decimal ml-5 space-y-1 text-gray-600">
-        <li>Re-scrape <code>data/tickets.json</code> from the Providence demo environment (see <a href="DEMO-README.md" class="text-blue-600 hover:underline">DEMO-README.md</a>).</li>
+        <li>Re-scrape <code>data/tickets.json</code> from the Everyday Health Clinic demo environment (see <a href="DEMO-README.md" class="text-blue-600 hover:underline">DEMO-README.md</a>).</li>
         <li>Open Claire&rsquo;s call page &rarr; <strong>Quo settings</strong>, paste the API key + base URL + her demo phone number.</li>
         <li>Verify by calling (or having Claire call) and watching the note auto-populate.</li>
         <li>Fallback: append <code>?mock=1</code> to Claire&rsquo;s URL to load the hand-authored mock summary.</li>
