@@ -396,6 +396,36 @@
                 </div>
                 <div class="space-y-1.5 ml-3">
                   <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Baseline</span><span class="font-semibold text-green-700 text-sm">No change</span></div>
+                  <div class="flex items-center justify-between pt-1">
+                    <span class="text-gray-600 text-sm">Patient-submitted images</span>
+                    <div class="flex items-center gap-2">
+                      <button type="button" onclick="toggleWoundImage('with')" id="wound-btn-with" class="text-xs font-medium px-2.5 py-1 rounded-md border border-green-300 bg-white text-green-700 hover:bg-green-100 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        With bandage
+                      </button>
+                      <button type="button" onclick="toggleWoundImage('without')" id="wound-btn-without" class="text-xs font-medium px-2.5 py-1 rounded-md border border-green-300 bg-white text-green-700 hover:bg-green-100 flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        Without bandage
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Redacted image placeholder (hidden until user clicks) -->
+                  <div id="wound-image" class="hidden mt-3">
+                    <div class="rounded-lg border border-gray-300 bg-gray-100 overflow-hidden">
+                      <div class="aspect-[16/9] relative flex items-center justify-center" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);">
+                        <div class="absolute inset-0 backdrop-blur-md bg-gray-900/40 flex flex-col items-center justify-center text-center px-4">
+                          <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                          <div class="text-white text-sm font-semibold">REDACTED — PHI</div>
+                          <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Image of wound with bandage</div>
+                          <div class="text-white/60 text-[10px] mt-2">Demo placeholder · image not displayed</div>
+                        </div>
+                      </div>
+                      <div class="px-3 py-2 bg-white border-t border-gray-200 flex items-center justify-between text-xs">
+                        <span id="wound-image-meta" class="text-gray-600">Submitted by patient · Apr 17, 2026 · 2:14 PM</span>
+                        <button type="button" onclick="hideWoundImage()" class="text-gray-500 hover:text-gray-700 font-medium">Hide</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1091,6 +1121,46 @@ function seekCallAudio(event) {
   const rect = track.getBoundingClientRect();
   const pct = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
   a.currentTime = pct * a.duration;
+}
+
+// Wound image reveal — patient-submitted images are PHI and never shown
+// in the demo. Clicking either button reveals a redacted placeholder
+// labeled with the requested view (with/without bandage).
+function toggleWoundImage(variant) {
+  const wrap = document.getElementById('wound-image');
+  const caption = document.getElementById('wound-image-caption');
+  const meta = document.getElementById('wound-image-meta');
+  if (!wrap) return;
+  if (variant === 'with') {
+    caption.textContent = 'Image of wound with bandage';
+    meta.textContent = 'Submitted by patient · Apr 17, 2026 · 2:14 PM';
+  } else {
+    caption.textContent = 'Image of wound without bandage';
+    meta.textContent = 'Submitted by patient · Apr 17, 2026 · 2:15 PM';
+  }
+  wrap.classList.remove('hidden');
+  // Highlight the active button
+  ['with', 'without'].forEach(v => {
+    const b = document.getElementById('wound-btn-' + v);
+    if (!b) return;
+    if (v === variant) {
+      b.classList.remove('bg-white', 'text-green-700');
+      b.classList.add('bg-green-600', 'text-white', 'border-green-600');
+    } else {
+      b.classList.remove('bg-green-600', 'text-white', 'border-green-600');
+      b.classList.add('bg-white', 'text-green-700');
+    }
+  });
+}
+function hideWoundImage() {
+  const wrap = document.getElementById('wound-image');
+  if (wrap) wrap.classList.add('hidden');
+  ['with', 'without'].forEach(v => {
+    const b = document.getElementById('wound-btn-' + v);
+    if (!b) return;
+    b.classList.remove('bg-green-600', 'text-white', 'border-green-600');
+    b.classList.add('bg-white', 'text-green-700');
+  });
 }
 
 function toggleTranscript() {
