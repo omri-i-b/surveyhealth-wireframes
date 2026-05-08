@@ -1,82 +1,114 @@
 {
-  "_comment": "Default fallback note for Claire — represents a real human care manager (Lisa Goldenstein, SurveyHealth) follow-up call. Loaded by default and when ?mock=1 is present. Overridden by live Quo + LLM output when 'Listen for AI call' captures a fresh call.",
-  "callMeta": {
-    "patientName": "Claire Henderson",
-    "patientDob": "1948-03-22",
-    "patientAge": 77,
-    "callDirection": "Outbound",
-    "callDuration": "2:47",
-    "callStarted": "2026-05-08T10:14:00-05:00",
-    "callEnded": "2026-05-08T10:16:47-05:00",
-    "agentName": "Lisa Goldenstein, RN — SurveyHealth Care Manager"
+  "_comment": "Default mock for Claire's ticket. Two distinct touchpoints: (1) aiCall = the AI agent (Lily / SurveyHealth Voice) biweekly wellness check that flagged this ticket — drives the call recording + transcript + extracted responses card at the TOP of the page. (2) nurseCall = the human follow-up call by Lisa Goldenstein, RN — drives the AI Summary card with the 13-field CCM note at the BOTTOM. Live Quo + LLM output overrides nurseCall when 'Listen for AI call' captures a fresh call.",
+
+  "aiCall": {
+    "callMeta": {
+      "patientName": "Claire Henderson",
+      "callDirection": "Inbound",
+      "callDuration": "2:47",
+      "callStarted": "2026-05-08T08:42:00-05:00",
+      "callEnded": "2026-05-08T08:44:47-05:00",
+      "agentName": "SurveyHealth Voice AI"
+    },
+    "transcript": [
+      { "t": "0:00", "speaker": "agent",   "text": "Hi, this is Lily, calling on behalf of Everyday Health Clinic. Is this Claire?" },
+      { "t": "0:05", "speaker": "patient", "text": "This is." },
+      { "t": "0:07", "speaker": "agent",   "text": "Do you have about a minute for your biweekly health check?" },
+      { "t": "0:11", "speaker": "patient", "text": "Yeah." },
+      { "t": "0:12", "speaker": "agent",   "text": "Thank you. Please answer the following in your own words. In the past week, have you had any increased shortness of breath and/or hacking cough that limits your normal activities?" },
+      { "t": "0:28", "speaker": "patient", "text": "I do. I've been coughing up a lot more, and it doesn't look good at all." },
+      { "t": "0:37", "speaker": "agent",   "text": "I understand. In the past week, have you been taking your medications like your doctor ordered?" },
+      { "t": "0:46", "speaker": "patient", "text": "I'm not sure if I'm taking the right doses or the right medications. I'm a little confused on that." },
+      { "t": "0:58", "speaker": "agent",   "text": "Thanks for letting me know. In the past week, have you felt like you needed medical help, even if you didn't end up asking for help?" },
+      { "t": "1:11", "speaker": "patient", "text": "Yeah. I — I think there was one time where I think I really did need help. I was too much of a hassle. I didn't wanna go to emergency room, but maybe I should have." },
+      { "t": "1:28", "speaker": "agent",   "text": "I'm sorry to hear that. Can you tell me a little more about what's been worse?" },
+      { "t": "1:35", "speaker": "patient", "text": "You know, I'm just coughing up a lot more, and it doesn't look great. And I'm, you know, a little bit short of breath when I do activities." },
+      { "t": "1:49", "speaker": "agent",   "text": "Got it. Compared to last month, is your general wellness better, worse or the same?" },
+      { "t": "1:58", "speaker": "patient", "text": "Well, to include last week, it's worse. I mean, I'm not feeling better. So, yeah, I need to be seen." },
+      { "t": "2:10", "speaker": "agent",   "text": "In the past month, have you experienced any new or unbearable symptoms that limit your normal activities, such as pain, fever, nausea, diarrhea, or vomiting?" },
+      { "t": "2:24", "speaker": "patient", "text": "None of those. I mean, I did — you a little zebraish, but it, it's mainly the my shortness of breath that's bothering me." },
+      { "t": "2:37", "speaker": "agent",   "text": "Thank you for sharing that. It sounds like you need to be seen by your care team. We'll now send you a text message so you can take your vital signs on your phone. Please look for the message and follow the instructions when it arrives." }
+    ],
+    "extractedResponses": [
+      {
+        "question": "In the past week, have you had any increased shortness of breath and/or hacking cough that limits your normal activities?",
+        "answer": "Yes",
+        "answerClass": "bad",
+        "quote": "I do. I've been coughing up a lot more, and it doesn't look good at all."
+      },
+      {
+        "question": "In the past week, have you been taking your medications like your doctor ordered?",
+        "answer": "Not Sure",
+        "answerClass": "bad",
+        "quote": "I'm not sure if I'm taking the right doses or the right medications. I'm a little confused on that."
+      },
+      {
+        "question": "In the past week, have you felt like you needed medical help, even if you didn't end up asking for help?",
+        "answer": "Yes",
+        "answerClass": "bad",
+        "quote": "I think there was one time where I really did need help. I didn't wanna go to emergency room, but maybe I should have."
+      },
+      {
+        "question": "Compared to last month, is your general wellness better, worse or the same?",
+        "answer": "Worse",
+        "answerClass": "bad",
+        "quote": "It's worse. I'm not feeling better. I need to be seen."
+      },
+      {
+        "question": "In the past month, have you experienced any NEW or UNBEARABLE symptoms that limit your normal activities, such as pain, fever, nausea, diarrhea, or vomiting?",
+        "answer": "No",
+        "answerClass": "good",
+        "quote": "None of those. It's mainly the shortness of breath that's bothering me."
+      }
+    ]
   },
-  "transcript": [
-    { "t": "0:00", "speaker": "agent",   "text": "Hi Claire, this is Lisa from SurveyHealth calling on behalf of Everyday Health Clinic. Is now still a good time to talk for a couple of minutes?" },
-    { "t": "0:08", "speaker": "patient", "text": "Yes, yes, it is. Thanks for calling back so quickly." },
-    { "t": "0:13", "speaker": "agent",   "text": "Of course. I'm following up on the check-in you did earlier this week. You mentioned more shortness of breath and a cough that's been bothering you — is that still going on today?" },
-    { "t": "0:25", "speaker": "patient", "text": "It is. I've been coughing up a lot more, and honestly it doesn't look good. Even getting up the stairs is hard now." },
-    { "t": "0:36", "speaker": "agent",   "text": "Okay, thank you for telling me. And how about your medications — are you confident you're taking the right doses?" },
-    { "t": "0:45", "speaker": "patient", "text": "Not really. I'm a little confused on which one is which. My daughter usually helps but she's been away." },
-    { "t": "0:55", "speaker": "agent",   "text": "That's helpful for me to know. Have you felt at any point this week that you needed to be seen — even if you didn't end up calling anyone?" },
-    { "t": "1:05", "speaker": "patient", "text": "Yes. There was one night I almost called, but I didn't want to be a hassle. Maybe I should have." },
-    { "t": "1:15", "speaker": "agent",   "text": "You're not a hassle, Claire. That's exactly what we're here for. Compared to last month, would you say you're feeling better, worse, or about the same?" },
-    { "t": "1:26", "speaker": "patient", "text": "Worse. Definitely worse. I'm not getting better, and I think I need to be seen." },
-    { "t": "1:34", "speaker": "agent",   "text": "Okay. Any new pain, fever, nausea, vomiting — anything else that's new this past month?" },
-    { "t": "1:44", "speaker": "patient", "text": "No, none of that. It's mainly the breathing and the cough." },
-    { "t": "1:51", "speaker": "agent",   "text": "Got it. Here's what I'd like to do. I'm going to get you on the schedule today or tomorrow with Dr. Henderson's team — I think you should be seen sooner rather than later. In the meantime, please continue your furosemide in the morning and the lisinopril as prescribed." },
-    { "t": "2:09", "speaker": "patient", "text": "Okay, I can do that." },
-    { "t": "2:13", "speaker": "agent",   "text": "And one more thing — I'm going to send you a quick text so you can take your blood pressure and weight on your phone. It only takes about a minute and helps the team see what's happening before your visit." },
-    { "t": "2:26", "speaker": "patient", "text": "Alright, I'll watch for it." },
-    { "t": "2:31", "speaker": "agent",   "text": "Perfect. If anything gets worse before we talk again — chest pain, severe shortness of breath at rest, or you feel lightheaded — please call 911 right away. I'll be in touch within the next two hours with your appointment time. Take care, Claire." },
-    { "t": "2:45", "speaker": "patient", "text": "Thank you, Lisa." }
-  ],
-  "extractedResponses": [
-    {
-      "question": "In the past week, have you had any increased shortness of breath and/or hacking cough that limits your normal activities?",
-      "answer": "Yes",
-      "answerClass": "bad",
-      "quote": "I've been coughing up a lot more, and honestly it doesn't look good. Even getting up the stairs is hard now."
+
+  "nurseCall": {
+    "callMeta": {
+      "patientName": "Claire Henderson",
+      "callDirection": "Outbound",
+      "callDuration": "2:47",
+      "callStarted": "2026-05-08T10:14:00-05:00",
+      "callEnded": "2026-05-08T10:16:47-05:00",
+      "agentName": "Lisa Goldenstein, RN — SurveyHealth Care Manager"
     },
-    {
-      "question": "In the past week, have you been taking your medications like your doctor ordered?",
-      "answer": "Not Sure",
-      "answerClass": "bad",
-      "quote": "Not really. I'm a little confused on which one is which. My daughter usually helps but she's been away."
-    },
-    {
-      "question": "In the past week, have you felt like you needed medical help, even if you didn't end up asking for help?",
-      "answer": "Yes",
-      "answerClass": "bad",
-      "quote": "There was one night I almost called, but I didn't want to be a hassle. Maybe I should have."
-    },
-    {
-      "question": "Compared to last month, is your general wellness better, worse or the same?",
-      "answer": "Worse",
-      "answerClass": "bad",
-      "quote": "Worse. Definitely worse. I'm not getting better, and I think I need to be seen."
-    },
-    {
-      "question": "In the past month, have you experienced any NEW or UNBEARABLE symptoms that limit your normal activities, such as pain, fever, nausea, diarrhea, or vomiting?",
-      "answer": "No",
-      "answerClass": "good",
-      "quote": "No, none of that. It's mainly the breathing and the cough."
+    "transcript": [
+      { "t": "0:00", "speaker": "agent",   "text": "Hi Claire, this is Lisa from SurveyHealth calling on behalf of Everyday Health Clinic. Is now still a good time to talk for a couple of minutes?" },
+      { "t": "0:08", "speaker": "patient", "text": "Yes, yes, it is. Thanks for calling back so quickly." },
+      { "t": "0:13", "speaker": "agent",   "text": "Of course. I'm following up on the wellness check you did earlier this morning. You mentioned more shortness of breath and a cough that's been bothering you — is that still going on?" },
+      { "t": "0:25", "speaker": "patient", "text": "It is. I've been coughing up a lot more, and honestly it doesn't look good. Even getting up the stairs is hard now." },
+      { "t": "0:36", "speaker": "agent",   "text": "Okay, thank you for telling me. And how about your medications — are you confident you're taking the right doses?" },
+      { "t": "0:45", "speaker": "patient", "text": "Not really. I'm a little confused on which one is which. My daughter usually helps but she's been away." },
+      { "t": "0:55", "speaker": "agent",   "text": "That's helpful for me to know. Have you felt at any point this week that you needed to be seen — even if you didn't end up calling anyone?" },
+      { "t": "1:05", "speaker": "patient", "text": "Yes. There was one night I almost called, but I didn't want to be a hassle. Maybe I should have." },
+      { "t": "1:15", "speaker": "agent",   "text": "You're not a hassle, Claire. That's exactly what we're here for. Compared to last month, would you say you're feeling better, worse, or about the same?" },
+      { "t": "1:26", "speaker": "patient", "text": "Worse. Definitely worse. I'm not getting better, and I think I need to be seen." },
+      { "t": "1:34", "speaker": "agent",   "text": "Okay. Any new pain, fever, nausea, vomiting — anything else that's new this past month?" },
+      { "t": "1:44", "speaker": "patient", "text": "No, none of that. It's mainly the breathing and the cough." },
+      { "t": "1:51", "speaker": "agent",   "text": "Got it. Here's what I'd like to do. I'm going to get you on the schedule today or tomorrow with Dr. Henderson's team — I think you should be seen sooner rather than later. In the meantime, please continue your furosemide in the morning and the lisinopril as prescribed." },
+      { "t": "2:09", "speaker": "patient", "text": "Okay, I can do that." },
+      { "t": "2:13", "speaker": "agent",   "text": "And one more thing — I'm going to send you a quick text so you can take your blood pressure and weight on your phone. It only takes about a minute and helps the team see what's happening before your visit." },
+      { "t": "2:26", "speaker": "patient", "text": "Alright, I'll watch for it." },
+      { "t": "2:31", "speaker": "agent",   "text": "Perfect. If anything gets worse before we talk again — chest pain, severe shortness of breath at rest, or you feel lightheaded — please call 911 right away. I'll be in touch within the next two hours with your appointment time. Take care, Claire." },
+      { "t": "2:45", "speaker": "patient", "text": "Thank you, Lisa." }
+    ],
+    "note": {
+      "patientName": "Claire Henderson",
+      "patientDob": "March 22, 1948 (age 77)",
+      "pcp": "Dr. Henderson, Everyday Health Clinic",
+      "dateOfEngagement": "May 8, 2026",
+      "careManager": "Lisa Goldenstein, RN — SurveyHealth",
+      "interactionType": "Telephonic Care Manager Follow-up",
+      "interventionCategory": "APCM + RPM",
+      "conditionsMonitored": "Heart Failure",
+      "goals": "No ED visits and no hospitalizations this calendar year.",
+      "evaluationReason": "Follow-up to flagged AI biweekly wellness check earlier this morning — patient reported worsening dyspnea, increased cough, medication confusion, and a self-identified need for clinical attention.",
+      "summaryOfInteraction": "Spoke with Ms. Henderson by phone for 2 minutes and 47 seconds. Patient reports progressive shortness of breath when climbing stairs over the past 7–9 days, an increase in cough volume and productivity, mild bilateral ankle swelling in the evenings, and a 3-lb weight gain from last week. New orthopnea — needing to prop up on pillows overnight. Denies chest pain, palpitations, fever, nausea, or vomiting. Medication adherence uncertain — patient confused about which doses she's taking; usual support from daughter is currently unavailable. Patient expressed she felt she should have been seen earlier in the week. Compared to last month, patient reports her general wellness is worse and explicitly stated she needs to be seen.",
+      "plan": "1. Schedule same-day or next-day visit with Dr. Henderson's team; nurse to confirm appointment within 2 hours.\n2. Reconcile medications on next call — confirm furosemide AM dose and lisinopril; offer pill-organizer setup with daughter when she returns.\n3. Send RPM prompt for BP and weight reading; alert threshold +2 lb/day or +5 lb/week.\n4. Reinforce 2 g sodium diet and fluid guidance; reviewed CHF decompensation warning signs with patient.\n5. Patient instructed to call 911 if chest pain, severe SOB at rest, or lightheadedness develops before her visit.\n6. Flag ticket as Evaluation — High priority pending PCP review.",
+      "timeSpent": "2 minutes 47 seconds"
     }
-  ],
-  "note": {
-    "patientName": "Claire Henderson",
-    "patientDob": "March 22, 1948 (age 77)",
-    "pcp": "Dr. Henderson, Everyday Health Clinic",
-    "dateOfEngagement": "May 8, 2026",
-    "careManager": "Lisa Goldenstein, RN — SurveyHealth",
-    "interactionType": "Telephonic Wellness Check Evaluation",
-    "interventionCategory": "APCM + RPM",
-    "conditionsMonitored": "Heart Failure",
-    "goals": "No ED visits and no hospitalizations this calendar year.",
-    "evaluationReason": "Follow-up to flagged biweekly wellness check — patient reported worsening dyspnea, increased cough, medication confusion, and a self-identified need for clinical attention.",
-    "summaryOfInteraction": "Spoke with Ms. Henderson by phone for 2 minutes and 47 seconds. Patient reports progressive shortness of breath when climbing stairs over the past 7–9 days, an increase in cough volume and productivity, mild bilateral ankle swelling in the evenings, and a 3-lb weight gain from last week. New orthopnea — needing to prop up on pillows overnight. Denies chest pain, palpitations, fever, nausea, or vomiting. Medication adherence uncertain — patient confused about which doses she's taking; usual support from daughter is currently unavailable. Patient expressed she felt she should have been seen earlier in the week. Compared to last month, patient reports her general wellness is worse and explicitly stated she needs to be seen.",
-    "plan": "1. Schedule same-day or next-day visit with Dr. Henderson's team; nurse to confirm appointment within 2 hours.\n2. Reconcile medications on next call — confirm furosemide AM dose and lisinopril; offer pill-organizer setup with daughter when she returns.\n3. Send RPM prompt for BP and weight reading; alert threshold +2 lb/day or +5 lb/week.\n4. Reinforce 2 g sodium diet and fluid guidance; reviewed CHF decompensation warning signs with patient.\n5. Patient instructed to call 911 if chest pain, severe SOB at rest, or lightheadedness develops before her visit.\n6. Flag ticket as Evaluation — High priority pending PCP review.",
-    "timeSpent": "2 minutes 47 seconds"
   },
+
   "summary": {
     "riskLevel": "moderate-high",
     "oneLine": "Likely early CHF decompensation — worsening dyspnea, productive cough, new orthopnea, 3-lb weight gain, and medication confusion. Same-day clinic visit being arranged."

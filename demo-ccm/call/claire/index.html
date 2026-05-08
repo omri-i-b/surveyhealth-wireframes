@@ -1739,14 +1739,17 @@ document.addEventListener('click', (e) => {
 // has a conversation to analyze on regenerate.
 async function renderFromMock() {
   const mock = await fetchMock();
+  // The AI Summary card represents the human nurse follow-up call — distinct
+  // from the AI agent biweekly wellness check at the top of the page.
+  const nurse = mock.nurseCall || {};
   const callId = 'mock-' + Date.now();
   lastCallId = callId;
   noteGenerated = true;
-  renderCallMeta({ callMeta: mock.callMeta || {} });
-  renderNote(mock.note);
-  renderLiveTranscript(mock.transcript || []);
-  const when = mock.callMeta?.callEnded
-    ? new Date(mock.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  renderCallMeta({ callMeta: nurse.callMeta || {} });
+  renderNote(nurse.note || {});
+  renderLiveTranscript(nurse.transcript || []);
+  const when = nurse.callMeta?.callEnded
+    ? new Date(nurse.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     : '';
   setStatus('received', when ? `note ready, based on call at ${when}` : 'note ready');
   const statusEl = document.getElementById('info-status');
@@ -1754,9 +1757,9 @@ async function renderFromMock() {
   try {
     localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
       callId,
-      callMeta: mock.callMeta,
-      transcript: mock.transcript,
-      note: mock.note,
+      callMeta: nurse.callMeta,
+      transcript: nurse.transcript,
+      note: nurse.note,
       savedAt: new Date().toISOString(),
     }));
   } catch (_) {}
@@ -1820,12 +1823,17 @@ document.getElementById('listen-btn').addEventListener('click', () => {
 });
 
 // Prefill the top section (call recording + transcript + extracted responses)
-// from the mock, representing a prior call already on file for this ticket.
-// The AI Summary Note below stays empty until a NEW Quo call arrives.
+// with the AI agent (Lily) biweekly wellness check that flagged this ticket.
+// The AI Summary Note at the bottom is a *separate* touchpoint — the human
+// nurse follow-up call by Lisa Goldenstein — driven by renderFromMock().
 async function prefillPreviousTouchpoint() {
   try {
-    const payload = await fetchMock();
-    renderCallCard(payload);
+    const mock = await fetchMock();
+    const ai = mock.aiCall || {};
+    renderCallCard({
+      transcript: ai.transcript || [],
+      extractedResponses: ai.extractedResponses || [],
+    });
   } catch (err) {
     console.warn('Could not load previous call:', err.message);
   }
