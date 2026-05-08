@@ -876,32 +876,50 @@ function applySettings() {
 }
 
 // Populate the Quo-line dropdown (inside the settings drawer) from /v1/phone-numbers.
+// Hardcoded fallback so the dropdown is always usable even when the proxy
+// is unreachable from the browser (CORS, offline, etc). The CCM Test line
+// is the demo default.
+const FALLBACK_QUO_LINES = [
+  { id: 'PN9cTfcvuB', name: 'CCM Test',                formattedNumber: '(803) 233-4666' },
+  { id: 'PNaTKlSkJU', name: "Ilya's testing number",   formattedNumber: '(803) 590-9924' },
+  { id: 'PNyULnebBE', name: 'Primary',                 formattedNumber: '(505) 431-4999' },
+];
+const DEFAULT_PN_ID = 'PN9cTfcvuB';
+
+function fillQuoLineSelect(select, lines, selectedId, pnIdInput) {
+  select.innerHTML = '<option value="">— choose a line —</option>' + lines.map(l => {
+    const label = `${l.name || 'Line'} · ${l.formattedNumber || l.number}`;
+    return `<option value="${l.id}">${label}</option>`;
+  }).join('');
+  const pick = (selectedId && lines.some(l => l.id === selectedId))
+    ? selectedId
+    : (lines.find(l => l.id === DEFAULT_PN_ID)?.id || lines[0]?.id);
+  if (pick) {
+    select.value = pick;
+    localStorage.setItem(STORAGE.pnId, pick);
+    if (pnIdInput) pnIdInput.value = pick;
+  }
+}
+
 async function populateQuoLineDropdown() {
   const select = document.getElementById('input-pnid-select');
   const pnIdInput = document.getElementById('input-pnid');
   if (!select) return;
   const s = loadSettings();
+  // Wire the change handler once
+  select.addEventListener('change', () => {
+    if (pnIdInput) pnIdInput.value = select.value;
+  });
+  // Seed with the fallback list immediately so the dropdown is never empty
+  fillQuoLineSelect(select, FALLBACK_QUO_LINES, s.pnId, pnIdInput);
+  // Then try to fetch the live list and replace if available
   try {
     const json = await quoGet('/phone-numbers');
     const lines = json?.data || [];
-    if (!lines.length) throw new Error('no lines returned');
-    select.innerHTML = '<option value="">— choose a line —</option>' + lines.map(l => {
-      const label = `${l.name || 'Line'} · ${l.formattedNumber || l.number}`;
-      return `<option value="${l.id}">${label}</option>`;
-    }).join('');
-    if (s.pnId && lines.some(l => l.id === s.pnId)) {
-      select.value = s.pnId;
-    } else if (lines.length) {
-      select.value = lines[0].id;
-      localStorage.setItem(STORAGE.pnId, lines[0].id);
-      if (pnIdInput) pnIdInput.value = lines[0].id;
-    }
-    select.addEventListener('change', () => {
-      if (pnIdInput) pnIdInput.value = select.value;
-    });
+    if (!lines.length) return; // keep fallback
+    fillQuoLineSelect(select, lines, s.pnId || DEFAULT_PN_ID, pnIdInput);
   } catch (err) {
-    console.warn('Could not load Quo lines:', err.message);
-    select.innerHTML = `<option value="">— proxy not reachable; type PN id below —</option>`;
+    console.warn('Could not load Quo lines (using fallback list):', err.message);
   }
 }
 function openSettings() {
