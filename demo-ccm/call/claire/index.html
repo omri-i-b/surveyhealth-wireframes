@@ -1388,9 +1388,12 @@ async function pollNow(forceRender = false) {
       }
       const IN_PROGRESS = ['queued','initiated','ringing','in-progress'];
       if (IN_PROGRESS.includes(payload.status)) {
+        if (listening) setListenButton('active');
         setStatus('waiting', `call ${payload.status} — awaiting completion`);
         return;
       }
+      // Call has ended — flip the button back to "Stop listening"
+      if (listening) setListenButton('listening');
       // Freshness gate: completed calls older than CALL_FRESHNESS_MS (1h) do
       // not auto-populate the ticket. Bypassed when the user explicitly asks
       // via the Regenerate button, OR when this call is already rendered
@@ -1808,15 +1811,24 @@ function setListenButton(state) {
   const label = document.getElementById('listen-btn-label');
   const btn = document.getElementById('listen-btn');
   if (!btn) return;
-  if (state === 'listening') {
+  // Strip any prior color theme
+  btn.classList.remove(
+    'border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50',
+    'border-red-200', 'bg-red-50', 'text-red-700', 'hover:bg-red-100',
+    'border-green-300', 'bg-green-50', 'text-green-700', 'hover:bg-green-100',
+    'animate-pulse'
+  );
+  if (state === 'active') {
+    icon.textContent = '🔴';
+    label.textContent = 'Active call';
+    btn.classList.add('border-green-300', 'bg-green-50', 'text-green-700', 'hover:bg-green-100', 'animate-pulse');
+  } else if (state === 'listening') {
     icon.textContent = '⏹';
     label.textContent = 'Stop listening';
-    btn.classList.remove('border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50');
     btn.classList.add('border-red-200', 'bg-red-50', 'text-red-700', 'hover:bg-red-100');
   } else {
     icon.textContent = '🎧';
     label.textContent = 'Listen for AI call';
-    btn.classList.remove('border-red-200', 'bg-red-50', 'text-red-700', 'hover:bg-red-100');
     btn.classList.add('border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50');
   }
 }
