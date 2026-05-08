@@ -415,7 +415,10 @@
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                 <span class="text-sm font-semibold text-gray-900">AI Summary</span>
               </div>
-              <button id="regen-btn" class="text-xs text-blue-600 hover:text-blue-800 font-medium">↻ Regenerate from latest call</button>
+              <button id="listen-btn" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
+                <span id="listen-btn-icon">🎧</span>
+                <span id="listen-btn-label">Listen for AI call</span>
+              </button>
             </div>
 
             <!-- Empty state — passive by default, animates only during a live call -->
@@ -808,7 +811,14 @@ function saveSettings() {
   localStorage.setItem(STORAGE.mock,     s.mock ? '1' : '0');
   closeSettings();
   applySettings();
-  restartPolling();
+  // Don't auto-start polling on settings save — the user explicitly opts in
+  // via the "Listen for AI call" button. If they were already listening,
+  // restart with the new interval; otherwise leave the toggle off.
+  if (listening) {
+    if (pollTimer) clearInterval(pollTimer);
+    const ms = Math.max(2, loadSettings().interval || 5) * 1000;
+    pollTimer = setInterval(() => pollNow(true), ms);
+  }
   toast('Settings saved');
 }
 // Format +18032334666 → "(803) 233-4666"
@@ -1675,68 +1685,61 @@ async function renderFromMock() {
   } catch (_) {}
 }
 
-document.getElementById('regen-btn').addEventListener('click', async () => {
-  // Explicit user intent to pull the latest call back — clear suppression
-  // and the "saw it already" guard so pollNow re-renders from scratch.
+// Listening toggle: by default the AI summary shows the bundled mock
+// conversation so the demo always has something to analyze. Clicking
+// "Listen for AI call" starts polling Quo for a fresh call and replaces
+// the summary when one arrives. Clicking again stops polling.
+let listening = false;
+
+function setListenButton(state) {
+  const icon = document.getElementById('listen-btn-icon');
+  const label = document.getElementById('listen-btn-label');
+  const btn = document.getElementById('listen-btn');
+  if (!btn) return;
+  if (state === 'listening') {
+    icon.textContent = '⏹';
+    label.textContent = 'Stop listening';
+    btn.classList.remove('border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50');
+    btn.classList.add('border-red-200', 'bg-red-50', 'text-red-700', 'hover:bg-red-100');
+  } else {
+    icon.textContent = '🎧';
+    label.textContent = 'Listen for AI call';
+    btn.classList.remove('border-red-200', 'bg-red-50', 'text-red-700', 'hover:bg-red-100');
+    btn.classList.add('border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50');
+  }
+}
+
+function startListening() {
+  listening = true;
+  setListenButton('listening');
   suppressedCallIds.clear();
   lastCallId = null;
   noteGenerated = false;
   lastStatusKind = null;
   lastStatusDetail = null;
-  resetNote();
-  toast('Pulling latest call…');
-
-  // Try Quo first. If it returns nothing usable (no recent call, transcript
-  // not ready, settings missing, network error, or LLM call fails), fall
-  // back to the bundled mock conversation so the demo always renders.
+  setStatus('waiting', 'listening for next AI call…');
+  if (pollTimer) clearInterval(pollTimer);
   const s = loadSettings();
-  const isMock = s.mock || new URLSearchParams(location.search).get('mock') === '1';
-  const viaProxy = /^https?:\/\/(localhost|127\.0\.0\.1|[^/]*\.up\.railway\.app)/.test(s.base);
-  const quoConfigured = !isMock && s.pnId && s.number && (s.apiKey || viaProxy);
+  const ms = Math.max(2, s.interval || 5) * 1000;
+  pollNow(true);
+  pollTimer = setInterval(() => pollNow(true), ms);
+  toast('Listening for next call…');
+}
 
-  if (!quoConfigured) {
-    await renderFromMock();
-    return;
+function stopListening() {
+  listening = false;
+  setListenButton('idle');
+  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  // If no real call landed while listening, restore the mock so the
+  // summary card stays populated. If a real call did populate, leave it.
+  if (!noteGenerated) {
+    renderFromMock();
   }
+  toast('Stopped listening — showing default conversation');
+}
 
-  try {
-    const payload = await fetchQuoLatest();
-    if (!payload || !payload.callId || payload.transcriptStatus !== 'completed' || !payload.transcript || !payload.transcript.length) {
-      await renderFromMock();
-      return;
-    }
-    // Quo has a real, completed call — render it via the LLM pipeline.
-    lastCallId = payload.callId;
-    noteGenerated = true;
-    renderCallMeta(payload);
-    setStatus('waiting', 'generating AI note…');
-    try {
-      const note = await generateNoteFromCall(payload.callId);
-      renderNote(note);
-      renderLiveTranscript(payload.transcript);
-      const when = payload.callMeta?.callEnded
-        ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        : '';
-      setStatus('received', `note ready, based on call at ${when}`);
-      const statusEl = document.getElementById('info-status');
-      if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
-      try {
-        localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
-          callId: payload.callId,
-          callMeta: payload.callMeta,
-          transcript: payload.transcript,
-          note,
-          savedAt: new Date().toISOString(),
-        }));
-      } catch (_) {}
-    } catch (err) {
-      console.warn('LLM summarize failed, falling back to mock:', err);
-      await renderFromMock();
-    }
-  } catch (err) {
-    console.warn('Quo fetch failed, falling back to mock:', err);
-    await renderFromMock();
-  }
+document.getElementById('listen-btn').addEventListener('click', () => {
+  if (listening) stopListening(); else startListening();
 });
 
 // Prefill the top section (call recording + transcript + extracted responses)
@@ -1759,8 +1762,12 @@ async function prefillPreviousTouchpoint() {
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
   // Rehydrate a previously-rendered AI summary so a page reload keeps the
-  // populated state until the user explicitly resets the ticket.
-  restoreLastRender();
+  // populated state until the user explicitly resets the ticket. If nothing
+  // was previously rendered, fall back to the bundled mock conversation so
+  // the summary card always has content to show by default.
+  if (!restoreLastRender()) {
+    renderFromMock();
+  }
   const createdEl = document.getElementById('info-created');
   if (createdEl) createdEl.textContent = todayDateStr();
 
@@ -1793,12 +1800,10 @@ async function prefillPreviousTouchpoint() {
     }
   } catch (_) { /* ignore */ }
 
-  const s = loadSettings();
-  const mockParam = new URLSearchParams(location.search).get('mock') === '1';
-  if (!s.pnId && !s.number && !s.mock && !mockParam) {
-    setStatus('idle');
-  }
-  restartPolling();
+  // No auto-polling on boot — the user opts in by clicking "Listen for AI call".
+  // The mock conversation is rendered by default so the demo always has
+  // something to analyze. Initialize the listen button to the idle state.
+  setListenButton('idle');
 })();
 </script>
 
