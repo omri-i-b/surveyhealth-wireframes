@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ticket #CH-042 — Claire Henderson · SurveyHealth</title>
+  <title>Ticket #CH-042 — Claire Henderson · Survey Health</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -405,7 +405,7 @@
               <div class="p-4 flex items-center justify-between flex-wrap gap-3">
                 <div>
                   <div class="font-medium text-gray-800 text-sm">Patient-submitted images</div>
-                  <div class="text-gray-500 text-xs mt-0.5">Submitted via SurveyHealth mobile · May 8, 2026</div>
+                  <div class="text-gray-500 text-xs mt-0.5">Submitted via Survey Health mobile · May 8, 2026</div>
                 </div>
                 <div class="flex items-center gap-2">
                   <button type="button" onclick="toggleWoundImage('with')" id="wound-btn-with" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
@@ -1677,6 +1677,11 @@ function restoreLastRender() {
   // (e.g. note.patientName). If so, invalidate and re-render from the
   // current mock so the UI doesn't show a half-empty note.
   if (!prior.note.patientName || !prior.note.summaryOfInteraction) {
+    localStorage.removeItem('demoCcm.claireLastRender');
+    return false;
+  }
+  // Invalidate cached renders baked with the old "SurveyHealth" spelling.
+  if (/SurveyHealth/.test(JSON.stringify(prior.note))) {
     localStorage.removeItem('demoCcm.claireLastRender');
     return false;
   }

@@ -1,5 +1,5 @@
 {
-  "_comment": "Default mock for Claire's ticket. Two distinct touchpoints: (1) aiCall = the AI agent (Lily / SurveyHealth Voice) biweekly wellness check that flagged this ticket — drives the call recording + transcript + extracted responses card at the TOP of the page. (2) nurseCall = the human follow-up call by Lisa Goldenstein, RN — drives the AI Summary card with the 13-field CCM note at the BOTTOM. Live Quo + LLM output overrides nurseCall when 'Listen for AI call' captures a fresh call.",
+  "_comment": "Default mock for Claire's ticket. Two distinct touchpoints: (1) aiCall = the AI agent (Lily / Survey Health Voice) biweekly wellness check that flagged this ticket — drives the call recording + transcript + extracted responses card at the TOP of the page. (2) nurseCall = the human follow-up call by Lisa Goldenstein, RN — drives the AI Summary card with the 13-field CCM note at the BOTTOM. Live Quo + LLM output overrides nurseCall when 'Listen for AI call' captures a fresh call.",
 
   "aiCall": {
     "callMeta": {
@@ -8,7 +8,7 @@
       "callDuration": "2:47",
       "callStarted": "2026-05-08T08:42:00-05:00",
       "callEnded": "2026-05-08T08:44:47-05:00",
-      "agentName": "SurveyHealth Voice AI"
+      "agentName": "Survey Health Voice AI"
     },
     "transcript": [
       { "t": "0:00", "speaker": "agent",   "text": "Hi, this is Lily, calling on behalf of Everyday Health Clinic. Is this Claire?" },
@@ -70,10 +70,10 @@
       "callDuration": "2:47",
       "callStarted": "2026-05-08T10:14:00-05:00",
       "callEnded": "2026-05-08T10:16:47-05:00",
-      "agentName": "Lisa Goldenstein, RN — SurveyHealth Care Manager"
+      "agentName": "Lisa Goldenstein, RN — Survey Health Care Manager"
     },
     "transcript": [
-      { "t": "0:00", "speaker": "agent",   "text": "Hi Claire, this is Lisa from SurveyHealth calling on behalf of Everyday Health Clinic. Is now still a good time to talk for a couple of minutes?" },
+      { "t": "0:00", "speaker": "agent",   "text": "Hi Claire, this is Lisa from Survey Health calling on behalf of Everyday Health Clinic. Is now still a good time to talk for a couple of minutes?" },
       { "t": "0:08", "speaker": "patient", "text": "Yes, yes, it is. Thanks for calling back so quickly." },
       { "t": "0:13", "speaker": "agent",   "text": "Of course. I'm following up on the wellness check you did earlier this morning. You mentioned more shortness of breath and a cough that's been bothering you — is that still going on?" },
       { "t": "0:25", "speaker": "patient", "text": "It is. I've been coughing up a lot more, and honestly it doesn't look good. Even getting up the stairs is hard now." },
@@ -97,7 +97,7 @@
       "patientDob": "March 22, 1948 (age 77)",
       "pcp": "Dr. Henderson, Everyday Health Clinic",
       "dateOfEngagement": "May 8, 2026",
-      "careManager": "Lisa Goldenstein, RN — SurveyHealth",
+      "careManager": "Lisa Goldenstein, RN — Survey Health",
       "interactionType": "Telephonic Care Manager Follow-up",
       "interventionCategory": "APCM + RPM",
       "conditionsMonitored": "Heart Failure",

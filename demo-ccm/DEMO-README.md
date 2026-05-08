@@ -119,7 +119,7 @@ The summary shape is limited (just arrays of bullets), so `mapQuoSummaryToAmbien
 - `nextSteps[]` → Plan / Follow-up (last bullet)
 - Other sections default to "(not captured — click to add)" — editable.
 
-When SurveyHealth's real structured ambient-note feature ships (3–4 weeks), replace only `mapQuoSummaryToAmbientNote()` and/or the summary fetch call to return the full note shape directly.
+When Survey Health's real structured ambient-note feature ships (3–4 weeks), replace only `mapQuoSummaryToAmbientNote()` and/or the summary fetch call to return the full note shape directly.
 
 ### CORS proxy (included)
 
