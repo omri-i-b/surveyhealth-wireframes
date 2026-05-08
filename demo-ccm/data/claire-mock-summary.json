@@ -67,9 +67,9 @@
     "callMeta": {
       "patientName": "Claire Henderson",
       "callDirection": "Outbound",
-      "callDuration": "2:47",
+      "callDuration": "4:18",
       "callStarted": "2026-05-08T10:14:00-05:00",
-      "callEnded": "2026-05-08T10:16:47-05:00",
+      "callEnded": "2026-05-08T10:18:18-05:00",
       "agentName": "Lisa Goldenstein, RN — Survey Health Care Manager"
     },
     "transcript": [
@@ -89,8 +89,12 @@
       { "t": "2:09", "speaker": "patient", "text": "Okay, I can do that." },
       { "t": "2:13", "speaker": "agent",   "text": "And one more thing — I'm going to send you a quick text so you can take your blood pressure and weight on your phone. It only takes about a minute and helps the team see what's happening before your visit." },
       { "t": "2:26", "speaker": "patient", "text": "Alright, I'll watch for it." },
-      { "t": "2:31", "speaker": "agent",   "text": "Perfect. If anything gets worse before we talk again — chest pain, severe shortness of breath at rest, or you feel lightheaded — please call 911 right away. I'll be in touch within the next two hours with your appointment time. Take care, Claire." },
-      { "t": "2:45", "speaker": "patient", "text": "Thank you, Lisa." }
+      { "t": "2:31", "speaker": "agent",   "text": "Before I let you go, let's quickly go over your medications so I can make sure you're on the right ones. Can you grab your pill bottles?" },
+      { "t": "2:42", "speaker": "patient", "text": "Hold on, let me get them. Okay, I have furosemide, lisinopril, and a multivitamin." },
+      { "t": "2:55", "speaker": "agent",   "text": "Great. Furosemide is the water pill — once in the morning. Lisinopril is for blood pressure — once a day. Are you taking those at the same time every day?" },
+      { "t": "3:08", "speaker": "patient", "text": "I try to but some days I forget the morning one." },
+      { "t": "3:14", "speaker": "agent",   "text": "Okay. I'll have your nurse set up a pill organizer when she calls back, and we'll have your daughter help when she's back in town. If anything gets worse before we talk again — chest pain, severe shortness of breath at rest, or you feel lightheaded — please call 911 right away. I'll be in touch within the next two hours with your appointment time. Take care, Claire." },
+      { "t": "4:13", "speaker": "patient", "text": "Thank you, Lisa." }
     ],
     "note": {
       "patientName": "Claire Henderson",
@@ -103,9 +107,9 @@
       "conditionsMonitored": "Heart Failure",
       "goals": "No ED visits and no hospitalizations this calendar year.",
       "evaluationReason": "Follow-up to flagged AI biweekly wellness check earlier this morning — patient reported worsening dyspnea, increased cough, medication confusion, and a self-identified need for clinical attention.",
-      "summaryOfInteraction": "Spoke with Ms. Henderson by phone for 2 minutes and 47 seconds. Patient reports progressive shortness of breath when climbing stairs over the past 7–9 days, an increase in cough volume and productivity, mild bilateral ankle swelling in the evenings, and a 3-lb weight gain from last week. New orthopnea — needing to prop up on pillows overnight. Denies chest pain, palpitations, fever, nausea, or vomiting. Medication adherence uncertain — patient confused about which doses she's taking; usual support from daughter is currently unavailable. Patient expressed she felt she should have been seen earlier in the week. Compared to last month, patient reports her general wellness is worse and explicitly stated she needs to be seen.",
+      "summaryOfInteraction": "Spoke with Ms. Henderson by phone for 4 minutes and 18 seconds. Patient reports progressive shortness of breath when climbing stairs over the past 7–9 days, an increase in cough volume and productivity, mild bilateral ankle swelling in the evenings, and a 3-lb weight gain from last week. New orthopnea — needing to prop up on pillows overnight. Denies chest pain, palpitations, fever, nausea, or vomiting. Medication reconciliation completed on call — patient confirmed furosemide AM, lisinopril daily, and a multivitamin; reports occasionally missing the morning dose, with usual support from daughter currently unavailable. Patient expressed she felt she should have been seen earlier in the week. Compared to last month, patient reports her general wellness is worse and explicitly stated she needs to be seen.",
       "plan": "1. Schedule same-day or next-day visit with Dr. Henderson's team; nurse to confirm appointment within 2 hours.\n2. Reconcile medications on next call — confirm furosemide AM dose and lisinopril; offer pill-organizer setup with daughter when she returns.\n3. Send RPM prompt for BP and weight reading; alert threshold +2 lb/day or +5 lb/week.\n4. Reinforce 2 g sodium diet and fluid guidance; reviewed CHF decompensation warning signs with patient.\n5. Patient instructed to call 911 if chest pain, severe SOB at rest, or lightheadedness develops before her visit.\n6. Flag ticket as Evaluation — High priority pending PCP review.",
-      "timeSpent": "2 minutes 47 seconds"
+      "timeSpent": "4 minutes 18 seconds"
     }
   },
 
