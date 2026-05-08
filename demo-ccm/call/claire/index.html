@@ -1332,11 +1332,28 @@ async function quoGet(path) {
 async function fetchQuoLatest() {
   const s = loadSettings();
   const viaProxy = /^https?:\/\/(localhost|127\.0\.0\.1|[^/]*\.up\.railway\.app)/.test(s.base);
-  if ((!s.apiKey && !viaProxy) || !s.pnId || !s.number) {
-    throw new Error('Missing API key / phoneNumberId / phone number');
+  if ((!s.apiKey && !viaProxy) || !s.pnId) {
+    throw new Error('Missing API key / phoneNumberId');
   }
+
+  // Step 1: if the user typed a specific patient number, use it. Otherwise
+  // auto-resolve the latest participant on this line via /v1/conversations,
+  // since /v1/calls requires a participants filter.
+  let participant = (s.number || '').trim();
+  if (!participant) {
+    try {
+      const convos = await quoGet(`/conversations?phoneNumberIds%5B%5D=${encodeURIComponent(s.pnId)}&maxResults=1`);
+      const latest = convos?.data?.[0];
+      participant = latest?.participants?.[0] || '';
+    } catch (_) { /* fall through */ }
+  }
+  if (!participant) {
+    // No conversation history on this line yet — nothing to fetch.
+    return null;
+  }
+
   const listPath = `/calls?phoneNumberId=${encodeURIComponent(s.pnId)}` +
-                   `&participants=${encodeURIComponent(s.number)}&maxResults=1`;
+                   `&participants=${encodeURIComponent(participant)}&maxResults=1`;
   const list = await quoGet(listPath);
   const calls = list?.data || [];
   if (!calls.length) return null;
@@ -1374,7 +1391,9 @@ async function pollNow(forceRender = false) {
       setStatus('received');
     } else {
       const viaProxy = /^https?:\/\/(localhost|127\.0\.0\.1|[^/]*\.up\.railway\.app)/.test(s.base);
-      if ((!s.apiKey && !viaProxy) || !s.pnId || !s.number) {
+      // Patient number is optional now — fetchQuoLatest auto-resolves the
+      // latest participant via /v1/conversations when it's blank.
+      if ((!s.apiKey && !viaProxy) || !s.pnId) {
         setStatus('idle');
         return;
       }
