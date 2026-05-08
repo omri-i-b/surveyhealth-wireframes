@@ -1664,6 +1664,13 @@ function restoreLastRender() {
   try { prior = JSON.parse(localStorage.getItem('demoCcm.claireLastRender') || 'null'); }
   catch { prior = null; }
   if (!prior || !prior.note || !prior.callId) return false;
+  // Schema gate: older cached renders may be missing the 13 CCM fields
+  // (e.g. note.patientName). If so, invalidate and re-render from the
+  // current mock so the UI doesn't show a half-empty note.
+  if (!prior.note.patientName || !prior.note.summaryOfInteraction) {
+    localStorage.removeItem('demoCcm.claireLastRender');
+    return false;
+  }
 
   // Rebuild the payload shape renderCallMeta expects
   renderCallMeta({ callMeta: prior.callMeta || {} });
