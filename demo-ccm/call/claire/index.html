@@ -1646,7 +1646,36 @@ document.addEventListener('click', (e) => {
 // =========================================================================
 // Regen + Boot
 // =========================================================================
-document.getElementById('regen-btn').addEventListener('click', () => {
+// Render the bundled mock conversation directly into the AI Summary card
+// (no LLM call — the mock JSON already has the full 13-field note populated).
+// Used as a fallback when Quo has nothing fresh to pull, so the demo always
+// has a conversation to analyze on regenerate.
+async function renderFromMock() {
+  const mock = await fetchMock();
+  const callId = 'mock-' + Date.now();
+  lastCallId = callId;
+  noteGenerated = true;
+  renderCallMeta({ callMeta: mock.callMeta || {} });
+  renderNote(mock.note);
+  renderLiveTranscript(mock.transcript || []);
+  const when = mock.callMeta?.callEnded
+    ? new Date(mock.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    : '';
+  setStatus('received', when ? `note ready, based on call at ${when}` : 'note ready');
+  const statusEl = document.getElementById('info-status');
+  if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+  try {
+    localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
+      callId,
+      callMeta: mock.callMeta,
+      transcript: mock.transcript,
+      note: mock.note,
+      savedAt: new Date().toISOString(),
+    }));
+  } catch (_) {}
+}
+
+document.getElementById('regen-btn').addEventListener('click', async () => {
   // Explicit user intent to pull the latest call back — clear suppression
   // and the "saw it already" guard so pollNow re-renders from scratch.
   suppressedCallIds.clear();
@@ -1656,7 +1685,58 @@ document.getElementById('regen-btn').addEventListener('click', () => {
   lastStatusDetail = null;
   resetNote();
   toast('Pulling latest call…');
-  pollNow(true);  // bypass freshness + suppression gates
+
+  // Try Quo first. If it returns nothing usable (no recent call, transcript
+  // not ready, settings missing, network error, or LLM call fails), fall
+  // back to the bundled mock conversation so the demo always renders.
+  const s = loadSettings();
+  const isMock = s.mock || new URLSearchParams(location.search).get('mock') === '1';
+  const viaProxy = /^https?:\/\/(localhost|127\.0\.0\.1|[^/]*\.up\.railway\.app)/.test(s.base);
+  const quoConfigured = !isMock && s.pnId && s.number && (s.apiKey || viaProxy);
+
+  if (!quoConfigured) {
+    await renderFromMock();
+    return;
+  }
+
+  try {
+    const payload = await fetchQuoLatest();
+    if (!payload || !payload.callId || payload.transcriptStatus !== 'completed' || !payload.transcript || !payload.transcript.length) {
+      await renderFromMock();
+      return;
+    }
+    // Quo has a real, completed call — render it via the LLM pipeline.
+    lastCallId = payload.callId;
+    noteGenerated = true;
+    renderCallMeta(payload);
+    setStatus('waiting', 'generating AI note…');
+    try {
+      const note = await generateNoteFromCall(payload.callId);
+      renderNote(note);
+      renderLiveTranscript(payload.transcript);
+      const when = payload.callMeta?.callEnded
+        ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : '';
+      setStatus('received', `note ready, based on call at ${when}`);
+      const statusEl = document.getElementById('info-status');
+      if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
+      try {
+        localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
+          callId: payload.callId,
+          callMeta: payload.callMeta,
+          transcript: payload.transcript,
+          note,
+          savedAt: new Date().toISOString(),
+        }));
+      } catch (_) {}
+    } catch (err) {
+      console.warn('LLM summarize failed, falling back to mock:', err);
+      await renderFromMock();
+    }
+  } catch (err) {
+    console.warn('Quo fetch failed, falling back to mock:', err);
+    await renderFromMock();
+  }
 });
 
 // Prefill the top section (call recording + transcript + extracted responses)
