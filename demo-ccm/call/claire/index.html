@@ -422,7 +422,7 @@
               <div id="wound-image" class="hidden border-t border-gray-200">
                 <div class="aspect-square sm:aspect-[4/3] max-h-80 mx-auto relative bg-gray-100 overflow-hidden">
                   <!-- Real photo (only used for "without bandage") -->
-                  <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden');" />
+                  <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="if (!this.dataset.fellBack) { this.dataset.fellBack = '1'; this.src = '../../assets/wound-no-bandage.svg'; } else { this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden'); }" />
                   <!-- Redacted hatch (used for "with bandage" — no photo on file) -->
                   <div id="wound-image-hatch" class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
                   <!-- Click-to-reveal overlay -->
@@ -1155,6 +1155,9 @@ function seekCallAudio(event) {
 // blurred by default with a click-to-reveal overlay. "With bandage" has
 // no photo on file so it shows a redacted hatch placeholder. Either way,
 // the user must click the overlay to remove the blur.
+// If a real JPG is dropped at assets/wound-no-bandage.jpg it'll be used;
+// otherwise the bundled SVG anatomical illustration shows instead (the
+// <img onerror> falls back to the SVG path automatically).
 const WOUND_IMG_WITHOUT = '../../assets/wound-no-bandage.jpg';
 function toggleWoundImage(variant) {
   const wrap   = document.getElementById('wound-image');
@@ -1177,6 +1180,7 @@ function toggleWoundImage(variant) {
     meta.textContent = 'Submitted by patient · May 9, 2026 · 7:14 AM';
   } else {
     if (photo) {
+      delete photo.dataset.fellBack;  // retry JPG → SVG fallback chain each time
       photo.src = WOUND_IMG_WITHOUT;
       photo.alt = 'Bilateral lower-extremity edema (patient-submitted)';
       photo.classList.remove('hidden');

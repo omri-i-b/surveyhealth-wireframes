@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <radialGradient id="skin" cx="50%" cy="40%" r="80%">
+      <stop offset="0%"  stop-color="#f3d4be"/>
+      <stop offset="55%" stop-color="#e6b9a0"/>
+      <stop offset="100%" stop-color="#cf957d"/>
+    </radialGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d8d5d0"/>
+      <stop offset="100%" stop-color="#aeaaa3"/>
+    </linearGradient>
+    <radialGradient id="edema" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#d99284" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#d99284" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Floor -->
+  <rect x="0" y="540" width="800" height="260" fill="url(#floor)"/>
+  <!-- Right foot (anatomical) -->
+  <g transform="translate(420,260)">
+    <path d="
+      M 60 0
+      C 40 80, 50 160, 90 230
+      C 100 290, 80 340, 50 380
+      L 240 380
+      C 260 350, 280 300, 290 260
+      C 300 220, 295 175, 270 140
+      C 245 100, 200 80, 170 60
+      C 145 40, 110 10, 60 0
+      Z" fill="url(#skin)"/>
+    <!-- Toes -->
+    <ellipse cx="105" cy="370" rx="22" ry="18" fill="#e8c0a6"/>
+    <ellipse cx="155" cy="378" rx="20" ry="16" fill="#e8c0a6"/>
+    <ellipse cx="195" cy="380" rx="18" ry="15" fill="#e8c0a6"/>
+    <ellipse cx="225" cy="378" rx="15" ry="13" fill="#e8c0a6"/>
+    <ellipse cx="248" cy="372" rx="13" ry="12" fill="#e8c0a6"/>
+    <!-- Edema flush around ankle -->
+    <ellipse cx="170" cy="120" rx="140" ry="80" fill="url(#edema)"/>
+  </g>
+  <!-- Left foot -->
+  <g transform="translate(110,290)">
+    <path d="
+      M 50 0
+      C 35 70, 45 150, 80 220
+      C 90 285, 70 335, 40 370
+      L 220 370
+      C 240 340, 258 290, 268 250
+      C 278 210, 273 170, 250 135
+      C 225 95, 185 75, 155 60
+      C 130 40, 95 10, 50 0
+      Z" fill="url(#skin)"/>
+    <ellipse cx="90" cy="362" rx="20" ry="17" fill="#e8c0a6"/>
+    <ellipse cx="138" cy="370" rx="18" ry="15" fill="#e8c0a6"/>
+    <ellipse cx="174" cy="372" rx="16" ry="14" fill="#e8c0a6"/>
+    <ellipse cx="202" cy="368" rx="14" ry="12" fill="#e8c0a6"/>
+    <ellipse cx="222" cy="362" rx="12" ry="11" fill="#e8c0a6"/>
+    <ellipse cx="155" cy="115" rx="135" ry="78" fill="url(#edema)"/>
+  </g>
+  <!-- Ankle/leg stubs -->
+  <path d="M 160 0 L 240 0 L 250 320 L 150 320 Z" fill="url(#skin)" opacity="0.95"/>
+  <path d="M 480 -10 L 570 -10 L 580 290 L 470 290 Z" fill="url(#skin)" opacity="0.95"/>
+  <!-- Soft floor shadow -->
+  <ellipse cx="280" cy="660" rx="180" ry="20" fill="#000" opacity="0.18"/>
+  <ellipse cx="600" cy="650" rx="170" ry="18" fill="#000" opacity="0.18"/>
+</svg>
