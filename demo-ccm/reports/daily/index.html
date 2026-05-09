@@ -138,8 +138,29 @@
             gap: 1px;
             background: var(--color-gray-200);
         }
+        .compact-card-body.two-col { grid-template-columns: 280px 1fr; }
         .compact-card-body.three-col { grid-template-columns: repeat(3, 1fr); }
         .compact-card-body.four-col { grid-template-columns: repeat(4, 1fr); }
+        .clinical-note-block {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 4px var(--spacing-md);
+            font-size: 12px;
+            line-height: 1.45;
+        }
+        .clinical-note-block dt {
+            color: var(--color-gray-500);
+            font-weight: 500;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding-top: 2px;
+        }
+        .clinical-note-block dd {
+            color: var(--color-gray-800);
+            margin: 0;
+        }
+        .clinical-note-block dd + dt { margin-top: 6px; }
         .compact-card-section {
             background: white;
             padding: var(--spacing-md) var(--spacing-lg);
@@ -285,23 +306,30 @@
                             <tbody id="tbody-escalation">
                                 <tr>
                                     <td>1</td>
-                                    <td>Jane Smith</td>
-                                    <td>Dr. Sarah Chen</td>
+                                    <td>Milton Abara</td>
+                                    <td>Dr. Henderson</td>
                                     <td><span class="badge badge-emergent">Emergent</span><span class="recommendation-text">Recommended ED visit</span></td>
                                     <td>No</td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td>Michael Davis</td>
-                                    <td>Dr. James Wilson</td>
-                                    <td><span class="badge badge-urgent">Urgent</span><span class="recommendation-text">Needs visit by Apr 21</span></td>
+                                    <td>Augusta Lindquist</td>
+                                    <td>Dr. Sarah Chen</td>
+                                    <td><span class="badge badge-urgent">Urgent</span><span class="recommendation-text">Recommend visit within 48 hours</span></td>
                                     <td>No</td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
-                                    <td>Test User</td>
-                                    <td>Nurse Alice Thompson</td>
-                                    <td><span class="badge badge-immediate">Immediate</span><span class="recommendation-text">Needs visit by Apr 26</span></td>
+                                    <td>Priscilla Hadley</td>
+                                    <td>Dr. James Wilson</td>
+                                    <td><span class="badge badge-immediate">Immediate</span><span class="recommendation-text">Recommend visit between 3-7 days</span></td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Dominic Okeke</td>
+                                    <td>Dr. Henderson</td>
+                                    <td><span class="badge badge-immediate">Immediate</span><span class="recommendation-text">Recommend visit between 3-7 days</span></td>
                                     <td>No</td>
                                 </tr>
                             </tbody>
@@ -328,7 +356,14 @@
                                     <td>1</td>
                                     <td>Emma Wilson</td>
                                     <td>Dr. Sarah Chen</td>
-                                    <td><span class="badge badge-routine">Routine</span><span class="recommendation-text">Needs visit by May 19</span></td>
+                                    <td><span class="badge badge-routine">Routine</span><span class="recommendation-text">Recommend visit between 8-30 days</span></td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Marion Bellinger</td>
+                                    <td>Dr. James Wilson</td>
+                                    <td><span class="badge badge-routine">Routine</span><span class="recommendation-text">Recommend visit between 8-30 days</span></td>
                                     <td>No</td>
                                 </tr>
                             </tbody>
@@ -352,44 +387,44 @@
                             <tbody id="tbody-interactions">
                                 <tr>
                                     <td>1</td>
-                                    <td>Jane Smith</td>
+                                    <td>Harold Wiseman</td>
                                     <td>Dr. Sarah Chen</td>
-                                    <td>No Intervention Needed</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Robert Williams</td>
-                                    <td>Dr. James Wilson</td>
                                     <td>Resolved on Phone</td>
                                 </tr>
                                 <tr>
-                                    <td>3</td>
-                                    <td>John Doe</td>
-                                    <td>Dr. Sarah Chen</td>
+                                    <td>2</td>
+                                    <td>Theodore Katz</td>
+                                    <td>Dr. James Wilson</td>
                                     <td>No Intervention Needed</td>
                                 </tr>
                                 <tr>
+                                    <td>3</td>
+                                    <td>Gloria Whitfield</td>
+                                    <td>Dr. Henderson</td>
+                                    <td>Resolved on Phone</td>
+                                </tr>
+                                <tr>
                                     <td>4</td>
-                                    <td>Mary Johnson</td>
+                                    <td>Beatrice Sandoval</td>
                                     <td>Dr. Sarah Chen</td>
                                     <td>Not Reachable</td>
                                 </tr>
                                 <tr>
                                     <td>5</td>
-                                    <td>Robert Williams</td>
+                                    <td>Walter Kamau</td>
                                     <td>Dr. James Wilson</td>
                                     <td>No Intervention Needed</td>
                                 </tr>
                                 <tr>
                                     <td>6</td>
-                                    <td>Robert Williams</td>
+                                    <td>Delphine Okafor</td>
                                     <td>Dr. James Wilson</td>
                                     <td>Resolved on Phone</td>
                                 </tr>
                                 <tr>
                                     <td>7</td>
-                                    <td>Sarah Anderson</td>
-                                    <td>Dr. James Wilson</td>
+                                    <td>Raymond Brewster</td>
+                                    <td>Dr. Sarah Chen</td>
                                     <td>Not Reachable</td>
                                 </tr>
                             </tbody>
@@ -403,150 +438,182 @@
                 <h2 class="details-header">Escalation Details</h2>
                 <div id="escalation-details-anchor"></div>
 
-                <!-- Jane Smith - Emergent -->
+                <!-- Milton Abara — Emergent -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Jane Smith <span class="badge badge-emergent">Emergent</span></h3>
+                        <h3>Milton Abara <span class="badge badge-emergent">Emergent</span></h3>
                         <div class="compact-card-meta">
-                            <span class="ticket-type">Evaluation</span>
+                            <span class="ticket-type">RPM Wellness Check</span>
+                            <span>Dr. Henderson</span>
+                        </div>
+                    </div>
+                    <div class="compact-card-body two-col">
+                        <div class="compact-card-section">
+                            <div class="compact-card-section-title">Patient Information</div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">02/14/1949</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0142</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9, I10, E78.5</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
+                        </div>
+                        <div class="compact-card-section">
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Acute substernal chest pressure with radiation to left arm, onset ~40 minutes prior to RPM check, accompanied by diaphoresis.</dd>
+                                <dt>Assessment</dt><dd>Possible acute coronary syndrome in a patient with known CHF and HTN. Symptoms not relieved by rest. Patient remains conversant but anxious; spouse on scene.</dd>
+                                <dt>Plan</dt><dd>911 dispatched concurrent with this call; ED warm handoff initiated to Dr. Henderson's on-call. Continue prescribed regimen pending ED evaluation. Care manager to follow up within 4 hours.</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Augusta Lindquist — Urgent -->
+                <div class="compact-card">
+                    <div class="compact-card-header">
+                        <h3>Augusta Lindquist <span class="badge badge-urgent">Urgent</span></h3>
+                        <div class="compact-card-meta">
+                            <span class="ticket-type">RPM Wellness Check</span>
                             <span>Dr. Sarah Chen</span>
                         </div>
                     </div>
-                    <div class="compact-card-body four-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">01/30/1980</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-987-6543</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I48.91, I10</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
-                            <div class="compact-reason">Patient gained 3 lbs in past week. Needs assessment.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Nurse Emma Garcia</span></div>
-                            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Urgent</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Recommendation</div>
-                            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Emergent Evaluation</span></div>
-                            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Urgent</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Michael Davis - Urgent -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Michael Davis <span class="badge badge-urgent">Urgent</span></h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">Evaluation</span>
-                            <span>Dr. James Wilson</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body four-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
                             <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">09/12/1955</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-987-6544</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I21.3, I10, E119</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0287</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I21.3, I10, E11.9</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Hypertension Mgmt</span></div>
-                            <div class="compact-reason">Patient having trouble sleeping. May need medication review.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Dr. Sarah Chen</span></div>
-                            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Urgent</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Recommendation</div>
-                            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Urgent Evaluation</span></div>
-                            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Urgent</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>BP 178/104 on this morning's RPM reading; reports headache and intermittent dizziness over the past 48 hours.</dd>
+                                <dt>Assessment</dt><dd>Hypertensive urgency in a post-MI patient. Confirms missed two doses of lisinopril last week. Denies chest pain, shortness of breath, or focal neuro deficits at this time.</dd>
+                                <dt>Plan</dt><dd>Recommend in-person visit with Dr. Chen within 48 hours for medication titration and labs. Reinforced strict adherence; to recheck BP twice daily and call back if &gt; 180/110 or any new symptoms.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Test User - Immediate -->
+                <!-- Priscilla Hadley — Immediate -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Test User <span class="badge badge-immediate">Immediate</span></h3>
+                        <h3>Priscilla Hadley <span class="badge badge-immediate">Immediate</span></h3>
                         <div class="compact-card-meta">
-                            <span class="ticket-type">Evaluation</span>
-                            <span>Nurse Alice Thompson</span>
+                            <span class="ticket-type">RPM Wellness Check</span>
+                            <span>Dr. James Wilson</span>
                         </div>
                     </div>
-                    <div class="compact-card-body four-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">05/20/1990</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-555-5555</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value empty">—</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">06/30/1952</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0461</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.32, J44.9</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
-                            <div class="compact-reason">Patient reported irregular heartbeat during morning reading.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Nurse Alice Thompson</span></div>
-                            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">Immediate</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Recommendation</div>
-                            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Immediate Evaluation</span></div>
-                            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">Immediate</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Mild productive cough and SpO₂ trending down (94 → 91% over 5 days). Mild dyspnea on exertion. No fever.</dd>
+                                <dt>Assessment</dt><dd>Possible early COPD exacerbation overlapping with chronic CHF. Stable at rest, no acute distress. Inhaler use consistent; rescue inhaler used twice this week.</dd>
+                                <dt>Plan</dt><dd>Recommend visit between 3-7 days to evaluate for steroid burst and re-check oximetry. Reinforce daily SpO₂ logging; call back today if SpO₂ &lt; 90%, fever, or worsening dyspnea.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Emma Wilson - Routine -->
+                <!-- Dominic Okeke — Immediate -->
+                <div class="compact-card">
+                    <div class="compact-card-header">
+                        <h3>Dominic Okeke <span class="badge badge-immediate">Immediate</span></h3>
+                        <div class="compact-card-meta">
+                            <span class="ticket-type">RPM Wellness Check</span>
+                            <span>Dr. Henderson</span>
+                        </div>
+                    </div>
+                    <div class="compact-card-body two-col">
+                        <div class="compact-card-section">
+                            <div class="compact-card-section-title">Patient Information</div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/05/1947</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0314</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">E11.65, I10</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
+                        </div>
+                        <div class="compact-card-section">
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Fasting glucose readings 280-310 mg/dL daily over the past week despite reported medication adherence; intermittent blurred vision.</dd>
+                                <dt>Assessment</dt><dd>Worsening hyperglycemia in T2DM with hypertension. Patient confirms diet drift over the past 10 days. No DKA symptoms reported (no nausea, no Kussmaul respirations).</dd>
+                                <dt>Plan</dt><dd>Recommend in-person visit between 3-7 days for insulin regimen review and HbA1c. Diet counseling reinforced; daily fasting glucose logs to be reviewed at visit. ED if glucose &gt; 400 or symptoms develop.</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emma Wilson — Routine -->
                 <div class="compact-card">
                     <div class="compact-card-header">
                         <h3>Emma Wilson <span class="badge badge-routine">Routine</span></h3>
                         <div class="compact-card-meta">
-                            <span class="ticket-type">Evaluation</span>
+                            <span class="ticket-type">RPM Wellness Check</span>
                             <span>Dr. Sarah Chen</span>
                         </div>
                     </div>
-                    <div class="compact-card-body four-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
                             <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">12/03/1978</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-555-5556</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0729</span></div>
                             <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">R00.0, F41.1</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
-                            <div class="compact-reason">Patient glucose reading below normal range (65 mg/dL).</div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Single isolated low fasting glucose reading of 65 mg/dL on yesterday's RPM check; no recurrence today. No syncope.</dd>
+                                <dt>Assessment</dt><dd>Mild, non-recurrent hypoglycemia. Patient otherwise stable. Reports skipping breakfast that morning. Anxiety baseline unchanged.</dd>
+                                <dt>Plan</dt><dd>Recommend visit between 8-30 days for routine medication review. Counseled on consistent meal timing; ongoing daily glucose log. Call back sooner if recurrent &lt; 70 mg/dL.</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Marion Bellinger — Routine -->
+                <div class="compact-card">
+                    <div class="compact-card-header">
+                        <h3>Marion Bellinger <span class="badge badge-routine">Routine</span></h3>
+                        <div class="compact-card-meta">
+                            <span class="ticket-type">RPM Wellness Check</span>
+                            <span>Dr. James Wilson</span>
+                        </div>
+                    </div>
+                    <div class="compact-card-body two-col">
+                        <div class="compact-card-section">
+                            <div class="compact-card-section-title">Patient Information</div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">07/19/1961</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0612</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, E78.0</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
-                            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">routine</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Recommendation</div>
-                            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">Routine Evaluation</span></div>
-                            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">routine</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Slow upward BP trend (avg 138/86 → 144/92 over past two weeks). Asymptomatic. Reports inconsistent evening dose timing.</dd>
+                                <dt>Assessment</dt><dd>Mildly suboptimal BP control in stable HTN/hyperlipidemia. No end-organ symptoms. Adherence drift identified.</dd>
+                                <dt>Plan</dt><dd>Recommend visit between 8-30 days for med-adherence review and possible dose adjustment. Reinforced 2 g sodium diet and consistent dose timing; continue daily readings.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
@@ -557,219 +624,212 @@
                 <h2 class="details-header">Resolution Details</h2>
                 <div id="resolution-details-anchor"></div>
 
-                <!-- Jane Smith - No Intervention -->
+                <!-- Harold Wiseman — Resolved on Phone -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Jane Smith</h3>
+                        <h3>Harold Wiseman</h3>
                         <div class="compact-card-meta">
-                            <span class="ticket-type">No Intervention Needed</span>
+                            <span class="ticket-type">Resolved on Phone</span>
                             <span>Dr. Sarah Chen</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">01/30/1980</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-987-6543</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I48.91, I10</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">04/02/1944</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0521</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10, I10</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-reason">Medication review completed. No changes needed.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Dr. Sarah Chen</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">No Intervention Needed</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Single elevated BP reading (152/94) on this morning's RPM check.</dd>
+                                <dt>Assessment</dt><dd>Likely transient — patient confirms two cups of coffee and stress prior to reading. Repeat reading 138/82 fifteen minutes later. No symptoms.</dd>
+                                <dt>Plan</dt><dd>Issue addressed during call. Reinforced reading conditions; continue current regimen. No escalation needed.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Robert Williams - Resolved on Phone -->
+                <!-- Theodore Katz — No Intervention Needed -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Robert Williams</h3>
+                        <h3>Theodore Katz</h3>
                         <div class="compact-card-meta">
-                            <span class="ticket-type">Resolved on Phone</span>
+                            <span class="ticket-type">No Intervention Needed</span>
                             <span>Dr. James Wilson</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/08/1972</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4569</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">10/15/1953</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0689</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Hypertension Mgmt</span></div>
-                            <div class="compact-reason">Patient reported feeling dizzy in the morning.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Resolved on Phone</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Routine biweekly wellness check; flagged for medication question.</dd>
+                                <dt>Assessment</dt><dd>Patient stable. Vitals at baseline. Med question resolved during call (clarified furosemide vs. carvedilol timing). No symptoms of decompensation.</dd>
+                                <dt>Plan</dt><dd>No intervention required. Continue current regimen and RPM logging. Next check-in in 14 days.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- John Doe - No Intervention -->
+                <!-- Gloria Whitfield — Resolved on Phone -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>John Doe</h3>
+                        <h3>Gloria Whitfield</h3>
                         <div class="compact-card-meta">
-                            <span class="ticket-type">No Intervention Needed</span>
-                            <span>Dr. Sarah Chen</span>
+                            <span class="ticket-type">Resolved on Phone</span>
+                            <span>Dr. Henderson</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/15/1958</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4567</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, E119</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">08/22/1950</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0408</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">E11.9, I10</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
-                            <div class="compact-reason">Patient reported BP 145/95. Needs follow-up call.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Dr. Sarah Chen</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">No Intervention Needed</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Mild morning dizziness over past two days.</dd>
+                                <dt>Assessment</dt><dd>Likely volume-related — patient reports lower fluid intake recently. BP 118/74; glucose 102. No focal neuro signs. Symptom resolved by lunchtime each day.</dd>
+                                <dt>Plan</dt><dd>Issue addressed during call. Counseled on hydration and slow positional changes. Continue regimen; call back if dizziness recurs or worsens.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mary Johnson - Not Reachable -->
+                <!-- Beatrice Sandoval — Not Reachable -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Mary Johnson</h3>
+                        <h3>Beatrice Sandoval</h3>
                         <div class="compact-card-meta">
                             <span class="ticket-type">Not Reachable</span>
                             <span>Dr. Sarah Chen</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">07/22/1965</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4568</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">02/28/1958</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0837</span></div>
                             <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, I50.9</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">Post-MI Follow-up</span></div>
-                            <div class="compact-reason">Patient missed morning medication. Needs reminder call.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Nurse Alice Thompson</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Not Reachable</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Scheduled outreach for biweekly wellness check.</dd>
+                                <dt>Assessment</dt><dd>Patient did not answer. Voicemail left. No prior call attempts today.</dd>
+                                <dt>Plan</dt><dd>Re-attempt outreach this afternoon and tomorrow morning. If still unreachable after 3 attempts within 48 hours, escalate to PCP and emergency contact.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Robert Williams - No Intervention (2nd) -->
+                <!-- Walter Kamau — No Intervention Needed -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Robert Williams</h3>
+                        <h3>Walter Kamau</h3>
                         <div class="compact-card-meta">
                             <span class="ticket-type">No Intervention Needed</span>
                             <span>Dr. James Wilson</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/08/1972</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4569</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">06/04/1962</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0916</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">E11.9</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-reason">Patient completed vital scan review. BP within normal range.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">No Intervention Needed</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Glucose readings consistently within target range; no concerns reported.</dd>
+                                <dt>Assessment</dt><dd>Stable on current regimen. Diet adherence reported as good. No medication concerns.</dd>
+                                <dt>Plan</dt><dd>No intervention required. Continue regimen and RPM logging.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Robert Williams - Resolved on Phone (3rd) -->
+                <!-- Delphine Okafor — Resolved on Phone -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Robert Williams</h3>
+                        <h3>Delphine Okafor</h3>
                         <div class="compact-card-meta">
                             <span class="ticket-type">Resolved on Phone</span>
                             <span>Dr. James Wilson</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">11/08/1972</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-123-4569</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">12/19/1956</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0263</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, E78.5</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-reason">Vital signs reviewed. All readings within target range.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Resolved on Phone</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Question about statin side effects (mild muscle aches).</dd>
+                                <dt>Assessment</dt><dd>Symmetric mild myalgia, no weakness, no dark urine. Likely statin-related but tolerable. No red flags for rhabdomyolysis.</dd>
+                                <dt>Plan</dt><dd>Issue addressed during call. Counseled to maintain hydration and take statin in the evening. Will discuss with PCP at next visit if symptoms persist.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sarah Anderson - Not Reachable -->
+                <!-- Raymond Brewster — Not Reachable -->
                 <div class="compact-card">
                     <div class="compact-card-header">
-                        <h3>Sarah Anderson</h3>
+                        <h3>Raymond Brewster</h3>
                         <div class="compact-card-meta">
                             <span class="ticket-type">Not Reachable</span>
-                            <span>Dr. James Wilson</span>
+                            <span>Dr. Sarah Chen</span>
                         </div>
                     </div>
-                    <div class="compact-card-body three-col">
+                    <div class="compact-card-body two-col">
                         <div class="compact-card-section">
                             <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">08/10/1975</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">555-222-3334</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I42.0, I10</span></div>
+                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/30/1959</span></div>
+                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0152</span></div>
+                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
+                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
+                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
                         </div>
                         <div class="compact-card-section">
-                            <div class="compact-card-section-title">System Escalation</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value empty">—</span></div>
-                            <div class="compact-reason">Patient completed vital scan review. BP within normal range.</div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Care Manager Resolution</div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">Head Nurse Williams</span></div>
-                            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">Not Reachable</span></div>
+                            <div class="compact-card-section-title">Clinical Note</div>
+                            <dl class="clinical-note-block">
+                                <dt>Chief Complaint</dt><dd>Scheduled outreach for biweekly wellness check.</dd>
+                                <dt>Assessment</dt><dd>Patient did not answer. Voicemail box full — unable to leave message. No prior contact attempts today.</dd>
+                                <dt>Plan</dt><dd>Re-attempt outreach today and tomorrow. Send SMS reminder via Survey Health mobile. Escalate to PCP if still unreachable in 48 hours.</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
@@ -924,30 +984,23 @@
             <span>Dr. Henderson</span>
           </div>
         </div>
-        <div class="compact-card-body four-col">
+        <div class="compact-card-body two-col">
           <div class="compact-card-section">
             <div class="compact-card-section-title">Patient Information</div>
             <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/22/1948</span></div>
-            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(202) 210-9652</span></div>
+            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0173</span></div>
             <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9</span></div>
-          </div>
-          <div class="compact-card-section">
-            <div class="compact-card-section-title">System Escalation</div>
-            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
             <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-            <div class="compact-reason">${data.reasonText}</div>
+            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
           </div>
           <div class="compact-card-section">
-            <div class="compact-card-section-title">Care Manager Escalation</div>
-            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">L. Goldenstein</span></div>
-            <div class="compact-row"><span class="compact-label">Notes</span><span class="compact-value">${res.outcomeLabel}</span></div>
-          </div>
-          <div class="compact-card-section">
-            <div class="compact-card-section-title">Recommendation</div>
-            <div class="compact-row"><span class="compact-label">Category</span><span class="compact-value">${data.recCategory}</span></div>
-            <div class="compact-row"><span class="compact-label">Warm Handoff</span><span class="compact-value empty">—</span></div>
-            <div class="compact-row"><span class="compact-label">Request</span><span class="compact-value">${data.recRequest}</span></div>
+            <div class="compact-card-section-title">Clinical Note</div>
+            <dl class="clinical-note-block">
+              <dt>Chief Complaint</dt><dd>Worsening dyspnea on exertion, productive cough, new orthopnea, and 3-lb weight gain over the past 7-9 days.</dd>
+              <dt>Assessment</dt><dd>Likely early CHF decompensation. Bilateral lower-extremity edema noted as worsening on this evaluation. Medication adherence reviewed and reconciled on follow-up call.</dd>
+              <dt>Plan</dt><dd>${data.recRequest}. ${data.reasonText}</dd>
+            </dl>
           </div>
         </div>`;
       anchor.parentNode.insertBefore(card, anchor.nextSibling);
@@ -965,24 +1018,23 @@
             <span>Dr. Henderson</span>
           </div>
         </div>
-        <div class="compact-card-body three-col">
+        <div class="compact-card-body two-col">
           <div class="compact-card-section">
             <div class="compact-card-section-title">Patient Information</div>
             <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/22/1948</span></div>
-            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(202) 210-9652</span></div>
+            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0173</span></div>
             <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9</span></div>
-          </div>
-          <div class="compact-card-section">
-            <div class="compact-card-section-title">System Escalation</div>
-            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
             <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-            <div class="compact-reason">${data.reasonText}</div>
+            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
+            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
           </div>
           <div class="compact-card-section">
-            <div class="compact-card-section-title">Care Manager Resolution</div>
-            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">Apr 19, 2026</span></div>
-            <div class="compact-row"><span class="compact-label">Name</span><span class="compact-value">L. Goldenstein</span></div>
-            <div class="compact-row"><span class="compact-label">Reason</span><span class="compact-value">${data.reason}</span></div>
+            <div class="compact-card-section-title">Clinical Note</div>
+            <dl class="clinical-note-block">
+              <dt>Chief Complaint</dt><dd>Biweekly RPM wellness check; flagged via AI screening.</dd>
+              <dt>Assessment</dt><dd>${data.reasonText}</dd>
+              <dt>Plan</dt><dd>${data.reason}. Continue current regimen. Next scheduled RPM check-in in 14 days.</dd>
+            </dl>
           </div>
         </div>`;
       anchor.parentNode.insertBefore(card, anchor.nextSibling);
