@@ -375,7 +375,7 @@
                   <span class="font-semibold text-yellow-700 text-sm">Mild, bilateral</span>
                 </div>
                 <div class="space-y-1.5 ml-3">
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Baseline</span><span class="font-semibold text-yellow-700 text-sm">+1 grade</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Baseline</span><span class="font-semibold text-yellow-700 text-sm">Worsening</span></div>
                 </div>
               </div>
               <!-- Skin integrity -->
@@ -385,7 +385,7 @@
                   <span class="font-semibold text-green-700 text-sm">Intact</span>
                 </div>
                 <div class="space-y-1.5 ml-3">
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Baseline</span><span class="font-semibold text-green-700 text-sm">WNL</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Baseline</span><span class="font-semibold text-green-700 text-sm">No change</span></div>
                 </div>
               </div>
               <!-- Pressure injuries / open wounds -->
@@ -418,18 +418,23 @@
                   </button>
                 </div>
               </div>
-              <!-- Redacted image placeholder (hidden until user clicks) -->
+              <!-- Image card (hidden until user clicks "With"/"Without") -->
               <div id="wound-image" class="hidden border-t border-gray-200">
-                <div class="aspect-[16/9] relative flex items-center justify-center" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);">
-                  <div class="absolute inset-0 backdrop-blur-md bg-gray-900/40 flex flex-col items-center justify-center text-center px-4">
-                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    <div class="text-white text-sm font-semibold">REDACTED — PHI</div>
-                    <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Image of wound with bandage</div>
-                    <div class="text-white/60 text-[10px] mt-2">Demo placeholder · image not displayed</div>
-                  </div>
+                <div class="aspect-square sm:aspect-[4/3] max-h-80 mx-auto relative bg-gray-100 overflow-hidden">
+                  <!-- Real photo (only used for "without bandage") -->
+                  <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden');" />
+                  <!-- Redacted hatch (used for "with bandage" — no photo on file) -->
+                  <div id="wound-image-hatch" class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
+                  <!-- Click-to-reveal overlay -->
+                  <button type="button" id="wound-image-reveal-btn" onclick="revealWoundImage()" class="absolute inset-0 backdrop-blur-md bg-gray-900/45 hover:bg-gray-900/55 transition-colors flex flex-col items-center justify-center text-center px-4 cursor-pointer">
+                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    <div class="text-white text-sm font-semibold">Click to reveal image</div>
+                    <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Image of wound without bandage</div>
+                    <div class="text-white/60 text-[10px] mt-2">May contain graphic clinical content</div>
+                  </button>
                 </div>
                 <div class="px-4 py-2 bg-white border-t border-gray-200 flex items-center justify-between text-xs">
-                  <span id="wound-image-meta" class="text-gray-600">Submitted by patient · May 8, 2026 · 7:14 AM</span>
+                  <span id="wound-image-meta" class="text-gray-600">Submitted by patient · May 9, 2026 · 7:14 AM</span>
                   <button type="button" onclick="hideWoundImage()" class="text-gray-500 hover:text-gray-700 font-medium">Hide</button>
                 </div>
               </div>
@@ -1146,23 +1151,41 @@ function seekCallAudio(event) {
   a.currentTime = pct * a.duration;
 }
 
-// Wound image reveal — patient-submitted images are PHI and never shown
-// in the demo. Clicking either button reveals a redacted placeholder
-// labeled with the requested view (with/without bandage).
+// Wound image reveal — "without bandage" uses a real patient photo,
+// blurred by default with a click-to-reveal overlay. "With bandage" has
+// no photo on file so it shows a redacted hatch placeholder. Either way,
+// the user must click the overlay to remove the blur.
+const WOUND_IMG_WITHOUT = '../../assets/wound-no-bandage.jpg';
 function toggleWoundImage(variant) {
-  const wrap = document.getElementById('wound-image');
-  const caption = document.getElementById('wound-image-caption');
-  const meta = document.getElementById('wound-image-meta');
+  const wrap   = document.getElementById('wound-image');
+  const photo  = document.getElementById('wound-image-photo');
+  const hatch  = document.getElementById('wound-image-hatch');
+  const cap    = document.getElementById('wound-image-caption');
+  const meta   = document.getElementById('wound-image-meta');
+  const reveal = document.getElementById('wound-image-reveal-btn');
   if (!wrap) return;
+  // Reset to blurred-overlay state every time the user switches view
+  if (reveal) reveal.style.display = '';
+  if (photo) {
+    photo.style.filter = 'blur(28px) saturate(0.85)';
+    photo.style.transform = 'scale(1.08)';
+  }
   if (variant === 'with') {
-    caption.textContent = 'Image of wound with bandage';
-    meta.textContent = 'Submitted by patient · Apr 17, 2026 · 2:14 PM';
+    if (photo) photo.classList.add('hidden');
+    if (hatch) hatch.classList.remove('hidden');
+    cap.textContent = 'Image of wound with bandage';
+    meta.textContent = 'Submitted by patient · May 9, 2026 · 7:14 AM';
   } else {
-    caption.textContent = 'Image of wound without bandage';
-    meta.textContent = 'Submitted by patient · Apr 17, 2026 · 2:15 PM';
+    if (photo) {
+      photo.src = WOUND_IMG_WITHOUT;
+      photo.alt = 'Bilateral lower-extremity edema (patient-submitted)';
+      photo.classList.remove('hidden');
+    }
+    if (hatch) hatch.classList.add('hidden');
+    cap.textContent = 'Image of wound without bandage';
+    meta.textContent = 'Submitted by patient · May 9, 2026 · 7:15 AM';
   }
   wrap.classList.remove('hidden');
-  // Highlight the active button
   ['with', 'without'].forEach(v => {
     const b = document.getElementById('wound-btn-' + v);
     if (!b) return;
@@ -1174,6 +1197,16 @@ function toggleWoundImage(variant) {
       b.classList.add('bg-white', 'text-blue-700');
     }
   });
+}
+function revealWoundImage() {
+  // Clear the blur from the photo and dismiss the click-to-reveal overlay.
+  const photo  = document.getElementById('wound-image-photo');
+  const reveal = document.getElementById('wound-image-reveal-btn');
+  if (photo) {
+    photo.style.filter = 'none';
+    photo.style.transform = 'none';
+  }
+  if (reveal) reveal.style.display = 'none';
 }
 function hideWoundImage() {
   const wrap = document.getElementById('wound-image');
