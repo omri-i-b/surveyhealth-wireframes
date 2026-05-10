@@ -266,8 +266,8 @@
 
             <!-- 소요 시간 (matches the AI summary row styling) -->
             <div class="px-4 py-2.5 bg-white border-b border-gray-200 grid grid-cols-[180px_1fr] gap-x-4 text-sm">
-              <div class="text-gray-500 font-medium">소요 시간:</div>
-              <div class="text-gray-900">2 minutes 47 seconds</div>
+              <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="소요 시간:" data-label-en="Time Spent:">소요 시간:</div>
+              <div class="text-gray-900">2분 47초</div>
             </div>
 
             <!-- 통화 내용 (Collapsible) -->
@@ -440,15 +440,22 @@
 
           <!-- Ambient AI 요약 노트 -->
           <div class="mb-8 rounded-xl border border-gray-200 overflow-hidden bg-white">
-            <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-200 flex items-center justify-between">
+            <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-200 flex items-center justify-between flex-wrap gap-2">
               <div class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
                 <span class="text-sm font-semibold text-gray-900">AI 요약</span>
               </div>
-              <button id="listen-btn" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
-                <span id="listen-btn-icon">🎧</span>
-                <span id="listen-btn-label">AI 통화 수신 대기</span>
-              </button>
+              <div class="flex items-center gap-2">
+                <!-- Language toggle for the note — Korean by default; English view is copy-friendly for EHR paste-in -->
+                <div class="inline-flex rounded-md overflow-hidden border border-gray-300 bg-white text-xs">
+                  <button type="button" id="note-lang-ko" onclick="setNoteLanguage('ko')" class="px-2.5 py-1 bg-blue-600 text-white font-medium">한국어</button>
+                  <button type="button" id="note-lang-en" onclick="setNoteLanguage('en')" class="px-2.5 py-1 bg-white text-gray-700 hover:bg-gray-50 font-medium border-l border-gray-300">English</button>
+                </div>
+                <button id="listen-btn" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
+                  <span id="listen-btn-icon">🎧</span>
+                  <span id="listen-btn-label">AI 통화 수신 대기</span>
+                </button>
+              </div>
             </div>
 
             <!-- Empty state — passive by default, animates only during a live call -->
@@ -471,35 +478,35 @@
             <!-- Populated state — CCM care interaction note format -->
             <div id="note-populated" class="p-6 space-y-3" style="display:none;">
               <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
-                <div class="text-gray-500 font-medium">환자 Name:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="환자명:" data-label-en="Patient Name:">환자명:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="patientName"></div>
 
-                <div class="text-gray-500 font-medium">환자 Date of Birth:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="생년월일:" data-label-en="Patient Date of Birth:">생년월일:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="patientDob"></div>
 
-                <div class="text-gray-500 font-medium">주치의:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="주치의:" data-label-en="PCP:">주치의:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="pcp"></div>
 
-                <div class="text-gray-500 font-medium">참여 일자:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="참여 일자:" data-label-en="Date of Engagement:">참여 일자:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="dateOfEngagement"></div>
 
-                <div class="text-gray-500 font-medium">케어 매니저:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="케어 매니저:" data-label-en="Care Manager:">케어 매니저:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="careManager"></div>
 
-                <div class="text-gray-500 font-medium">상호작용 유형:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="상호작용 유형:" data-label-en="Interaction Type:">상호작용 유형:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="interactionType"></div>
               </section>
 
               <div class="h-px bg-gray-200 my-2"></div>
 
               <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
-                <div class="text-gray-500 font-medium">중재 카테고리:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="중재 카테고리:" data-label-en="Intervention Category:">중재 카테고리:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="interventionCategory"></div>
 
-                <div class="text-gray-500 font-medium">관리 질환 Monitored:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="모니터링 질환:" data-label-en="Conditions Monitored:">모니터링 질환:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="conditionsMonitored"></div>
 
-                <div class="text-gray-500 font-medium">목표:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="목표:" data-label-en="Goals:">목표:</div>
                 <div class="note-section text-gray-900" contenteditable="true" data-field="goals"></div>
               </section>
 
@@ -507,15 +514,15 @@
 
               <section class="space-y-3 text-sm">
                 <div>
-                  <div class="text-gray-500 font-medium mb-1">평가 사유:</div>
+                  <div class="text-gray-500 font-medium mb-1" data-i18n-label data-label-ko="평가 사유:" data-label-en="Evaluation Reason:">평가 사유:</div>
                   <div class="note-section text-gray-900 leading-relaxed" contenteditable="true" data-field="evaluationReason"></div>
                 </div>
                 <div>
-                  <div class="text-gray-500 font-medium mb-1">상호작용 요약:</div>
+                  <div class="text-gray-500 font-medium mb-1" data-i18n-label data-label-ko="상호작용 요약:" data-label-en="Summary of Interaction:">상호작용 요약:</div>
                   <div class="note-section text-gray-900 leading-relaxed" contenteditable="true" data-field="summaryOfInteraction"></div>
                 </div>
                 <div>
-                  <div class="text-gray-500 font-medium mb-1">계획:</div>
+                  <div class="text-gray-500 font-medium mb-1" data-i18n-label data-label-ko="계획:" data-label-en="Plan:">계획:</div>
                   <div class="note-section text-gray-900 leading-relaxed whitespace-pre-wrap" contenteditable="true" data-field="plan"></div>
                 </div>
               </section>
@@ -523,7 +530,7 @@
               <div class="h-px bg-gray-200 my-2"></div>
 
               <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
-                <div class="text-gray-500 font-medium">소요 시간:</div>
+                <div class="text-gray-500 font-medium" data-i18n-label data-label-ko="소요 시간:" data-label-en="Time Spent:">소요 시간:</div>
                 <div class="text-gray-900" data-field="timeSpent"></div>
               </section>
 
@@ -1055,13 +1062,56 @@ function renderCallMeta(payload) {
   // Created row is a ticket-creation date, not the call-end time — pinned to today.
 }
 
-function renderNote(note) {
+// Bilingual note cache. The Korean view loads the Korean note by default
+// and lazy-fetches the English note on first toggle to English.
+let __notesByLang = { ko: null, en: null };
+let __currentNoteLang = 'ko';
+
+function renderNote(note, lang) {
+  if (lang) __currentNoteLang = lang;
+  if (note && __currentNoteLang) __notesByLang[__currentNoteLang] = note;
   document.getElementById('note-empty').style.display = 'none';
   document.getElementById('note-populated').style.display = 'block';
-  Object.entries(note).forEach(([k, v]) => {
+  const active = __notesByLang[__currentNoteLang] || note || {};
+  Object.entries(active).forEach(([k, v]) => {
     const el = document.querySelector(`[data-field="${k}"]`);
     if (el) el.textContent = v;
   });
+  // Swap any [data-i18n-label] strings to the active language
+  document.querySelectorAll('[data-i18n-label]').forEach(el => {
+    const v = el.getAttribute('data-label-' + __currentNoteLang);
+    if (v) el.textContent = v;
+  });
+}
+
+async function setNoteLanguage(lang) {
+  if (lang !== 'ko' && lang !== 'en') return;
+  __currentNoteLang = lang;
+  // Toggle the segmented button styling
+  const koBtn = document.getElementById('note-lang-ko');
+  const enBtn = document.getElementById('note-lang-en');
+  if (koBtn && enBtn) {
+    const on  = ['bg-blue-600', 'text-white'];
+    const off = ['bg-white', 'text-gray-700', 'hover:bg-gray-50'];
+    const activeBtn = lang === 'ko' ? koBtn : enBtn;
+    const otherBtn  = lang === 'ko' ? enBtn : koBtn;
+    on.forEach(c => activeBtn.classList.add(c));
+    off.forEach(c => activeBtn.classList.remove(c));
+    on.forEach(c => otherBtn.classList.remove(c));
+    off.forEach(c => otherBtn.classList.add(c));
+  }
+  // Lazy-fetch the English note if requested and not cached yet
+  if (lang === 'en' && !__notesByLang.en) {
+    try {
+      const res = await fetch('../../../data/claire-mock-summary.json', { cache: 'no-store' });
+      const mock = await res.json();
+      __notesByLang.en = mock?.nurseCall?.note || null;
+    } catch (e) {
+      console.warn('Could not load English note:', e.message);
+    }
+  }
+  // Re-render with the now-active language
+  renderNote(null, lang);
 }
 function resetNote() {
   document.getElementById('note-empty').style.display = 'block';
@@ -1072,7 +1122,7 @@ function resetNote() {
 }
 
 function todayDateStr() {
-  return new Date().toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date().toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 function relativeTime(d) {
   const diffMs = Date.now() - d.getTime();
@@ -1438,7 +1488,7 @@ async function pollNow(forceRender = false) {
         return;
       }
       const when = payload.callMeta?.callEnded
-        ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        ? new Date(payload.callMeta.callEnded).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
         : '';
       const ts = payload.transcriptStatus;
       const endedMs = payload.callMeta?.callEnded ? (Date.now() - new Date(payload.callMeta.callEnded).getTime()) : 0;
@@ -1481,7 +1531,7 @@ async function pollNow(forceRender = false) {
         renderNote(note);
         renderLiveTranscript(payload.transcript);
         const finalWhen = payload.callMeta?.callEnded
-          ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          ? new Date(payload.callMeta.callEnded).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
           : '';
         setStatus('received', `노트 준비 완료, based on call at ${finalWhen}`);
         const statusEl = document.getElementById('info-status');
@@ -1566,7 +1616,7 @@ function submitNote() {
   // Flip the 티켓 정보 "Status" row + the header's OPEN pill to 해결d
   const infoStatus = document.getElementById('info-status');
   if (infoStatus) {
-    infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">해결d &middot; ${outcomeLabel}</span>`;
+    infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">해결됨 &middot; ${outcomeLabel}</span>`;
   }
   const headerPill = document.querySelector('.h-14 .bg-red-500.rounded-full');
   if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
@@ -1580,7 +1630,7 @@ function submitNote() {
   const banner = document.getElementById('resolved-banner');
   if (banner) {
     document.getElementById('resolved-outcome').textContent = outcomeLabel;
-    document.getElementById('resolved-time').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('resolved-time').textContent = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
     banner.style.display = 'flex';
   }
   // Flip the right-sidebar OPEN pill to RESOLVED (green)
@@ -1605,7 +1655,7 @@ function wireManualNote() {
     savedFlag.classList.add('hidden');
     saveTimer = setTimeout(() => {
       localStorage.setItem(MANUAL_NOTE_KEY, ta.value);
-      timeEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      timeEl.textContent = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
       savedFlag.classList.remove('hidden');
       setTimeout(() => savedFlag.classList.add('hidden'), 1500);
     }, 500);
@@ -1810,7 +1860,7 @@ async function renderFromMock() {
   renderNote(nurse.note || {});
   renderLiveTranscript(nurse.transcript || []);
   const when = nurse.callMeta?.callEnded
-    ? new Date(nurse.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    ? new Date(nurse.callMeta.callEnded).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
     : '';
   setStatus('received', when ? `노트 준비 완료, based on call at ${when}` : '노트 준비 완료');
   const statusEl = document.getElementById('info-status');
@@ -1937,12 +1987,12 @@ async function prefillPreviousTouchpoint() {
       if (banner) {
         document.getElementById('resolved-outcome').textContent = prior.outcomeLabel || prior.outcome;
         document.getElementById('resolved-time').textContent = prior.savedAt
-          ? new Date(prior.savedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          ? new Date(prior.savedAt).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
           : '—';
         banner.style.display = 'flex';
       }
       const infoStatus = document.getElementById('info-status');
-      if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">해결d &middot; ${prior.outcomeLabel || prior.outcome}</span>`;
+      if (infoStatus) infoStatus.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">해결됨 &middot; ${prior.outcomeLabel || prior.outcome}</span>`;
       const headerPill = document.querySelector('.h-14 .bg-red-500.rounded-full');
       if (headerPill) headerPill.classList.replace('bg-red-500', 'bg-green-500');
       const headerMeta = document.querySelector('.h-14 .text-gray-500.text-sm');
