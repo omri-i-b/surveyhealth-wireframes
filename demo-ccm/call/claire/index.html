@@ -408,13 +408,9 @@
                   <div class="text-gray-500 text-xs mt-0.5">Submitted via Survey Health mobile · May 8, 2026</div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <button type="button" onclick="toggleWoundImage('with')" id="wound-btn-with" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
+                  <button type="button" onclick="toggleWoundImage()" id="wound-btn-view" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                    With bandage
-                  </button>
-                  <button type="button" onclick="toggleWoundImage('without')" id="wound-btn-without" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                    Without bandage
+                    View image
                   </button>
                 </div>
               </div>
@@ -423,13 +419,13 @@
                 <div class="aspect-square sm:aspect-[4/3] max-h-80 mx-auto relative bg-gray-100 overflow-hidden">
                   <!-- Real photo (only used for "without bandage") -->
                   <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="if (!this.dataset.fellBack) { this.dataset.fellBack = '1'; this.src = '../../assets/wound-no-bandage.svg'; } else { this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden'); }" />
-                  <!-- Redacted hatch (used for "with bandage" — no photo on file) -->
-                  <div id="wound-image-hatch" class="absolute inset-0" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
+                  <!-- Redacted hatch fallback (only shown if both JPG + SVG fail to load) -->
+                  <div id="wound-image-hatch" class="absolute inset-0 hidden" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
                   <!-- Click-to-reveal overlay -->
                   <button type="button" id="wound-image-reveal-btn" onclick="revealWoundImage()" class="absolute inset-0 backdrop-blur-md bg-gray-900/45 hover:bg-gray-900/55 transition-colors flex flex-col items-center justify-center text-center px-4 cursor-pointer">
                     <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     <div class="text-white text-sm font-semibold">Click to reveal image</div>
-                    <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Image of wound without bandage</div>
+                    <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Patient-submitted clinical image</div>
                     <div class="text-white/60 text-[10px] mt-2">May contain graphic clinical content</div>
                   </button>
                 </div>
@@ -1151,56 +1147,31 @@ function seekCallAudio(event) {
   a.currentTime = pct * a.duration;
 }
 
-// Wound image reveal — "without bandage" uses a real patient photo,
-// blurred by default with a click-to-reveal overlay. "With bandage" has
-// no photo on file so it shows a redacted hatch placeholder. Either way,
-// the user must click the overlay to remove the blur.
-// If a real JPG is dropped at assets/wound-no-bandage.jpg it'll be used;
-// otherwise the bundled SVG anatomical illustration shows instead (the
-// <img onerror> falls back to the SVG path automatically).
-const WOUND_IMG_WITHOUT = '../../assets/wound-no-bandage.jpg';
-function toggleWoundImage(variant) {
+// Wound image reveal — single patient photo, blurred by default with a
+// click-to-reveal overlay so it isn't shown until the user opts in.
+// Real photo at assets/wound-photo.jpg.
+const WOUND_IMG = '../../assets/wound-photo.jpg';
+function toggleWoundImage() {
   const wrap   = document.getElementById('wound-image');
   const photo  = document.getElementById('wound-image-photo');
-  const hatch  = document.getElementById('wound-image-hatch');
-  const cap    = document.getElementById('wound-image-caption');
-  const meta   = document.getElementById('wound-image-meta');
   const reveal = document.getElementById('wound-image-reveal-btn');
+  const btn    = document.getElementById('wound-btn-view');
   if (!wrap) return;
-  // Reset to blurred-overlay state every time the user switches view
+  // Reset to blurred-overlay state every time
   if (reveal) reveal.style.display = '';
   if (photo) {
     photo.style.filter = 'blur(28px) saturate(0.85)';
     photo.style.transform = 'scale(1.08)';
-  }
-  if (variant === 'with') {
-    if (photo) photo.classList.add('hidden');
-    if (hatch) hatch.classList.remove('hidden');
-    cap.textContent = 'Image of wound with bandage';
-    meta.textContent = 'Submitted by patient · May 9, 2026 · 7:14 AM';
-  } else {
-    if (photo) {
-      delete photo.dataset.fellBack;  // retry JPG → SVG fallback chain each time
-      photo.src = WOUND_IMG_WITHOUT;
-      photo.alt = 'Bilateral lower-extremity edema (patient-submitted)';
-      photo.classList.remove('hidden');
-    }
-    if (hatch) hatch.classList.add('hidden');
-    cap.textContent = 'Image of wound without bandage';
-    meta.textContent = 'Submitted by patient · May 9, 2026 · 7:15 AM';
+    delete photo.dataset.fellBack;
+    photo.src = WOUND_IMG;
+    photo.alt = 'Bilateral lower-extremity edema (patient-submitted)';
+    photo.classList.remove('hidden');
   }
   wrap.classList.remove('hidden');
-  ['with', 'without'].forEach(v => {
-    const b = document.getElementById('wound-btn-' + v);
-    if (!b) return;
-    if (v === variant) {
-      b.classList.remove('bg-white', 'text-blue-700');
-      b.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
-    } else {
-      b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
-      b.classList.add('bg-white', 'text-blue-700');
-    }
-  });
+  if (btn) {
+    btn.classList.remove('bg-white', 'text-blue-700');
+    btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+  }
 }
 function revealWoundImage() {
   // Clear the blur from the photo and dismiss the click-to-reveal overlay.
@@ -1215,12 +1186,11 @@ function revealWoundImage() {
 function hideWoundImage() {
   const wrap = document.getElementById('wound-image');
   if (wrap) wrap.classList.add('hidden');
-  ['with', 'without'].forEach(v => {
-    const b = document.getElementById('wound-btn-' + v);
-    if (!b) return;
-    b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
-    b.classList.add('bg-white', 'text-blue-700');
-  });
+  const btn = document.getElementById('wound-btn-view');
+  if (btn) {
+    btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+    btn.classList.add('bg-white', 'text-blue-700');
+  }
 }
 
 function toggleTranscript() {
