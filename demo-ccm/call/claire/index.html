@@ -1151,6 +1151,12 @@ function toggleWoundImage() {
   const reveal = document.getElementById('wound-image-reveal-btn');
   const btn    = document.getElementById('wound-btn-view');
   if (!wrap) return;
+  // Lock scroll so the layout shift from showing the image doesn't yank
+  // the page. The Claire view scrolls inside a flex child, not the
+  // document — find the nearest scrollable ancestor and pin it.
+  const scroller = wrap.closest('.overflow-y-auto, .overflow-auto') || document.scrollingElement;
+  const y = scroller ? scroller.scrollTop : 0;
+  requestAnimationFrame(() => { if (scroller) scroller.scrollTop = y; });
   // Reset to blurred-overlay state every time
   if (reveal) reveal.style.display = '';
   if (photo) {
