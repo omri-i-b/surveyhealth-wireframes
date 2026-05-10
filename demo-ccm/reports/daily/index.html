@@ -289,6 +289,54 @@
                     </div>
                 </div>
 
+                <!-- Top Summary -->
+                <div class="section">
+                    <div class="section-title">Today's Summary</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th style="text-align:right;">Count</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-summary">
+                                <tr>
+                                    <td><strong>Patients evaluated today</strong></td>
+                                    <td style="text-align:right;"><strong id="count-total">6</strong></td>
+                                    <td>Across all priority levels</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-emergent">Emergent</span></td>
+                                    <td style="text-align:right;"><span id="count-emergent">1</span></td>
+                                    <td>Recommended ED visit</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-urgent">Urgent</span></td>
+                                    <td style="text-align:right;"><span id="count-urgent">1</span></td>
+                                    <td>Recommend visit within 48 hours</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-immediate">Immediate</span></td>
+                                    <td style="text-align:right;"><span id="count-immediate">2</span></td>
+                                    <td>Recommend visit between 3-7 days</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge badge-routine">Routine</span></td>
+                                    <td style="text-align:right;"><span id="count-routine">2</span></td>
+                                    <td>Recommend visit between 8-30 days</td>
+                                </tr>
+                                <tr>
+                                    <td>Care manager contacted clinic</td>
+                                    <td style="text-align:right;">0 / 6</td>
+                                    <td>Warm handoff pending PCP review</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <!-- Summary: Emergent/Urgent/Immediate -->
                 <div class="section">
                     <div class="section-title">Patients Requiring Emergent/Urgent/Immediate Escalation</div>
@@ -371,66 +419,6 @@
                     </div>
                 </div>
 
-                <!-- Summary: Net Interactions -->
-                <div class="section">
-                    <div class="section-title">Net Patient Interactions</div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="width: 40px">#</th>
-                                    <th>Patient</th>
-                                    <th>Provider</th>
-                                    <th>Disposition</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-interactions">
-                                <tr>
-                                    <td>1</td>
-                                    <td>Harold Wiseman</td>
-                                    <td>Dr. Sarah Chen</td>
-                                    <td>Resolved on Phone</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Theodore Katz</td>
-                                    <td>Dr. James Wilson</td>
-                                    <td>No Intervention Needed</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Gloria Whitfield</td>
-                                    <td>Dr. Henderson</td>
-                                    <td>Resolved on Phone</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Beatrice Sandoval</td>
-                                    <td>Dr. Sarah Chen</td>
-                                    <td>Not Reachable</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Walter Kamau</td>
-                                    <td>Dr. James Wilson</td>
-                                    <td>No Intervention Needed</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Delphine Okafor</td>
-                                    <td>Dr. James Wilson</td>
-                                    <td>Resolved on Phone</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>Raymond Brewster</td>
-                                    <td>Dr. Sarah Chen</td>
-                                    <td>Not Reachable</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
 
                 <hr class="section-divider">
 
@@ -618,222 +606,6 @@
                     </div>
                 </div>
 
-                <hr class="section-divider">
-
-                <!-- Resolution Details -->
-                <h2 class="details-header">Resolution Details</h2>
-                <div id="resolution-details-anchor"></div>
-
-                <!-- Harold Wiseman — Resolved on Phone -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Harold Wiseman</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">Resolved on Phone</span>
-                            <span>Dr. Sarah Chen</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">04/02/1944</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0521</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10, I10</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Single elevated BP reading (152/94) on this morning's RPM check.</dd>
-                                <dt>Assessment</dt><dd>Likely transient — patient confirms two cups of coffee and stress prior to reading. Repeat reading 138/82 fifteen minutes later. No symptoms.</dd>
-                                <dt>Plan</dt><dd>Issue addressed during call. Reinforced reading conditions; continue current regimen. No escalation needed.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Theodore Katz — No Intervention Needed -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Theodore Katz</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">No Intervention Needed</span>
-                            <span>Dr. James Wilson</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">10/15/1953</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0689</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Routine biweekly wellness check; flagged for medication question.</dd>
-                                <dt>Assessment</dt><dd>Patient stable. Vitals at baseline. Med question resolved during call (clarified furosemide vs. carvedilol timing). No symptoms of decompensation.</dd>
-                                <dt>Plan</dt><dd>No intervention required. Continue current regimen and RPM logging. Next check-in in 14 days.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Gloria Whitfield — Resolved on Phone -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Gloria Whitfield</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">Resolved on Phone</span>
-                            <span>Dr. Henderson</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">08/22/1950</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0408</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">E11.9, I10</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Mild morning dizziness over past two days.</dd>
-                                <dt>Assessment</dt><dd>Likely volume-related — patient reports lower fluid intake recently. BP 118/74; glucose 102. No focal neuro signs. Symptom resolved by lunchtime each day.</dd>
-                                <dt>Plan</dt><dd>Issue addressed during call. Counseled on hydration and slow positional changes. Continue regimen; call back if dizziness recurs or worsens.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Beatrice Sandoval — Not Reachable -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Beatrice Sandoval</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">Not Reachable</span>
-                            <span>Dr. Sarah Chen</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">02/28/1958</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0837</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, I50.9</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Scheduled outreach for biweekly wellness check.</dd>
-                                <dt>Assessment</dt><dd>Patient did not answer. Voicemail left. No prior call attempts today.</dd>
-                                <dt>Plan</dt><dd>Re-attempt outreach this afternoon and tomorrow morning. If still unreachable after 3 attempts within 48 hours, escalate to PCP and emergency contact.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Walter Kamau — No Intervention Needed -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Walter Kamau</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">No Intervention Needed</span>
-                            <span>Dr. James Wilson</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">06/04/1962</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0916</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">E11.9</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Glucose readings consistently within target range; no concerns reported.</dd>
-                                <dt>Assessment</dt><dd>Stable on current regimen. Diet adherence reported as good. No medication concerns.</dd>
-                                <dt>Plan</dt><dd>No intervention required. Continue regimen and RPM logging.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Delphine Okafor — Resolved on Phone -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Delphine Okafor</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">Resolved on Phone</span>
-                            <span>Dr. James Wilson</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">12/19/1956</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0263</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I10, E78.5</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Question about statin side effects (mild muscle aches).</dd>
-                                <dt>Assessment</dt><dd>Symmetric mild myalgia, no weakness, no dark urine. Likely statin-related but tolerable. No red flags for rhabdomyolysis.</dd>
-                                <dt>Plan</dt><dd>Issue addressed during call. Counseled to maintain hydration and take statin in the evening. Will discuss with PCP at next visit if symptoms persist.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Raymond Brewster — Not Reachable -->
-                <div class="compact-card">
-                    <div class="compact-card-header">
-                        <h3>Raymond Brewster</h3>
-                        <div class="compact-card-meta">
-                            <span class="ticket-type">Not Reachable</span>
-                            <span>Dr. Sarah Chen</span>
-                        </div>
-                    </div>
-                    <div class="compact-card-body two-col">
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Patient Information</div>
-                            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/30/1959</span></div>
-                            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0152</span></div>
-                            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I25.10</span></div>
-                            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-                            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-                            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-                        </div>
-                        <div class="compact-card-section">
-                            <div class="compact-card-section-title">Clinical Note</div>
-                            <dl class="clinical-note-block">
-                                <dt>Chief Complaint</dt><dd>Scheduled outreach for biweekly wellness check.</dd>
-                                <dt>Assessment</dt><dd>Patient did not answer. Voicemail box full — unable to leave message. No prior contact attempts today.</dd>
-                                <dt>Plan</dt><dd>Re-attempt outreach today and tomorrow. Send SMS reminder via Survey Health mobile. Escalate to PCP if still unreachable in 48 hours.</dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Footer -->
                 <div class="report-footer">
                     <p class="powered-by">Powered by Survey Health</p>
@@ -957,20 +729,23 @@
     }
   }
 
-  // --- 2. Net Interactions table (ALWAYS — every call is an interaction) ---
-  const interactions = document.getElementById('tbody-interactions');
-  if (interactions) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>1</td>
-      <td>Claire Henderson</td>
-      <td>Dr. Henderson</td>
-      <td>${data.disposition}</td>`;
-    interactions.insertBefore(tr, interactions.firstChild);
-    renumber(interactions);
+  // --- 2. Update the Today's Summary count for this outcome's bucket ---
+  const bumpCount = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = (parseInt(el.textContent || '0', 10) + 1).toString();
+  };
+  if (data.summaryTable === 'tbody-escalation') {
+    if (res.outcome === 'emergent') bumpCount('count-emergent');
+    else if (res.outcome === 'urgent') bumpCount('count-urgent');
+    else if (res.outcome === 'immediate') bumpCount('count-immediate');
+  } else if (data.summaryTable === 'tbody-routine') {
+    bumpCount('count-routine');
   }
+  // Always bump the overall "Patients evaluated today" total.
+  bumpCount('count-total');
 
-  // --- 3. Detail card: either Escalation Details or Resolution Details ---
+  // --- 3. Detail card (escalation only — Resolution Details was removed) ---
   if (data.detailSection === 'escalation') {
     const anchor = document.getElementById('escalation-details-anchor');
     if (anchor) {
@@ -1005,41 +780,10 @@
         </div>`;
       anchor.parentNode.insertBefore(card, anchor.nextSibling);
     }
-  } else if (data.detailSection === 'resolution') {
-    const anchor = document.getElementById('resolution-details-anchor');
-    if (anchor) {
-      const card = document.createElement('div');
-      card.className = 'compact-card';
-      card.innerHTML = `
-        <div class="compact-card-header">
-          <h3>Claire Henderson</h3>
-          <div class="compact-card-meta">
-            <span class="ticket-type">${data.ticketType}</span>
-            <span>Dr. Henderson</span>
-          </div>
-        </div>
-        <div class="compact-card-body two-col">
-          <div class="compact-card-section">
-            <div class="compact-card-section-title">Patient Information</div>
-            <div class="compact-row"><span class="compact-label">DOB</span><span class="compact-value">03/22/1948</span></div>
-            <div class="compact-row"><span class="compact-label">Phone</span><span class="compact-value">(803) 555-0173</span></div>
-            <div class="compact-row"><span class="compact-label">Diagnoses</span><span class="compact-value">I50.9</span></div>
-            <div class="compact-row"><span class="compact-label">Program</span><span class="compact-value">APCM + RPM</span></div>
-            <div class="compact-row"><span class="compact-label">Date</span><span class="compact-value">May 9, 2026</span></div>
-            <div class="compact-row"><span class="compact-label">Care Mgr</span><span class="compact-value">L. Goldenstein</span></div>
-          </div>
-          <div class="compact-card-section">
-            <div class="compact-card-section-title">Clinical Note</div>
-            <dl class="clinical-note-block">
-              <dt>Chief Complaint</dt><dd>Biweekly RPM wellness check; flagged via AI screening.</dd>
-              <dt>Assessment</dt><dd>${data.reasonText}</dd>
-              <dt>Plan</dt><dd>${data.reason}. Continue current regimen. Next scheduled RPM check-in in 14 days.</dd>
-            </dl>
-          </div>
-        </div>`;
-      anchor.parentNode.insertBefore(card, anchor.nextSibling);
-    }
   }
+  // Resolution outcomes (resolved-on-phone, no-intervention, not-reachable)
+  // are reflected only in the Today's Summary count bump above; the
+  // Resolution Details section has been removed from this report.
 })();
 </script>
 

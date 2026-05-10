@@ -165,9 +165,9 @@
         </div>
         <div class="flex items-center gap-3 text-sm text-gray-400">
           <span id="header-time">—</span>
-          <button id="settings-btn" class="text-gray-400 hover:text-gray-600 relative" title="Settings">
+          <button id="settings-btn" class="text-gray-400 hover:text-gray-600 relative" title="설정">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span id="status-dot" class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-gray-300 ring-2 ring-white" title="Idle"></span>
+            <span id="status-dot" class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-gray-300 ring-2 ring-white" title="대기 중"></span>
           </button>
         </div>
       </div>
@@ -304,8 +304,8 @@
                 </div>
                 <div class="space-y-1.5 ml-3">
                   <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">측정값</span><span class="font-semibold text-green-700 text-sm">111/77 mmHg</span></div>
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비 (5 readings)</span><span class="font-semibold text-green-700 text-sm">+1 SBP / -6 DBP</span></div>
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Population</span><span class="font-semibold text-green-700 text-sm">Normal (90–129/60–84 mmHg)</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비 (최근 5회)</span><span class="font-semibold text-green-700 text-sm">+1 SBP / -6 DBP</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">인구 평균 대비</span><span class="font-semibold text-green-700 text-sm">정상 범위 (90–129/60–84 mmHg)</span></div>
                 </div>
               </div>
               <!-- Pulse -->
@@ -315,8 +315,8 @@
                 </div>
                 <div class="space-y-1.5 ml-3">
                   <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">측정값</span><span class="font-semibold text-green-700 text-sm">76 bpm</span></div>
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비 (5 readings)</span><span class="font-semibold text-green-700 text-sm">+8 bpm</span></div>
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Population</span><span class="font-semibold text-green-700 text-sm">Normal (60–84 bpm)</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비 (최근 5회)</span><span class="font-semibold text-green-700 text-sm">+8 bpm</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">인구 평균 대비</span><span class="font-semibold text-green-700 text-sm">정상 범위 (60–84 bpm)</span></div>
                 </div>
               </div>
               <!-- Respiratory Rate -->
@@ -325,9 +325,9 @@
                   <span class="font-medium text-gray-800 text-sm">호흡수</span>
                 </div>
                 <div class="space-y-1.5 ml-3">
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">측정값</span><span class="font-semibold text-yellow-700 text-sm">11 breaths/min</span></div>
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비 (5 readings)</span><span class="font-semibold text-yellow-700 text-sm">-6 breaths/min</span></div>
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Population</span><span class="font-semibold text-yellow-700 text-sm">Low (&lt;12 breaths/min)</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">측정값</span><span class="font-semibold text-yellow-700 text-sm">11회/분</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비 (최근 5회)</span><span class="font-semibold text-yellow-700 text-sm">-6회/분</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">인구 평균 대비</span><span class="font-semibold text-yellow-700 text-sm">낮음 (12회/분 미만)</span></div>
                 </div>
               </div>
             </div>
@@ -346,17 +346,17 @@
                   <span class="font-semibold text-yellow-700 text-sm">중간</span>
                 </div>
                 <div class="space-y-1.5 ml-3">
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비</span><span class="font-semibold text-yellow-700 text-sm">+1 level</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비</span><span class="font-semibold text-yellow-700 text-sm">+1 단계</span></div>
                 </div>
               </div>
               <!-- 불안 -->
               <div class="p-4 bg-green-50">
                 <div class="flex items-center justify-between mb-3">
                   <span class="font-medium text-gray-800 text-sm">불안</span>
-                  <span class="font-semibold text-green-700 text-sm">Low</span>
+                  <span class="font-semibold text-green-700 text-sm">낮음</span>
                 </div>
                 <div class="space-y-1.5 ml-3">
-                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비</span><span class="font-semibold text-green-700 text-sm">-1 level</span></div>
+                  <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비</span><span class="font-semibold text-green-700 text-sm">-1 단계</span></div>
                 </div>
               </div>
             </div>
@@ -550,7 +550,7 @@
               </div>
               <textarea id="manual-note"
                         rows="4"
-                        placeholder="Add context, corrections, or follow-up notes on top of the AI summary&#x2026;"
+                        placeholder="AI 요약 위에 추가 정보, 수정 사항 또는 후속 노트 입력&#x2026;"
                         class="w-full px-3 py-2.5 text-sm text-gray-800 leading-relaxed bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"></textarea>
               <div class="flex items-center justify-end mt-2">
                 <button onclick="clearManualNote()" class="text-[11px] text-gray-400 hover:text-gray-600">지우기</button>
@@ -565,7 +565,7 @@
             </div>
             <div class="flex-1 text-sm">
               <div class="font-semibold text-green-800">Ticket resolved &mdash; <span id="resolved-outcome">—</span></div>
-              <div class="text-green-700 text-xs mt-0.5">해결d at <span id="resolved-time">—</span> by L. 골든스타인. Added to today&rsquo;s Daily Report.</div>
+              <div class="text-green-700 text-xs mt-0.5"><span id="resolved-time">—</span>에 L. 골든스타인이 해결함. 오늘의 일일 보고서에 추가됨.</div>
             </div>
           </div>
 
@@ -582,7 +582,7 @@
                 <label class="text-sm font-medium text-gray-700 block mb-2">결과</label>
                 <div class="custom-dropdown" id="outcome-dropdown" onclick="this.classList.toggle('open')">
                   <button type="button" class="custom-dropdown-trigger">
-                    <span class="text-sm text-gray-400">Select outcome...</span>
+                    <span class="text-sm text-gray-400">결과 선택...</span>
                     <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
@@ -618,7 +618,7 @@
                       </div>
                     </div>
                     <div class="dropdown-divider"></div>
-                    <div class="dropdown-group-label">Non-Escalation</div>
+                    <div class="dropdown-group-label">에스컬레이션 없음</div>
                     <div class="dropdown-item" data-value="resolved">
                       <span class="dropdown-dot" style="background: #3b82f6;"></span>
                       <div class="dropdown-item-content">
@@ -675,7 +675,7 @@
             <div>
               <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">인적사항</div>
               <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
-                <div class="flex justify-between"><span class="text-gray-500">Age</span><span class="text-gray-900">77 years</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">나이</span><span class="text-gray-900">만 77세</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">생년월일</span><span class="text-gray-900">03/22/1948</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">주</span><span class="text-gray-900">SC</span></div>
               </div>
@@ -743,7 +743,7 @@
       <div>
         <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo API key (optional if using proxy)</label>
         <input id="input-apikey" type="password" placeholder="sk_..." class="mt-1 w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-[11px] text-gray-500 mt-1">Leave blank when using <code>node demo-ccm/proxy.js</code>. Stored only in this browser's localStorage.</p>
+        <p class="text-[11px] text-gray-500 mt-1">사용 시 비워두세요: <code>node demo-ccm/proxy.js</code>. Stored only in this browser's localStorage.</p>
       </div>
       <div>
         <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo API 기본 URL</label>
@@ -772,7 +772,7 @@
           <input id="input-mock" type="checkbox" class="rounded border-gray-300">
           <span>Use mock summary (bypass Quo)</span>
         </label>
-        <p class="text-[11px] text-gray-500 mt-1 ml-6">Loads <code>claire-mock-summary-ko.json</code>.</p>
+        <p class="text-[11px] text-gray-500 mt-1 ml-6">다음을 로드합니다: <code>claire-mock-summary-ko.json</code>.</p>
       </div>
     </div>
     <div class="px-5 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-between gap-2">
@@ -849,7 +849,7 @@ function saveSettings() {
     const ms = Math.max(2, loadSettings().interval || 5) * 1000;
     pollTimer = setInterval(() => pollNow(true), ms);
   }
-  toast('Settings saved');
+  toast('설정 저장됨');
 }
 // Format +18032334666 → "(803) 233-4666"
 function formatE164ForDisplay(e164) {
@@ -1036,7 +1036,7 @@ function renderCallCard(payload) {
       </div>`;
     }).join('');
   } else {
-    extracted.innerHTML = `<div class="text-xs text-gray-400 text-center py-3">No structured responses captured for this call.</div>`;
+    extracted.innerHTML = `<div class="text-xs text-gray-400 text-center py-3">이 통화에서 추출된 응답이 없습니다.</div>`;
   }
 }
 
@@ -1225,7 +1225,7 @@ function render실시간통화 내용(turns) {
   const turnsEl = document.getElementById('live-transcript-turns');
   if (!turnsEl) return;
   if (!Array.isArray(turns) || turns.length === 0) {
-    turnsEl.innerHTML = '<div class="text-xs text-gray-400 text-center py-3">No transcript was captured for this call.</div>';
+    turnsEl.innerHTML = '<div class="text-xs text-gray-400 text-center py-3">이 통화의 통화 내용이 없습니다.</div>';
     return;
   }
   turnsEl.innerHTML = turns.map(turn => {
@@ -1520,7 +1520,7 @@ function restartPolling() {
 // Note actions + toast
 // =========================================================================
 function discardNote() {
-  if (!confirm('Discard this note? Your edits will be lost.')) return;
+  if (!confirm('이 노트를 취소하시겠습니까? 수정 사항이 사라집니다.')) return;
   lastCallId = null;
   noteGenerated = false;
   resetNote();
@@ -1530,7 +1530,7 @@ function submitNote() {
   // Require an outcome so the Daily Report knows which bucket to put Claire in
   const selected = document.querySelector('#outcome-dropdown .dropdown-item.selected');
   if (!selected) {
-    toast('Please select an outcome before resolving', 3500);
+    toast('해결 전에 결과를 선택해 주세요', 3500);
     // Nudge the dropdown trigger red briefly so the user sees where to look
     const trigger = document.querySelector('#outcome-dropdown .custom-dropdown-trigger');
     if (trigger) {
@@ -1685,7 +1685,7 @@ function resetTicket() {
   document.querySelectorAll('#outcome-dropdown .dropdown-item.selected').forEach(i => i.classList.remove('selected'));
   const trigger = document.querySelector('#outcome-dropdown .custom-dropdown-trigger span');
   if (trigger) {
-    trigger.innerHTML = 'Select outcome...';
+    trigger.innerHTML = '결과 선택...';
     trigger.classList.remove('text-gray-900');
     trigger.classList.add('text-gray-400');
   }
@@ -1759,7 +1759,7 @@ function claireResolutionLocal() {
 function assignToMe() {
   const current = localStorage.getItem('demoCcm.claireAssignee');
   if (current) {
-    // Already assigned — "재배정" just clears it for the demo
+    // 이미 배정됨 — "재배정"은 데모용으로 배정을 해제합니다
     localStorage.removeItem('demoCcm.claireAssignee');
   } else {
     localStorage.setItem('demoCcm.claireAssignee', 'L. 골든스타인');
