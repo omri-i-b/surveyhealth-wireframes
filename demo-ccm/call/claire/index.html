@@ -389,7 +389,7 @@
                 </div>
               </div>
               <!-- Pressure injuries / open wounds -->
-              <div class="p-4 bg-green-50">
+              <div class="p-4 bg-green-50 border-b border-gray-200">
                 <div class="flex items-center justify-between mb-3">
                   <span class="font-medium text-gray-800 text-sm">Pressure injuries / open wounds</span>
                   <span class="font-semibold text-green-700 text-sm">None</span>
@@ -398,40 +398,34 @@
                   <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">vs Baseline</span><span class="font-semibold text-green-700 text-sm">No change</span></div>
                 </div>
               </div>
-            </div>
-
-            <!-- Patient-submitted images — top-level row under Skin / Wound Analysis -->
-            <div class="mt-3 rounded-lg border border-gray-200 bg-white">
-              <div class="p-4 flex items-center justify-between flex-wrap gap-3">
-                <div>
-                  <div class="font-medium text-gray-800 text-sm">Patient-submitted images</div>
-                  <div class="text-gray-500 text-xs mt-0.5">Submitted via Survey Health mobile · May 8, 2026</div>
-                </div>
-                <div class="flex items-center gap-2">
+              <!-- Patient-submitted images — final row of Skin / Wound Analysis -->
+              <div class="bg-white">
+                <div class="p-4 flex items-center justify-between flex-wrap gap-3">
+                  <div>
+                    <div class="font-medium text-gray-800 text-sm">Patient-submitted images</div>
+                    <div class="text-gray-500 text-xs mt-0.5">Submitted via Survey Health mobile · May 8, 2026</div>
+                  </div>
                   <button type="button" onclick="toggleWoundImage()" id="wound-btn-view" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                     View image
                   </button>
                 </div>
-              </div>
-              <!-- Image card (hidden until user clicks "With"/"Without") -->
-              <div id="wound-image" class="hidden border-t border-gray-200">
-                <div class="aspect-square sm:aspect-[4/3] max-h-80 mx-auto relative bg-gray-100 overflow-hidden">
-                  <!-- Real photo (only used for "without bandage") -->
-                  <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="if (!this.dataset.fellBack) { this.dataset.fellBack = '1'; this.src = '../../assets/wound-no-bandage.svg'; } else { this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden'); }" />
-                  <!-- Redacted hatch fallback (only shown if both JPG + SVG fail to load) -->
-                  <div id="wound-image-hatch" class="absolute inset-0 hidden" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
-                  <!-- Click-to-reveal overlay -->
-                  <button type="button" id="wound-image-reveal-btn" onclick="revealWoundImage()" class="absolute inset-0 backdrop-blur-md bg-gray-900/45 hover:bg-gray-900/55 transition-colors flex flex-col items-center justify-center text-center px-4 cursor-pointer">
-                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    <div class="text-white text-sm font-semibold">Click to reveal image</div>
-                    <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Patient-submitted clinical image</div>
-                    <div class="text-white/60 text-[10px] mt-2">May contain graphic clinical content</div>
-                  </button>
-                </div>
-                <div class="px-4 py-2 bg-white border-t border-gray-200 flex items-center justify-between text-xs">
-                  <span id="wound-image-meta" class="text-gray-600">Submitted by patient · May 9, 2026 · 7:14 AM</span>
-                  <button type="button" onclick="hideWoundImage()" class="text-gray-500 hover:text-gray-700 font-medium">Hide</button>
+                <!-- Image card (hidden until user clicks View) -->
+                <div id="wound-image" class="hidden border-t border-gray-200">
+                  <div class="aspect-square sm:aspect-[4/3] max-h-80 mx-auto relative bg-gray-100 overflow-hidden">
+                    <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="if (!this.dataset.fellBack) { this.dataset.fellBack = '1'; this.src = '../../assets/wound-no-bandage.svg'; } else { this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden'); }" />
+                    <div id="wound-image-hatch" class="absolute inset-0 hidden" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
+                    <button type="button" id="wound-image-reveal-btn" onclick="revealWoundImage()" class="absolute inset-0 backdrop-blur-md bg-gray-900/45 hover:bg-gray-900/55 transition-colors flex flex-col items-center justify-center text-center px-4 cursor-pointer">
+                      <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      <div class="text-white text-sm font-semibold">Click to reveal image</div>
+                      <div id="wound-image-caption" class="text-white/80 text-xs mt-1">Patient-submitted clinical image</div>
+                      <div class="text-white/60 text-[10px] mt-2">May contain graphic clinical content</div>
+                    </button>
+                  </div>
+                  <div class="px-4 py-2 bg-white border-t border-gray-200 flex items-center justify-between text-xs">
+                    <span id="wound-image-meta" class="text-gray-600">Submitted by patient · May 9, 2026 · 7:14 AM</span>
+                    <button type="button" onclick="hideWoundImage()" class="text-gray-500 hover:text-gray-700 font-medium">Hide</button>
+                  </div>
                 </div>
               </div>
             </div>
