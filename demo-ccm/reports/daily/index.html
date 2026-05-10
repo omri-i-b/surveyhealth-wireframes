@@ -330,24 +330,19 @@
                     </div>
                 </div>
 
-                <!-- Top Summary -->
+                <!-- Provider escalation breakdown (the 6 from Daily Overview, broken out by priority) -->
                 <div class="section">
-                    <div class="section-title">Today's Summary</div>
+                    <div class="section-title">Escalation Breakdown by Priority</div>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Metric</th>
+                                    <th>Priority</th>
                                     <th style="text-align:right;">Count</th>
-                                    <th>Detail</th>
+                                    <th>Recommendation</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-summary">
-                                <tr>
-                                    <td><strong>Patients evaluated today</strong></td>
-                                    <td style="text-align:right;"><strong id="count-total">6</strong></td>
-                                    <td>Across all priority levels</td>
-                                </tr>
                                 <tr>
                                     <td><span class="badge badge-emergent">Emergent</span></td>
                                     <td style="text-align:right;"><span id="count-emergent">1</span></td>
@@ -369,9 +364,14 @@
                                     <td>Recommend visit between 8-30 days</td>
                                 </tr>
                                 <tr>
-                                    <td>Care manager contacted clinic</td>
+                                    <td><strong>Total escalations to provider</strong></td>
+                                    <td style="text-align:right;"><strong id="count-total">6</strong></td>
+                                    <td>Matches Daily Overview row 5</td>
+                                </tr>
+                                <tr>
+                                    <td>Warm handoff completed</td>
                                     <td style="text-align:right;">0 / 6</td>
-                                    <td>Warm handoff pending PCP review</td>
+                                    <td>Pending PCP review</td>
                                 </tr>
                             </tbody>
                         </table>
