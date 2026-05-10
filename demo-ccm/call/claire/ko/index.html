@@ -182,7 +182,7 @@
             <div id="assigned-state" class="flex items-center gap-3" style="display:none;">
               <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">LG</div>
               <div>
-                <div class="font-medium text-gray-900 text-sm">Assigned to L. 골든스타인</div>
+                <div class="font-medium text-gray-900 text-sm">L. 골든스타인에게 배정됨</div>
                 <div class="text-xs text-gray-400">케어 매니저</div>
               </div>
             </div>
@@ -238,7 +238,7 @@
           <!-- Section Divider -->
           <div class="flex items-center gap-3 mb-6">
             <div class="h-px flex-1 bg-gray-200"></div>
-            <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">환자 Assessment</span>
+            <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">환자 평가</span>
             <div class="h-px flex-1 bg-gray-200"></div>
           </div>
 
@@ -272,7 +272,7 @@
 
             <!-- 통화 내용 (Collapsible) -->
             <div class="border-b border-gray-200">
-              <button onclick="toggle통화 내용()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors">
+              <button onclick="toggleTranscript()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors">
                 <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">통화 내용</span>
                 <span id="transcriptToggle" class="text-xs text-blue-600">펼치기 ↓</span>
               </button>
@@ -398,11 +398,11 @@
                   <div class="flex items-center justify-between"><span class="text-gray-600 text-sm">기준 대비</span><span class="font-semibold text-green-700 text-sm">변화 없음</span></div>
                 </div>
               </div>
-              <!-- 환자-submitted images — final row of 피부 / 상처 분석 -->
+              <!-- 환자 제출 이미지 — final row of 피부 / 상처 분석 -->
               <div class="bg-white">
                 <div class="p-4 flex items-center justify-between flex-wrap gap-3">
                   <div>
-                    <div class="font-medium text-gray-800 text-sm">환자-submitted images</div>
+                    <div class="font-medium text-gray-800 text-sm">환자 제출 이미지</div>
                     <div class="text-gray-500 text-xs mt-0.5">Survey Health 모바일로 제출 · 2026년 5월 8일</div>
                   </div>
                   <button type="button" onclick="toggleWoundImage()" id="wound-btn-view" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
@@ -418,7 +418,7 @@
                     <button type="button" id="wound-image-reveal-btn" onclick="revealWoundImage()" class="absolute inset-0 backdrop-blur-md bg-gray-900/45 hover:bg-gray-900/55 transition-colors flex flex-col items-center justify-center text-center px-4 cursor-pointer">
                       <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                       <div class="text-white text-sm font-semibold">클릭하여 이미지 표시</div>
-                      <div id="wound-image-caption" class="text-white/80 text-xs mt-1">환자-submitted clinical image</div>
+                      <div id="wound-image-caption" class="text-white/80 text-xs mt-1">환자 제출 임상 이미지</div>
                       <div class="text-white/60 text-[10px] mt-2">민감한 임상 콘텐츠가 포함될 수 있습니다</div>
                     </button>
                   </div>
@@ -431,14 +431,14 @@
             </div>
           </div>
 
-          <!-- Section Divider: 케어 매니저 Note -->
+          <!-- Section Divider: 케어 매니저 노트 -->
           <div class="flex items-center gap-3 mb-6">
             <div class="h-px flex-1 bg-gray-200"></div>
-            <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">케어 매니저 Note</span>
+            <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">케어 매니저 노트</span>
             <div class="h-px flex-1 bg-gray-200"></div>
           </div>
 
-          <!-- Ambient AI 요약 Note -->
+          <!-- Ambient AI 요약 노트 -->
           <div class="mb-8 rounded-xl border border-gray-200 overflow-hidden bg-white">
             <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-200 flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -529,11 +529,11 @@
 
               <!-- Full call transcript (accordion, collapsed by default) -->
               <section class="mt-2 rounded-lg border border-gray-200 overflow-hidden">
-                <button type="button" onclick="toggle실시간통화 내용()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors">
+                <button type="button" onclick="toggleLiveTranscript()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors">
                   <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">통화 내용</span>
-                  <span id="live통화 내용Toggle" class="text-xs text-blue-600">Show &darr;</span>
+                  <span id="liveTranscriptToggle" class="text-xs text-blue-600">펼치기 ↓</span>
                 </button>
-                <div id="live통화 내용Content" class="max-h-0 overflow-hidden transition-all duration-300">
+                <div id="liveTranscriptContent" class="max-h-0 overflow-hidden transition-all duration-300">
                   <div id="live-transcript-turns" class="p-4 space-y-2.5 text-sm bg-white border-t border-gray-100"></div>
                 </div>
               </section>
@@ -564,7 +564,7 @@
               <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
             </div>
             <div class="flex-1 text-sm">
-              <div class="font-semibold text-green-800">Ticket resolved &mdash; <span id="resolved-outcome">—</span></div>
+              <div class="font-semibold text-green-800">티켓 해결됨 — <span id="resolved-outcome">—</span></div>
               <div class="text-green-700 text-xs mt-0.5"><span id="resolved-time">—</span>에 L. 골든스타인이 해결함. 오늘의 일일 보고서에 추가됨.</div>
             </div>
           </div>
@@ -708,7 +708,7 @@
             </div>
 
             <div>
-              <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">환자 Contact</div>
+              <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">환자 연락처</div>
               <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
                 <div class="flex items-center justify-between">
                   <span class="text-gray-500">휴대전화</span>
@@ -741,36 +741,36 @@
     </div>
     <div class="flex-1 overflow-auto p-5 space-y-4">
       <div>
-        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo API key (optional if using proxy)</label>
+        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo API 키 (프록시 사용 시 선택)</label>
         <input id="input-apikey" type="password" placeholder="sk_..." class="mt-1 w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-[11px] text-gray-500 mt-1">사용 시 비워두세요: <code>node demo-ccm/proxy.js</code>. Stored only in this browser's localStorage.</p>
+        <p class="text-[11px] text-gray-500 mt-1">사용 시 비워두세요: <code>node demo-ccm/proxy.js</code>. 이 브라우저의 localStorage에만 저장됩니다.</p>
       </div>
       <div>
         <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo API 기본 URL</label>
         <input id="input-base" type="text" placeholder="http://localhost:8787/v1" class="mt-1 w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-[11px] text-gray-500 mt-1">Default: <code>http://localhost:8787/v1</code> (the local proxy).</p>
+        <p class="text-[11px] text-gray-500 mt-1">기본값: <code>http://localhost:8787/v1</code> (로컬 프록시).</p>
       </div>
       <div>
-        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo line (phoneNumberId)</label>
+        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Quo 회선 (phoneNumberId)</label>
         <select id="input-pnid-select" class="mt-1 w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">— select after API key + base URL are set —</option>
         </select>
-        <input id="input-pnid" type="text" placeholder="PN123abc — or free-type" class="mt-1 w-full px-3 py-2 text-sm font-mono border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-[11px] text-gray-500 mt-1">The Quo line the patient calls. Pick from the dropdown or paste a PN id.</p>
+        <input id="input-pnid" type="text" placeholder="PN123abc — 또는 직접 입력" class="mt-1 w-full px-3 py-2 text-sm font-mono border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <p class="text-[11px] text-gray-500 mt-1">환자가 전화하는 Quo 회선. 드롭다운에서 선택하거나 PN ID를 붙여넣으세요.</p>
       </div>
       <div>
-        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Claire's phone number (E.164)</label>
+        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">클레어의 전화번호 (E.164)</label>
         <input id="input-number" type="text" placeholder="+18032334666" class="mt-1 w-full px-3 py-2 text-sm font-mono border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <p class="text-[11px] text-gray-500 mt-1">Displayed as "(202) 210-9652" in the patient sidebar. Default: +12022109652.</p>
+        <p class="text-[11px] text-gray-500 mt-1">환자 사이드바에 "(202) 210-9652" 형식으로 표시됩니다. 기본값: +12022109652.</p>
       </div>
       <div>
-        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Poll interval (seconds)</label>
+        <label class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">폴링 주기 (초)</label>
         <input id="input-interval" type="number" min="2" max="60" class="mt-1 w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
       </div>
       <div class="pt-2 border-t border-gray-100">
         <label class="flex items-center gap-2 text-sm text-gray-700">
           <input id="input-mock" type="checkbox" class="rounded border-gray-300">
-          <span>Use mock summary (bypass Quo)</span>
+          <span>모의 요약 사용 (Quo 우회)</span>
         </label>
         <p class="text-[11px] text-gray-500 mt-1 ml-6">다음을 로드합니다: <code>claire-mock-summary-ko.json</code>.</p>
       </div>
@@ -1193,7 +1193,7 @@ function hideWoundImage() {
   }
 }
 
-function toggle통화 내용() {
+function toggleTranscript() {
   const content = document.getElementById('transcriptContent');
   const toggle = document.getElementById('transcriptToggle');
   transcriptExpanded = !transcriptExpanded;
@@ -1208,12 +1208,12 @@ function toggle통화 내용() {
 
 // Second transcript accordion — lives inside the AI 요약 card and shows
 // the LIVE call's transcript (the one the LLM summarized from).
-let live통화 내용Expanded = false;
-function toggle실시간통화 내용() {
-  const content = document.getElementById('live통화 내용Content');
-  const toggle = document.getElementById('live통화 내용Toggle');
-  live통화 내용Expanded = !live통화 내용Expanded;
-  if (live통화 내용Expanded) {
+let liveTranscriptExpanded = false;
+function toggleLiveTranscript() {
+  const content = document.getElementById('liveTranscriptContent');
+  const toggle = document.getElementById('liveTranscriptToggle');
+  liveTranscriptExpanded = !liveTranscriptExpanded;
+  if (liveTranscriptExpanded) {
     content.style.maxHeight = content.scrollHeight + 'px';
     toggle.textContent = '숨기기 \u2191';
   } else {
@@ -1221,7 +1221,7 @@ function toggle실시간통화 내용() {
     toggle.textContent = 'Show \u2193';
   }
 }
-function render실시간통화 내용(turns) {
+function renderLiveTranscript(turns) {
   const turnsEl = document.getElementById('live-transcript-turns');
   if (!turnsEl) return;
   if (!Array.isArray(turns) || turns.length === 0) {
@@ -1238,8 +1238,8 @@ function render실시간통화 내용(turns) {
     </div>`;
   }).join('');
   // If the accordion is already open, re-measure so the new content fits
-  if (live통화 내용Expanded) {
-    const content = document.getElementById('live통화 내용Content');
+  if (liveTranscriptExpanded) {
+    const content = document.getElementById('liveTranscriptContent');
     if (content) content.style.maxHeight = content.scrollHeight + 'px';
   }
 }
@@ -1479,7 +1479,7 @@ async function pollNow(forceRender = false) {
       try {
         const note = await generateNoteFromCall(payload.callId);
         renderNote(note);
-        render실시간통화 내용(payload.transcript);
+        renderLiveTranscript(payload.transcript);
         const finalWhen = payload.callMeta?.callEnded
           ? new Date(payload.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           : '';
@@ -1574,7 +1574,7 @@ function submitNote() {
   if (headerMeta) headerMeta.textContent = `해결d · ${outcomeLabel} · RPM`;
 
   // 숨기기 the whole 티켓 해결 section — a ticket can only be resolved
-  // once. Show the green "Ticket resolved" banner in its place.
+  // once. Show the green "티켓 해결됨" banner in its place.
   const resolveSection = document.getElementById('resolve-section');
   if (resolveSection) resolveSection.style.display = 'none';
   const banner = document.getElementById('resolved-banner');
@@ -1736,7 +1736,7 @@ function restoreLastRender() {
   // Rebuild the payload shape renderCallMeta expects
   renderCallMeta({ callMeta: prior.callMeta || {} });
   renderNote(prior.note);
-  render실시간통화 내용(prior.transcript || []);
+  renderLiveTranscript(prior.transcript || []);
 
   // Update 티켓 정보 status if not already resolved
   const res = claireResolutionLocal();
@@ -1808,7 +1808,7 @@ async function renderFromMock() {
   noteGenerated = true;
   renderCallMeta({ callMeta: nurse.callMeta || {} });
   renderNote(nurse.note || {});
-  render실시간통화 내용(nurse.transcript || []);
+  renderLiveTranscript(nurse.transcript || []);
   const when = nurse.callMeta?.callEnded
     ? new Date(nurse.callMeta.callEnded).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     : '';
@@ -1894,7 +1894,7 @@ document.getElementById('listen-btn').addEventListener('click', () => {
 
 // Prefill the top section (call recording + transcript + extracted responses)
 // with the AI agent (Lily) biweekly wellness check that flagged this ticket.
-// The AI 요약 Note at the bottom is a *separate* touchpoint — the human
+// The AI 요약 노트 at the bottom is a *separate* touchpoint — the human
 // nurse follow-up call by Lisa Goldenstein — driven by renderFromMock().
 async function prefillPreviousTouchpoint() {
   try {
