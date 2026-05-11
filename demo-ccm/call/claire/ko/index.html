@@ -868,14 +868,22 @@ function formatE164ForDisplay(e164) {
 function applySettings() {
   const s = loadSettings();
   const displayNum = formatE164ForDisplay(s.number);
+  // Sidebar number stays a plain tel: link, but the footer "Call patient"
+  // CTA jumps into the Quo (OpenPhone) dialer in a new tab so the care
+  // manager can click-to-call without leaving the workspace.
   const telHref = s.number ? 'tel:' + s.number : '#';
+  const quoHref = s.number ? 'https://my.quo.com/dialer?phoneNumber=' + encodeURIComponent(s.number) : '#';
   const sidebarCall = document.getElementById('sidebar-call-btn');
   if (sidebarCall) {
     sidebarCall.textContent = displayNum;
     sidebarCall.href = telHref;
   }
   const footerCall = document.getElementById('footer-call-btn');
-  if (footerCall) footerCall.href = telHref;
+  if (footerCall) {
+    footerCall.href = quoHref;
+    footerCall.target = '_blank';
+    footerCall.rel = 'noopener';
+  }
 }
 
 // Populate the Quo-line dropdown (inside the settings drawer) from /v1/phone-numbers.
