@@ -451,7 +451,8 @@
                   <button type="button" id="note-lang-ko" onclick="setNoteLanguage('ko')" class="px-2.5 py-1 bg-blue-600 text-white font-medium">한국어</button>
                   <button type="button" id="note-lang-en" onclick="setNoteLanguage('en')" class="px-2.5 py-1 bg-white text-gray-700 hover:bg-gray-50 font-medium border-l border-gray-300">English</button>
                 </div>
-                <button id="listen-btn" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
+                <!-- Live AI call listening intentionally hidden on the Korean view -->
+                <button id="listen-btn" class="hidden">
                   <span id="listen-btn-icon">🎧</span>
                   <span id="listen-btn-label">AI 통화 수신 대기</span>
                 </button>
@@ -1538,7 +1539,7 @@ async function pollNow(forceRender = false) {
         if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">검토 완료</span>`;
         // Persist the rendered state so page refreshes keep the summary visible
         try {
-          localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
+          localStorage.setItem('demoCcm.claireLastRender.ko', JSON.stringify({
             callId: payload.callId,
             callMeta: payload.callMeta,
             transcript: payload.transcript,
@@ -1696,7 +1697,7 @@ function resetTicket() {
   // Clear the resolution so Claire drops out of today's Daily Report
   localStorage.removeItem('demoCcm.claireResolution');
   localStorage.removeItem('demoCcm.claireAssignee');
-  localStorage.removeItem('demoCcm.claireLastRender');
+  localStorage.removeItem('demoCcm.claireLastRender.ko');
   renderAssignmentState();
 
   // Reset 티켓 정보 grid fields
@@ -1767,19 +1768,26 @@ function renderAssignmentState() {
 // reloads keep the populated state until the user hits Reset.
 function restoreLastRender() {
   let prior;
-  try { prior = JSON.parse(localStorage.getItem('demoCcm.claireLastRender') || 'null'); }
+  try { prior = JSON.parse(localStorage.getItem('demoCcm.claireLastRender.ko') || 'null'); }
   catch { prior = null; }
   if (!prior || !prior.note || !prior.callId) return false;
   // Schema gate: older cached renders may be missing the 13 CCM fields
   // (e.g. note.patientName). If so, invalidate and re-render from the
   // current mock so the UI doesn't show a half-empty note.
   if (!prior.note.patientName || !prior.note.summaryOfInteraction) {
-    localStorage.removeItem('demoCcm.claireLastRender');
+    localStorage.removeItem('demoCcm.claireLastRender.ko');
+    return false;
+  }
+  // Korean-only safety gate: if the cached note has English values (leaked
+  // from a previous shared-storage session), drop it and let renderFromMock
+  // load the Korean JSON.
+  if (!/[가-힣]/.test(prior.note.patientName + (prior.note.summaryOfInteraction || ''))) {
+    localStorage.removeItem('demoCcm.claireLastRender.ko');
     return false;
   }
   // Invalidate cached renders baked with the old "SurveyHealth" spelling.
   if (/SurveyHealth/.test(JSON.stringify(prior.note))) {
-    localStorage.removeItem('demoCcm.claireLastRender');
+    localStorage.removeItem('demoCcm.claireLastRender.ko');
     return false;
   }
 
@@ -1866,7 +1874,7 @@ async function renderFromMock() {
   const statusEl = document.getElementById('info-status');
   if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">검토 완료</span>`;
   try {
-    localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
+    localStorage.setItem('demoCcm.claireLastRender.ko', JSON.stringify({
       callId,
       callMeta: nurse.callMeta,
       transcript: nurse.transcript,
