@@ -1074,6 +1074,9 @@ function renderCallMeta(payload) {
 // Bilingual note cache. The Korean view loads the Korean note by default
 // and lazy-fetches the English note on first toggle to English.
 let __notesByLang = { ko: null, en: null };
+// Also cache the nurse-call transcript per language so the toggle swaps
+// both the 13-field note AND the live transcript accordion below it.
+let __transcriptsByLang = { ko: null, en: null };
 let __currentNoteLang = 'ko';
 
 function renderNote(note, lang) {
@@ -1109,18 +1112,21 @@ async function setNoteLanguage(lang) {
     on.forEach(c => otherBtn.classList.remove(c));
     off.forEach(c => otherBtn.classList.add(c));
   }
-  // Lazy-fetch the English note if requested and not cached yet
-  if (lang === 'en' && !__notesByLang.en) {
+  // Lazy-fetch the English nurse-call note + transcript if requested
+  if (lang === 'en' && (!__notesByLang.en || !__transcriptsByLang.en)) {
     try {
       const res = await fetch('../../../data/claire-mock-summary.json', { cache: 'no-store' });
       const mock = await res.json();
       __notesByLang.en = mock?.nurseCall?.note || null;
+      __transcriptsByLang.en = mock?.nurseCall?.transcript || null;
     } catch (e) {
-      console.warn('Could not load English note:', e.message);
+      console.warn('Could not load English nurse-call:', e.message);
     }
   }
-  // Re-render with the now-active language
+  // Re-render note (labels + values) and the live transcript in the chosen language
   renderNote(null, lang);
+  const turns = __transcriptsByLang[lang];
+  if (turns) renderLiveTranscript(turns);
 }
 function resetNote() {
   document.getElementById('note-empty').style.display = 'block';
@@ -1802,6 +1808,9 @@ function restoreLastRender() {
   // Rebuild the payload shape renderCallMeta expects
   renderCallMeta({ callMeta: prior.callMeta || {} });
   renderNote(prior.note);
+  // The cache key is namespaced to 'ko', so this transcript is Korean —
+  // stash it under the ko slot so the language toggle still works.
+  __transcriptsByLang.ko = prior.transcript || null;
   renderLiveTranscript(prior.transcript || []);
 
   // Update 티켓 정보 status if not already resolved
@@ -1874,6 +1883,9 @@ async function renderFromMock() {
   noteGenerated = true;
   renderCallMeta({ callMeta: nurse.callMeta || {} });
   renderNote(nurse.note || {});
+  // Cache the Korean transcript for the language toggle below; the English
+  // transcript is fetched lazily inside setNoteLanguage('en').
+  __transcriptsByLang.ko = nurse.transcript || null;
   renderLiveTranscript(nurse.transcript || []);
   const when = nurse.callMeta?.callEnded
     ? new Date(nurse.callMeta.callEnded).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
