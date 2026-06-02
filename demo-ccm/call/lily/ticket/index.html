@@ -9,6 +9,34 @@
     * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { font-size: 13px; }
     .note-section[contenteditable]:focus { outline: 2px solid #3b82f6; outline-offset: 2px; border-radius: 6px; }
+
+    /* Outcome dropdown — mirrors Claire */
+    .custom-dropdown { position: relative; }
+    .custom-dropdown-trigger {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 10px 14px; background: white;
+      border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .custom-dropdown-trigger:hover { border-color: #d1d5db; }
+    .custom-dropdown-trigger:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+    .custom-dropdown-menu {
+      position: absolute; bottom: calc(100% + 4px); left: 0; right: 0;
+      background: white; border: 1px solid #e5e7eb; border-radius: 8px;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.1); z-index: 50;
+      display: none; overflow: hidden;
+    }
+    .custom-dropdown.open .custom-dropdown-menu { display: block; }
+    .custom-dropdown.open .custom-dropdown-trigger { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+    .dropdown-group-label { padding: 8px 14px 4px; font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
+    .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; cursor: pointer; transition: background 0.1s; }
+    .dropdown-item:hover { background: #f9fafb; }
+    .dropdown-item.selected { background: #eff6ff; }
+    .dropdown-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .dropdown-item-content { flex: 1; }
+    .dropdown-item-title { font-size: 13px; font-weight: 500; color: #111827; }
+    .dropdown-item-desc { font-size: 11px; color: #6b7280; }
+    .dropdown-divider { height: 1px; background: #e5e7eb; margin: 4px 0; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -109,14 +137,9 @@
 
         <!-- Call Recording + Transcript + Extracted Responses (mirrors Claire, no audio because Lily doesn't return an MP3) -->
         <div id="call-detail" class="mb-8 rounded-xl border border-gray-200 overflow-hidden">
-          <div class="p-3 bg-gray-100 border-b border-gray-200 flex items-center gap-3">
-            <div class="w-9 h-9 bg-violet-100 text-violet-700 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M8.5 12a3.5 3.5 0 117 0v0a3.5 3.5 0 11-7 0z"/></svg>
-            </div>
-            <div class="flex-1">
-              <div class="text-xs font-medium text-gray-700">Call Recording</div>
-              <div id="call-meta" class="text-[10px] text-gray-500 mt-0.5">—</div>
-            </div>
+          <div class="p-3 bg-gray-100 border-b border-gray-200">
+            <div class="text-xs font-medium text-gray-700">Call Recording</div>
+            <div id="call-meta" class="text-[10px] text-gray-500 mt-0.5">—</div>
           </div>
 
           <!-- Time Spent (matches Claire row styling) -->
@@ -152,6 +175,15 @@
           <div class="h-px flex-1 bg-gray-200"></div>
         </div>
 
+        <!-- Resolved banner — appears after the user picks an outcome -->
+        <div id="resolved-banner" class="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 flex items-center gap-3" style="display:none;">
+          <svg class="w-5 h-5 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div class="flex-1">
+            <div class="font-semibold text-green-800">Ticket resolved &mdash; <span id="resolved-outcome">—</span></div>
+            <div class="text-green-700 text-xs mt-0.5">Resolved at <span id="resolved-time">—</span> by L. Goldenstein.</div>
+          </div>
+        </div>
+
         <!-- AI Summary — empty state always shown on this demo ticket -->
         <div class="mb-8 rounded-xl border border-gray-200 overflow-hidden bg-white">
           <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-200 flex items-center justify-between">
@@ -173,6 +205,83 @@
               <div class="h-3 w-1/4 bg-gray-200 rounded mt-6"></div>
               <div class="h-3 w-full bg-gray-200 rounded"></div>
               <div class="h-3 w-5/6 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resolve Ticket Section (matches Claire) -->
+        <div id="resolve-section" class="mt-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="h-px flex-1 bg-gray-200"></div>
+            <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Resolve Ticket</span>
+            <div class="h-px flex-1 bg-gray-200"></div>
+          </div>
+
+          <div class="mt-4 space-y-4">
+            <div>
+              <label class="text-sm font-medium text-gray-700 block mb-2">Outcome</label>
+              <div class="custom-dropdown" id="outcome-dropdown">
+                <button type="button" class="custom-dropdown-trigger" onclick="event.stopPropagation(); document.getElementById('outcome-dropdown').classList.toggle('open')">
+                  <span id="outcome-trigger-label" class="text-sm text-gray-400">Select outcome...</span>
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="custom-dropdown-menu">
+                  <div class="dropdown-group-label">Escalation</div>
+                  <div class="dropdown-item" data-value="emergent" data-label="Emergent" data-desc="Recommended ED visit" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #ef4444;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Emergent</div>
+                      <div class="dropdown-item-desc">Recommended ED visit</div>
+                    </div>
+                  </div>
+                  <div class="dropdown-item" data-value="urgent" data-label="Urgent" data-desc="Recommend visit within 48 hours" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #f97316;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Urgent</div>
+                      <div class="dropdown-item-desc">Recommend visit within 48 hours</div>
+                    </div>
+                  </div>
+                  <div class="dropdown-item" data-value="immediate" data-label="Immediate" data-desc="Recommend visit between 3-7 days" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #eab308;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Immediate</div>
+                      <div class="dropdown-item-desc">Recommend visit between 3-7 days</div>
+                    </div>
+                  </div>
+                  <div class="dropdown-item" data-value="routine" data-label="Routine" data-desc="Recommend visit between 8-30 days" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #22c55e;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Routine</div>
+                      <div class="dropdown-item-desc">Recommend visit between 8-30 days</div>
+                    </div>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <div class="dropdown-group-label">Non-Escalation</div>
+                  <div class="dropdown-item" data-value="resolved" data-label="Resolved on Phone" data-desc="" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #3b82f6;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Resolved on Phone</div>
+                    </div>
+                  </div>
+                  <div class="dropdown-item" data-value="no-intervention" data-label="No Intervention Needed" data-desc="" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #6b7280;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">No Intervention Needed</div>
+                    </div>
+                  </div>
+                  <div class="dropdown-item" data-value="not-reachable" data-label="Not Reachable" data-desc="" onclick="pickOutcome(this)">
+                    <span class="dropdown-dot" style="background: #9ca3af;"></span>
+                    <div class="dropdown-item-content">
+                      <div class="dropdown-item-title">Not Reachable</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-2">
+              <button onclick="discardTicket()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-md hover:bg-gray-50">Discard note</button>
+              <button onclick="resolveTicket()" class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md">Resolve &amp; save note</button>
             </div>
           </div>
         </div>
@@ -448,6 +557,79 @@ function formatE164(e164) {
   if (!e164 || !e164.startsWith('+1') || e164.length !== 12) return e164 || '—';
   return `(${e164.slice(2, 5)}) ${e164.slice(5, 8)}-${e164.slice(8)}`;
 }
+
+// ---------- Resolve Ticket ----------
+let pickedOutcome = null;
+
+function pickOutcome(el) {
+  const value = el.getAttribute('data-value');
+  const label = el.getAttribute('data-label');
+  const desc  = el.getAttribute('data-desc');
+  pickedOutcome = { value, label, desc };
+  // Mark selected
+  document.querySelectorAll('#outcome-dropdown .dropdown-item.selected').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  // Update the trigger label
+  const lbl = document.getElementById('outcome-trigger-label');
+  if (lbl) {
+    lbl.textContent = label;
+    lbl.classList.remove('text-gray-400');
+    lbl.classList.add('text-gray-900', 'font-medium');
+  }
+  // Close menu
+  document.getElementById('outcome-dropdown').classList.remove('open');
+}
+
+function resolveTicket() {
+  if (!pickedOutcome) {
+    // Nudge: open dropdown + flash trigger
+    const dd = document.getElementById('outcome-dropdown');
+    dd.classList.add('open');
+    const trig = dd.querySelector('.custom-dropdown-trigger');
+    if (trig) {
+      trig.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.25)';
+      trig.style.borderColor = '#ef4444';
+      setTimeout(() => { trig.style.boxShadow = ''; trig.style.borderColor = ''; }, 1200);
+    }
+    return;
+  }
+  // Hide resolve section, show resolved banner, flip status to Reviewed/Resolved
+  document.getElementById('resolve-section').style.display = 'none';
+  const banner = document.getElementById('resolved-banner');
+  document.getElementById('resolved-outcome').textContent = pickedOutcome.label;
+  document.getElementById('resolved-time').textContent =
+    new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  banner.style.display = 'flex';
+  // Update Ticket Info status pill
+  const statusEl = document.getElementById('info-status');
+  if (statusEl) {
+    statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Resolved · ${escapeHtml(pickedOutcome.label)}</span>`;
+  }
+  // Flip the header dot from red to green
+  document.querySelectorAll('.h-14 .bg-red-500.rounded-full').forEach(el => {
+    el.classList.remove('bg-red-500');
+    el.classList.add('bg-green-500');
+  });
+}
+
+function discardTicket() {
+  if (!confirm('Discard this ticket?\n\nThis clears the outcome selection and resets the resolve section.')) return;
+  pickedOutcome = null;
+  document.querySelectorAll('#outcome-dropdown .dropdown-item.selected').forEach(i => i.classList.remove('selected'));
+  const lbl = document.getElementById('outcome-trigger-label');
+  if (lbl) {
+    lbl.textContent = 'Select outcome...';
+    lbl.classList.add('text-gray-400');
+    lbl.classList.remove('text-gray-900', 'font-medium');
+  }
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#outcome-dropdown')) {
+    document.getElementById('outcome-dropdown')?.classList.remove('open');
+  }
+});
 
 function escapeHtml(s) {
   if (s == null) return '';
