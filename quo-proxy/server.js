@@ -325,23 +325,24 @@ function lilySnapshot(room) {
   };
 }
 
-// Forward to Lily with the bearer token. The browser POSTs us a body without
-// the token, we add it server-side.
+// Forward to Lily. The bearer token is optional — if LILY_API_TOKEN is set
+// we add it server-side; otherwise the request goes through unauthenticated
+// (Lily's current deployment doesn't require it).
 function lilyTriggerCall(body) {
   return new Promise((resolve, reject) => {
-    if (!LILY_TOKEN) return reject(new Error('LILY_API_TOKEN not configured'));
     const upstream = new URL(LILY_BASE + '/call');
     const payload = Buffer.from(JSON.stringify(body));
+    const headers = {
+      'Content-Type': 'application/json',
+      'Content-Length': payload.length,
+    };
+    if (LILY_TOKEN) headers['Authorization'] = 'Bearer ' + LILY_TOKEN;
     const req = https.request({
       hostname: upstream.hostname,
       port: upstream.port || 443,
       path: upstream.pathname,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + LILY_TOKEN,
-        'Content-Length': payload.length,
-      },
+      headers,
     }, up => {
       let chunks = '';
       up.setEncoding('utf8');
@@ -461,7 +462,8 @@ http.createServer(async (req, res) => {
       allowedOrigins: ALLOWED_ORIGINS.length,
       upstream: UPSTREAM,
       summarizer: anthropic ? 'ready' : 'disabled',
-      lily: LILY_TOKEN ? 'ready' : 'disabled',
+      lily: LILY_BASE ? 'ready' : 'disabled',
+      lilyAuth: LILY_TOKEN ? 'bearer' : 'none',
       lilyCallsInFlight: lilyCalls.size,
     }));
     return;
@@ -720,7 +722,7 @@ http.createServer(async (req, res) => {
   console.log(`CCM demo proxy v2.1 listening on 0.0.0.0:${PORT}`);
   console.log(`  Quo passthrough: GET /v1/*`);
   console.log(`  Summarizer:      POST /summarize/:callId (${anthropic ? 'ready' : 'disabled'})`);
-  console.log(`  Lily trigger:    POST /lily/start          (${LILY_TOKEN ? 'ready' : 'disabled — set LILY_API_TOKEN'})`);
+  console.log(`  Lily trigger:    POST /lily/start          (auth: ${LILY_TOKEN ? 'bearer' : 'none'} · base: ${LILY_BASE})`);
   console.log(`  Lily callback:   POST /lily/callback       (used by Lily, no auth)`);
   console.log(`  Lily status:     GET  /lily/calls/:roomId  (UI polls this)`);
   console.log(`  Allowed origins: ${ALLOWED_ORIGINS.join(', ') || '(none)'}`);
