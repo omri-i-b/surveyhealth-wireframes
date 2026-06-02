@@ -282,15 +282,187 @@ async function handleSummarize(callId, body, res, allowedOrigin) {
 // HTTP server
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Lily voice-agent integration
+// ---------------------------------------------------------------------------
+//   POST /lily/start            → kick off an outbound Lily call (server-side
+//                                 bearer auth; browser never sees the token)
+//   POST /lily/callback         → Lily POSTs transcript here when the call ends
+//   GET  /lily/calls/:roomId    → demo UI polls this to render status + Q&A
+//
+// State is held in-memory per server instance — fine for a single Railway
+// dyno, dies on restart. If the Lily call lands while the room id is still
+// unknown to us (race) we still keep it; the GET will find it by room id.
+const LILY_BASE  = process.env.LILY_BASE_URL || 'https://lily.surveyhealth-ai.com';
+const LILY_TOKEN = process.env.LILY_API_TOKEN || '';
+const LILY_ALLOWED_FLOWS = new Set(['ckd_session_1', 'esrd_session_5', 'copd_session_1', 'copd_session_9', 'post_surgical']);
+
+// roomId → { status, transcript, extracted, callMeta, createdAt, updatedAt }
+const lilyCalls = new Map();
+const LILY_TTL_MS = 24 * 60 * 60 * 1000;
+
+function lilyPrune() {
+  const cutoff = Date.now() - LILY_TTL_MS;
+  for (const [k, v] of lilyCalls.entries()) {
+    if ((v.updatedAt || v.createdAt || 0) < cutoff) lilyCalls.delete(k);
+  }
+}
+
+function lilySnapshot(room) {
+  const e = lilyCalls.get(room);
+  if (!e) return null;
+  return {
+    room,
+    status: e.status,
+    flow: e.flow || null,
+    patientName: e.patientName || null,
+    callMeta: e.callMeta || null,
+    transcript: e.transcript || null,
+    extracted: e.extracted || null,
+    error: e.error || null,
+    createdAt: e.createdAt,
+    updatedAt: e.updatedAt,
+  };
+}
+
+// Forward to Lily with the bearer token. The browser POSTs us a body without
+// the token, we add it server-side.
+function lilyTriggerCall(body) {
+  return new Promise((resolve, reject) => {
+    if (!LILY_TOKEN) return reject(new Error('LILY_API_TOKEN not configured'));
+    const upstream = new URL(LILY_BASE + '/call');
+    const payload = Buffer.from(JSON.stringify(body));
+    const req = https.request({
+      hostname: upstream.hostname,
+      port: upstream.port || 443,
+      path: upstream.pathname,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + LILY_TOKEN,
+        'Content-Length': payload.length,
+      },
+    }, up => {
+      let chunks = '';
+      up.setEncoding('utf8');
+      up.on('data', c => chunks += c);
+      up.on('end', () => {
+        try {
+          const json = chunks ? JSON.parse(chunks) : {};
+          if ((up.statusCode || 0) >= 400) {
+            return reject(new Error(`Lily ${up.statusCode}: ${chunks.slice(0, 300)}`));
+          }
+          resolve(json);
+        } catch (e) { reject(new Error('Lily returned non-JSON: ' + chunks.slice(0, 200))); }
+      });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+// Build the patient-facing transcript view + ask Claude to extract structured
+// Q&As. We keep the script generic across CKD/ESRD/etc. by asking Claude to
+// identify the AI agent's screening questions and the patient's answers.
+const QA_EXTRACT_SCHEMA = {
+  type: 'object',
+  properties: {
+    extractedResponses: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          question: { type: 'string' },
+          answer: { type: 'string' },
+          answerClass: { type: 'string', enum: ['good', 'bad', 'unclear'] },
+          quote: { type: 'string' },
+        },
+        required: ['question', 'answer', 'answerClass', 'quote'],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ['extractedResponses'],
+  additionalProperties: false,
+};
+
+const QA_EXTRACT_SYSTEM = `You are extracting structured screening-question responses from a clinical phone-call transcript between an AI care-management agent ("Lily") and a patient.
+
+Output JSON matching the schema. For each distinct screening question Lily asked, return:
+  - question: Lily's exact question (verbatim, trimmed)
+  - answer: a 1–3 word categorical answer derived from the patient's response (Yes / No / Sometimes / Not sure / Worse / Same / Better / etc.)
+  - answerClass: "bad" if the answer suggests worsening symptoms or non-adherence, "good" if stable or compliant, "unclear" if ambiguous or the patient didn't really answer.
+  - quote: the most representative direct quote from the patient (verbatim, trimmed; can be slightly cleaned of filler).
+
+RULES:
+- Only include actual screening questions. Skip greetings ("Am I speaking with Jane?"), housekeeping ("Do you have a minute?"), confirmations, and sign-offs.
+- Order matches the order asked in the call.
+- If the patient never answered a question, set answer to "No response" and answerClass to "unclear".
+- If the transcript is empty or contains no patient speech, return extractedResponses: [].`;
+
+function formatLilyTranscriptForLLM(turns) {
+  return (turns || []).map(t => {
+    const who = t.role === 'assistant' ? 'AGENT' : 'PATIENT';
+    return `[${who}] ${(t.text || '').trim()}`;
+  }).filter(s => s.length > 8).join('\n');
+}
+
+async function extractLilyQA(room) {
+  const entry = lilyCalls.get(room);
+  if (!entry || !entry.transcript || !anthropic) return;
+  try {
+    const formatted = formatLilyTranscriptForLLM(entry.transcript);
+    if (!formatted) {
+      entry.extracted = { extractedResponses: [] };
+      entry.status = 'extracted';
+      entry.updatedAt = Date.now();
+      return;
+    }
+    const resp = await anthropic.messages.create({
+      model: 'claude-opus-4-7',
+      max_tokens: 2000,
+      system: [{ type: 'text', text: QA_EXTRACT_SYSTEM, cache_control: { type: 'ephemeral' } }],
+      tools: [{
+        name: 'emit_extracted_qa',
+        description: 'Emit the structured screening Q&A list for this call.',
+        input_schema: QA_EXTRACT_SCHEMA,
+      }],
+      tool_choice: { type: 'tool', name: 'emit_extracted_qa' },
+      messages: [{
+        role: 'user',
+        content: `Flow: ${entry.flow || 'unknown'}\nPatient: ${entry.patientName || 'unknown'}\n\nTRANSCRIPT:\n${formatted}`,
+      }],
+    });
+    const tu = (resp.content || []).find(b => b.type === 'tool_use');
+    if (tu && tu.input) {
+      entry.extracted = tu.input;
+      entry.status = 'extracted';
+    } else {
+      entry.error = 'Extractor returned no tool_use';
+      entry.status = 'extract-failed';
+    }
+  } catch (err) {
+    console.error('lily extract failed:', err.message);
+    entry.error = err.message;
+    entry.status = 'extract-failed';
+  } finally {
+    entry.updatedAt = Date.now();
+  }
+}
+
 http.createServer(async (req, res) => {
   // Health
   if (req.url === '/healthz' || req.url === '/') {
+    lilyPrune();
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({
       ok: true,
       allowedOrigins: ALLOWED_ORIGINS.length,
       upstream: UPSTREAM,
       summarizer: anthropic ? 'ready' : 'disabled',
+      lily: LILY_TOKEN ? 'ready' : 'disabled',
+      lilyCallsInFlight: lilyCalls.size,
     }));
     return;
   }
@@ -298,13 +470,15 @@ http.createServer(async (req, res) => {
   const origin = req.headers.origin;
   const allowed = resolveCors(origin);
 
-  // CORS preflight — /v1/* is GET-only, /summarize/* is POST-only
+  // CORS preflight — /v1/* and /lily/calls/* are GET; /summarize/*, /lily/start, /lily/callback are POST
   if (req.method === 'OPTIONS') {
     if (allowed) {
-      const isSummarize = req.url.startsWith('/summarize/');
+      const isPost = req.url.startsWith('/summarize/')
+                  || req.url === '/lily/start'
+                  || req.url === '/lily/callback';
       res.setHeader('Access-Control-Allow-Origin', allowed);
       res.setHeader('Vary', 'Origin');
-      res.setHeader('Access-Control-Allow-Methods', isSummarize ? 'POST, OPTIONS' : 'GET, OPTIONS');
+      res.setHeader('Access-Control-Allow-Methods', isPost ? 'POST, OPTIONS' : 'GET, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'content-type,accept');
       res.setHeader('Access-Control-Max-Age', '600');
     }
@@ -342,6 +516,155 @@ http.createServer(async (req, res) => {
       return;
     }
     await handleSummarize(callId, body, res, allowed);
+    return;
+  }
+
+  // POST /lily/start — browser asks us to kick off a Lily call
+  if (req.url === '/lily/start') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Only POST is allowed on /lily/start' }));
+      return;
+    }
+    let body;
+    try {
+      body = await readJsonBody(req);
+    } catch (err) {
+      if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+      return;
+    }
+    const flow = (body.flow || 'ckd_session_1').trim();
+    const phone = (body.phone || '').trim();
+    const patientName = (body.patient_name || '').trim();
+    if (!LILY_ALLOWED_FLOWS.has(flow)) {
+      if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: `Unsupported flow '${flow}'.` }));
+      return;
+    }
+    if (!/^\+\d{10,15}$/.test(phone)) {
+      if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'phone must be E.164 (e.g. +12107444981).' }));
+      return;
+    }
+    if (!patientName) {
+      if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'patient_name is required.' }));
+      return;
+    }
+    // Lily POSTs the transcript to this callback URL. We auto-derive from
+    // the inbound request host so both railway prod and local dev work.
+    const proto = (req.headers['x-forwarded-proto'] || 'https').split(',')[0];
+    const host  = req.headers['x-forwarded-host'] || req.headers.host;
+    const callback_url = `${proto}://${host}/lily/callback`;
+    const lilyBody = {
+      flow,
+      phone,
+      patient_name: patientName,
+      callback_url,
+      ...(body.med_organization ? { med_organization: body.med_organization } : {}),
+      ...(body.contact_information ? { contact_information: body.contact_information } : {}),
+    };
+    try {
+      const result = await lilyTriggerCall(lilyBody);
+      const room = result.room || result.room_id || result.roomName;
+      if (!room) throw new Error('Lily response missing room id: ' + JSON.stringify(result));
+      const now = Date.now();
+      lilyCalls.set(room, {
+        status: 'in-progress',
+        flow,
+        patientName,
+        phone,
+        callMeta: null,
+        transcript: null,
+        extracted: null,
+        sip_call_id: result.sip_call_id || null,
+        participant_id: result.participant_id || null,
+        createdAt: now,
+        updatedAt: now,
+      });
+      if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ room, flow, status: 'in-progress' }));
+    } catch (err) {
+      console.error('lily start failed:', err.message);
+      if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+      res.writeHead(502, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'lily upstream failed', detail: err.message }));
+    }
+    return;
+  }
+
+  // POST /lily/callback — Lily sends the transcript here when the call ends
+  if (req.url === '/lily/callback') {
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Only POST is allowed on /lily/callback' }));
+      return;
+    }
+    let body;
+    try {
+      body = await readJsonBody(req, 5_000_000);
+    } catch (err) {
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+      return;
+    }
+    const room = body.room;
+    if (!room) {
+      res.writeHead(400, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'callback missing room id' }));
+      return;
+    }
+    const now = Date.now();
+    const prior = lilyCalls.get(room) || { createdAt: now };
+    const merged = {
+      ...prior,
+      status: 'transcribed',
+      flow: prior.flow || body.flow,
+      patientName: prior.patientName || body.patient_name,
+      phone: prior.phone || body.phone_number,
+      callMeta: {
+        room,
+        flow: body.flow,
+        med_organization: body.med_organization,
+        contact_information: body.contact_information,
+        call_start: body.call_start,
+        call_end: body.call_end,
+        duration_seconds: (body.call_end && body.call_start) ? Math.round(body.call_end - body.call_start) : null,
+      },
+      transcript: Array.isArray(body.transcript) ? body.transcript : [],
+      updatedAt: now,
+    };
+    lilyCalls.set(room, merged);
+    // Fire-and-forget — the UI polls; we don't need to block Lily.
+    extractLilyQA(room).catch(e => console.error('lily extract task error:', e.message));
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  // GET /lily/calls/:roomId — the demo UI polls this every few seconds
+  if (req.url.startsWith('/lily/calls/')) {
+    if (req.method !== 'GET') {
+      res.writeHead(405, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Only GET is allowed on /lily/calls/:room' }));
+      return;
+    }
+    const room = decodeURIComponent(req.url.slice('/lily/calls/'.length).split('?')[0]);
+    const snap = lilySnapshot(room);
+    if (allowed) { res.setHeader('Access-Control-Allow-Origin', allowed); res.setHeader('Vary', 'Origin'); }
+    if (!snap) {
+      res.writeHead(404, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ error: 'unknown room id', room }));
+      return;
+    }
+    res.writeHead(200, { 'content-type': 'application/json' });
+    res.end(JSON.stringify(snap));
     return;
   }
 
@@ -392,10 +715,13 @@ http.createServer(async (req, res) => {
   }
 
   res.writeHead(404, { 'content-type': 'application/json' });
-  res.end(JSON.stringify({ error: 'Unknown path. Try /v1/phone-numbers or /summarize/:callId' }));
+  res.end(JSON.stringify({ error: 'Unknown path. Try /v1/phone-numbers, /summarize/:callId, or /lily/{start,callback,calls/:room}' }));
 }).listen(PORT, '0.0.0.0', () => {
-  console.log(`CCM demo proxy v2.0 listening on 0.0.0.0:${PORT}`);
+  console.log(`CCM demo proxy v2.1 listening on 0.0.0.0:${PORT}`);
   console.log(`  Quo passthrough: GET /v1/*`);
   console.log(`  Summarizer:      POST /summarize/:callId (${anthropic ? 'ready' : 'disabled'})`);
+  console.log(`  Lily trigger:    POST /lily/start          (${LILY_TOKEN ? 'ready' : 'disabled — set LILY_API_TOKEN'})`);
+  console.log(`  Lily callback:   POST /lily/callback       (used by Lily, no auth)`);
+  console.log(`  Lily status:     GET  /lily/calls/:roomId  (UI polls this)`);
   console.log(`  Allowed origins: ${ALLOWED_ORIGINS.join(', ') || '(none)'}`);
 });
