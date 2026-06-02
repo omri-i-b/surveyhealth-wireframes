@@ -1,8 +1,8 @@
 {
   "name": "ccm-demo-quo-proxy",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
-  "description": "CORS proxy for Quo (OpenPhone) API + LLM-based ambient-scribe summarizer for the CCM demo.",
+  "description": "CORS proxy for Quo (OpenPhone) API + Anthropic summarizer + Lily voice-agent integration for the CCM demo.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
