@@ -388,19 +388,42 @@ const QA_EXTRACT_SCHEMA = {
   additionalProperties: false,
 };
 
-const QA_EXTRACT_SYSTEM = `You are extracting structured screening-question responses from a clinical phone-call transcript between an AI care-management agent ("Lily") and a patient.
+// Canonical screening questions per flow. The extractor emits one row per
+// question in this list (preserving order) regardless of how Lily phrased
+// each question on the actual call — so the demo ticket has a stable
+// 5-row layout instead of a varying number of rows.
+const FLOW_QUESTIONS = {
+  ckd_session_1: [
+    'Are you experiencing any new or worsening muscle cramps or aches, especially at night?',
+    'Have you had any problems taking your medications as your doctor told you to?',
+    'Have you noticed any new or worsening swelling in your legs, ankles, feet, or around your eyes?',
+    'Compared to last month, is your general wellness better, worse, or about the same?',
+    'In the past month, have you had any new or worsening problems getting food, medication, transportation, or healthcare?',
+  ],
+  esrd_session_5: [
+    'In the past week, did you have to miss or shorten your dialysis sessions?',
+    'In the past month, did you go to, or think about going to, the emergency room?',
+    'Are you experiencing any new or worsening muscle cramps or aches, especially at night?',
+    'In the past month, have you had any new or worsening symptoms related to eating, drinking, or urinating?',
+    'Compared to last month, are you having any new issues with balance or movement?',
+  ],
+};
 
-Output JSON matching the schema. For each distinct screening question Lily asked, return:
-  - question: Lily's exact question (verbatim, trimmed)
-  - answer: a 1–3 word categorical answer derived from the patient's response (Yes / No / Sometimes / Not sure / Worse / Same / Better / etc.)
-  - answerClass: "bad" if the answer suggests worsening symptoms or non-adherence, "good" if stable or compliant, "unclear" if ambiguous or the patient didn't really answer.
-  - quote: the most representative direct quote from the patient (verbatim, trimmed; can be slightly cleaned of filler).
+const QA_EXTRACT_SYSTEM = `You are extracting structured screening-question responses from a phone call between an AI care-management agent ("Lily") and a patient. You will be given the canonical list of screening questions for this call and the call transcript. Emit one extractedResponses entry per canonical question, in the order given.
+
+For each canonical question:
+  - question: the canonical question text VERBATIM (do not paraphrase or substitute Lily's wording)
+  - answer: a 1-3 word categorical answer derived from the patient's response on the call. Use the most natural categorical form: Yes / No / Sometimes / Not sure / Worse / Same / Better / Improved / None / Some / Mild / Moderate / Severe / No response — whichever fits. Single concept, no punctuation.
+  - answerClass:
+      * "bad"     - answer indicates worsening symptoms, missed care, non-adherence, new ED visits, swelling, cramps, missed dialysis, lack of access, etc.
+      * "good"    - answer indicates stable / no symptoms / adherent / improved / has access / etc.
+      * "unclear" - patient gave an ambiguous or non-answer, talked around it, or never answered.
+  - quote: the most representative direct quote from the patient (verbatim, lightly trimmed of filler). If the patient never spoke to this topic, set quote to "" (empty string).
 
 RULES:
-- Only include actual screening questions. Skip greetings ("Am I speaking with Jane?"), housekeeping ("Do you have a minute?"), confirmations, and sign-offs.
-- Order matches the order asked in the call.
-- If the patient never answered a question, set answer to "No response" and answerClass to "unclear".
-- If the transcript is empty or contains no patient speech, return extractedResponses: [].`;
+- Output exactly one entry per canonical question, in order, even if Lily skipped a question or the patient didn't engage. For skipped questions: answer = "No response", answerClass = "unclear", quote = "".
+- Use the patient's responses from the transcript to fill answer / answerClass / quote.
+- The question field is always the canonical text — never Lily's exact phrasing.`;
 
 function formatLilyTranscriptForLLM(turns) {
   return (turns || []).map(t => {
@@ -412,32 +435,58 @@ function formatLilyTranscriptForLLM(turns) {
 async function extractLilyQA(room) {
   const entry = lilyCalls.get(room);
   if (!entry || !entry.transcript || !anthropic) return;
+  const canonical = FLOW_QUESTIONS[entry.flow] || [];
+  // Fallback: if we don't know this flow, emit empty. The UI will show
+  // "No structured Q&A captured" rather than free-form guesses.
+  if (!canonical.length) {
+    entry.extracted = { extractedResponses: [] };
+    entry.status = 'extracted';
+    entry.updatedAt = Date.now();
+    return;
+  }
   try {
     const formatted = formatLilyTranscriptForLLM(entry.transcript);
     if (!formatted) {
-      entry.extracted = { extractedResponses: [] };
+      // Empty transcript — still emit one row per canonical question with no responses.
+      entry.extracted = {
+        extractedResponses: canonical.map(q => ({
+          question: q, answer: 'No response', answerClass: 'unclear', quote: '',
+        })),
+      };
       entry.status = 'extracted';
       entry.updatedAt = Date.now();
       return;
     }
+    const numbered = canonical.map((q, i) => `${i + 1}. ${q}`).join('\n');
     const resp = await anthropic.messages.create({
       model: 'claude-opus-4-7',
       max_tokens: 2000,
       system: [{ type: 'text', text: QA_EXTRACT_SYSTEM, cache_control: { type: 'ephemeral' } }],
       tools: [{
         name: 'emit_extracted_qa',
-        description: 'Emit the structured screening Q&A list for this call.',
+        description: 'Emit the structured screening Q&A list for this call. Exactly one entry per canonical question, in order.',
         input_schema: QA_EXTRACT_SCHEMA,
       }],
       tool_choice: { type: 'tool', name: 'emit_extracted_qa' },
       messages: [{
         role: 'user',
-        content: `Flow: ${entry.flow || 'unknown'}\nPatient: ${entry.patientName || 'unknown'}\n\nTRANSCRIPT:\n${formatted}`,
+        content: `Flow: ${entry.flow}\nPatient: ${entry.patientName || 'unknown'}\n\nCANONICAL SCREENING QUESTIONS (emit one entry per question, in order):\n${numbered}\n\nTRANSCRIPT:\n${formatted}`,
       }],
     });
     const tu = (resp.content || []).find(b => b.type === 'tool_use');
-    if (tu && tu.input) {
-      entry.extracted = tu.input;
+    if (tu && tu.input && Array.isArray(tu.input.extractedResponses)) {
+      // Defensive: lock question text to canonical and pad to exact length
+      // in case Claude over- or under-shoots.
+      const out = canonical.map((q, i) => {
+        const r = tu.input.extractedResponses[i] || {};
+        return {
+          question: q,
+          answer: r.answer || 'No response',
+          answerClass: ['good','bad','unclear'].includes(r.answerClass) ? r.answerClass : 'unclear',
+          quote: typeof r.quote === 'string' ? r.quote : '',
+        };
+      });
+      entry.extracted = { extractedResponses: out };
       entry.status = 'extracted';
     } else {
       entry.error = 'Extractor returned no tool_use';
