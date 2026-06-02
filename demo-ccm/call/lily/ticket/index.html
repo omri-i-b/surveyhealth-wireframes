@@ -8,15 +8,14 @@
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { font-size: 13px; }
-    .pulse { animation: pulse 1.2s ease-in-out infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.4 } }
+    .note-section[contenteditable]:focus { outline: 2px solid #3b82f6; outline-offset: 2px; border-radius: 6px; }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
 <div class="flex h-screen">
 
-  <!-- Left Sidebar (identical to other demo pages) -->
+  <!-- Left Sidebar (matches Claire) -->
   <div class="w-48 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
     <div class="h-14 px-3 border-b border-gray-200 flex items-center gap-2 flex-shrink-0">
       <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center text-white text-xs font-bold">PF</div>
@@ -49,7 +48,7 @@
     </div>
   </div>
 
-  <!-- Main Content (Claire-style) -->
+  <!-- Main column (matches Claire) -->
   <div class="flex-1 bg-white flex flex-col min-w-0">
     <div class="h-14 border-b border-gray-200 flex items-center justify-between px-5 flex-shrink-0">
       <div class="flex items-center gap-3">
@@ -57,18 +56,16 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
         </a>
         <span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-        <h1 id="header-title" class="text-base font-semibold text-gray-900">Ticket #LV-001</h1>
+        <h1 class="text-base font-semibold text-gray-900">Ticket #LV-001</h1>
         <span id="header-meta" class="text-gray-500 text-sm">Evaluation · High · CKD</span>
       </div>
-      <div class="flex items-center gap-2">
-        <span class="px-2 py-0.5 bg-violet-100 text-violet-700 text-xs font-semibold rounded">Lily-generated · demo</span>
-      </div>
+      <span class="px-2 py-0.5 bg-violet-100 text-violet-700 text-xs font-semibold rounded">Lily-generated · demo</span>
     </div>
 
     <div class="flex-1 overflow-y-auto">
       <div class="max-w-3xl mx-auto px-6 py-6 space-y-6">
 
-        <!-- Ticket Info grid (filler) -->
+        <!-- Ticket Info grid (matches Claire layout) -->
         <div class="rounded-xl border border-gray-200 bg-white">
           <div class="grid grid-cols-2 md:grid-cols-5 divide-x divide-gray-200">
             <div class="p-3">
@@ -77,7 +74,7 @@
             </div>
             <div class="p-3">
               <div class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold">Priority</div>
-              <div class="text-sm mt-1"><span id="info-priority" class="text-red-600 font-medium">High</span></div>
+              <div class="text-sm mt-1"><span class="text-red-600 font-medium">High</span></div>
             </div>
             <div class="p-3">
               <div class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold">Program</div>
@@ -94,30 +91,109 @@
           </div>
         </div>
 
-        <!-- Call Recording card -->
-        <div id="call-card" class="rounded-xl border border-gray-200 overflow-hidden bg-white">
-          <div class="px-4 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between flex-wrap gap-2">
-            <span class="text-sm font-semibold text-gray-900">Call Recording</span>
-            <span id="call-meta" class="text-[11px] text-gray-500">Loading…</span>
+        <!-- Section Divider: Care Manager Note (mirrors Claire) -->
+        <div class="flex items-center gap-3 mb-2">
+          <div class="h-px flex-1 bg-gray-200"></div>
+          <span class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">Care Manager Note</span>
+          <div class="h-px flex-1 bg-gray-200"></div>
+        </div>
+
+        <!-- Ambient AI Summary Note (mirrors Claire exactly) -->
+        <div class="rounded-xl border border-gray-200 overflow-hidden bg-white">
+          <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              <span class="text-sm font-semibold text-gray-900">AI Summary</span>
+            </div>
+            <span class="text-[11px] text-gray-500">Auto-generated from the Lily call</span>
           </div>
 
-          <!-- Transcript accordion -->
-          <div>
-            <button onclick="toggleTranscript()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 border-b border-gray-200">
-              <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Transcript</span>
-              <span id="transcript-toggle" class="text-xs text-blue-600">Show ↓</span>
-            </button>
-            <div id="transcript-content" class="overflow-hidden" style="max-height:0; transition: max-height 0.25s ease;">
-              <div id="transcript-turns" class="p-4 space-y-2 text-sm"></div>
+          <!-- Empty / loading state -->
+          <div id="note-empty" class="p-8">
+            <div class="flex items-center justify-center gap-3 mb-6 text-gray-500 text-sm">
+              <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+              <span id="note-empty-text">Loading AI summary…</span>
+            </div>
+            <div class="space-y-3 opacity-30">
+              <div class="h-3 w-1/4 bg-gray-200 rounded"></div>
+              <div class="h-3 w-full bg-gray-200 rounded"></div>
+              <div class="h-3 w-11/12 bg-gray-200 rounded"></div>
+              <div class="h-3 w-3/4 bg-gray-200 rounded"></div>
+              <div class="h-3 w-1/4 bg-gray-200 rounded mt-6"></div>
+              <div class="h-3 w-full bg-gray-200 rounded"></div>
+              <div class="h-3 w-5/6 bg-gray-200 rounded"></div>
             </div>
           </div>
 
-          <!-- Extracted Q&A -->
-          <div class="border-t border-gray-200">
-            <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
-              <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Extracted Responses</span>
-            </div>
-            <div id="extracted-list" class="p-4 space-y-2"></div>
+          <!-- Populated state — CCM care interaction note (13 fields) -->
+          <div id="note-populated" class="p-6 space-y-3" style="display:none;">
+            <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
+              <div class="text-gray-500 font-medium">Patient Name:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="patientName"></div>
+
+              <div class="text-gray-500 font-medium">Patient Date of Birth:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="patientDob"></div>
+
+              <div class="text-gray-500 font-medium">PCP:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="pcp"></div>
+
+              <div class="text-gray-500 font-medium">Date of Engagement:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="dateOfEngagement"></div>
+
+              <div class="text-gray-500 font-medium">Care Manager:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="careManager"></div>
+
+              <div class="text-gray-500 font-medium">Interaction Type:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="interactionType"></div>
+            </section>
+
+            <div class="h-px bg-gray-200 my-2"></div>
+
+            <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
+              <div class="text-gray-500 font-medium">Intervention Category:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="interventionCategory"></div>
+
+              <div class="text-gray-500 font-medium">Conditions Monitored:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="conditionsMonitored"></div>
+
+              <div class="text-gray-500 font-medium">Goals:</div>
+              <div class="note-section text-gray-900" contenteditable="true" data-field="goals"></div>
+            </section>
+
+            <div class="h-px bg-gray-200 my-2"></div>
+
+            <section class="space-y-3 text-sm">
+              <div>
+                <div class="text-gray-500 font-medium mb-1">Evaluation Reason:</div>
+                <div class="note-section text-gray-900 leading-relaxed" contenteditable="true" data-field="evaluationReason"></div>
+              </div>
+              <div>
+                <div class="text-gray-500 font-medium mb-1">Summary of Interaction:</div>
+                <div class="note-section text-gray-900 leading-relaxed" contenteditable="true" data-field="summaryOfInteraction"></div>
+              </div>
+              <div>
+                <div class="text-gray-500 font-medium mb-1">Plan:</div>
+                <div class="note-section text-gray-900 leading-relaxed whitespace-pre-wrap" contenteditable="true" data-field="plan"></div>
+              </div>
+            </section>
+
+            <div class="h-px bg-gray-200 my-2"></div>
+
+            <section class="grid grid-cols-[180px_1fr] gap-x-4 gap-y-2 text-sm">
+              <div class="text-gray-500 font-medium">Time Spent:</div>
+              <div class="text-gray-900" data-field="timeSpent"></div>
+            </section>
+
+            <!-- Full call transcript accordion (matches Claire exactly) -->
+            <section class="mt-2 rounded-lg border border-gray-200 overflow-hidden">
+              <button type="button" onclick="toggleLiveTranscript()" class="w-full px-4 py-2 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors">
+                <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Transcript</span>
+                <span id="liveTranscriptToggle" class="text-xs text-blue-600">Show ↓</span>
+              </button>
+              <div id="liveTranscriptContent" class="max-h-0 overflow-hidden transition-all duration-300">
+                <div id="live-transcript-turns" class="p-4 space-y-2.5 text-sm bg-white border-t border-gray-100"></div>
+              </div>
+            </section>
           </div>
         </div>
 
@@ -125,7 +201,7 @@
     </div>
   </div>
 
-  <!-- Right Sidebar (Claire-style patient identity + filler details) -->
+  <!-- Right Sidebar (matches Claire) -->
   <div class="w-72 bg-white border-l border-gray-200 flex flex-col">
     <div class="h-14 px-5 flex items-center border-b border-gray-200 flex-shrink-0">
       <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Patient</span>
@@ -147,7 +223,7 @@
                 <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
               </div>
               <div id="patient-dob" class="text-xs text-gray-500 mt-0.5">DOB: —</div>
-              <div id="patient-meta" class="text-xs text-gray-500">—</div>
+              <div class="text-xs text-gray-500">Female · SC</div>
             </div>
           </div>
           <div class="flex items-center gap-1.5 mt-3 text-xs text-gray-500">
@@ -156,7 +232,7 @@
           </div>
         </div>
 
-        <!-- Demographics (filler) -->
+        <!-- Demographics -->
         <div>
           <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">Demographics</div>
           <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
@@ -166,7 +242,7 @@
           </div>
         </div>
 
-        <!-- Diagnoses (flow-specific) -->
+        <!-- Diagnoses -->
         <div>
           <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">Diagnoses</div>
           <div class="bg-gray-50 rounded-lg p-3 text-sm">
@@ -174,7 +250,7 @@
           </div>
         </div>
 
-        <!-- Program Information (filler) -->
+        <!-- Program Information -->
         <div>
           <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">Program Information</div>
           <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
@@ -185,7 +261,7 @@
           </div>
         </div>
 
-        <!-- Provider (filler) -->
+        <!-- Provider -->
         <div>
           <div class="text-[11px] font-semibold text-gray-600 uppercase tracking-wide mb-2">Provider</div>
           <div class="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
@@ -219,15 +295,14 @@
 
 <script>
 // =========================================================================
-// Lily ticket view — reads ?room=<roomId> from the URL, pulls call data from
-// the Railway proxy, and renders a Claire-style ticket with flow-specific
-// filler patient context.
+// Lily ticket view — Claire-style chrome, only the Care Manager Note section
+// (13-field AI summary + transcript accordion). No Call Recording / Vitals /
+// Wellness / Skin sections.
 // =========================================================================
 const PROXY_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
   ? 'http://localhost:8787'
   : 'https://quocallsccm-production.up.railway.app';
 
-// Per-flow filler patient profile (anonymized; not real PHI).
 const FLOW_FILLER = {
   ckd_session_1: {
     label: 'CKD',
@@ -248,126 +323,112 @@ const FLOW_FILLER = {
 };
 
 let transcriptExpanded = false;
+let pollTimer = null;
+let currentRoom = null;
 
 function init() {
   const params = new URLSearchParams(location.search);
-  const room = params.get('room');
-  if (!room) {
+  currentRoom = params.get('room');
+  if (!currentRoom) {
     showError('Missing ?room= in URL. Open this view from the Lily Live Call page after a call completes.');
     return;
   }
-  loadCall(room);
+  // Initial paint + poll until the note is ready (note arrives ~5-10s after
+  // the call ends, separately from the Q&A extraction).
+  loadCall();
+  pollTimer = setInterval(loadCall, 4000);
 }
 
-async function loadCall(room) {
+async function loadCall() {
   try {
-    const res = await fetch(PROXY_BASE + '/lily/calls/' + encodeURIComponent(room), { cache: 'no-store' });
+    const res = await fetch(PROXY_BASE + '/lily/calls/' + encodeURIComponent(currentRoom), { cache: 'no-store' });
     if (!res.ok) {
-      showError(`Could not load call (HTTP ${res.status}). The proxy may have restarted — try the call again from the Lily page.`);
+      showError(`Could not load call (HTTP ${res.status}). The proxy may have restarted — try the call again.`);
+      if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
       return;
     }
     const snap = await res.json();
     render(snap);
+    // Stop polling once we have the note (or noteError gave up).
+    if ((snap.note || snap.noteError) && pollTimer) {
+      clearInterval(pollTimer); pollTimer = null;
+    }
   } catch (err) {
     showError(err.message || 'Failed to load call data.');
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
   }
 }
 
 function render(snap) {
-  const filler = FLOW_FILLER[snap.flow] || FLOW_FILLER.ckd_session_1;
+  const filler   = FLOW_FILLER[snap.flow] || FLOW_FILLER.ckd_session_1;
   const fullName = snap.patientName || 'Demo Patient';
-  // Lily gets a first name only; pad with a filler surname for the ticket view
   const displayName = fullName.includes(' ') ? fullName : (fullName + ' (demo)');
   const initials = (fullName.trim().split(/\s+/).slice(0, 2).map(w => w[0] || '').join('') || '??').toUpperCase();
 
-  // Header
+  // Header meta
   document.getElementById('header-meta').textContent = filler.headerMeta;
 
   // Identity card
   document.getElementById('patient-initials').textContent = initials;
-  document.getElementById('patient-name').textContent = displayName;
-  document.getElementById('patient-phone').textContent = formatE164(snap.phone);
-  document.getElementById('patient-dob').textContent = `DOB: ${filler.dob} (${filler.age}y)`;
-  document.getElementById('patient-meta').textContent = 'Female · SC';
-  document.getElementById('demo-age').textContent  = `${filler.age} years`;
-  document.getElementById('demo-dob').textContent  = filler.dob;
-  document.getElementById('diagnosis-text').textContent = filler.diagnosis;
-  document.getElementById('provider-name').textContent  = filler.provider;
-  document.getElementById('patient-cell').textContent   = formatE164(snap.phone);
+  document.getElementById('patient-name').textContent     = displayName;
+  document.getElementById('patient-phone').textContent    = formatE164(snap.phone);
+  document.getElementById('patient-dob').textContent      = `DOB: ${filler.dob} (${filler.age}y)`;
+  document.getElementById('demo-age').textContent         = `${filler.age} years`;
+  document.getElementById('demo-dob').textContent         = filler.dob;
+  document.getElementById('diagnosis-text').textContent   = filler.diagnosis;
+  document.getElementById('provider-name').textContent    = filler.provider;
+  document.getElementById('patient-cell').textContent     = formatE164(snap.phone);
 
-  // Call patient CTA → Quo dialer
   if (snap.phone) {
     document.getElementById('call-back-btn').href = 'https://my.quo.com/dialer?phoneNumber=' + encodeURIComponent(snap.phone);
   }
 
-  // Ticket info grid
+  // Ticket Info — Created date + Status
   if (snap.callMeta?.call_end) {
     const d = new Date(snap.callMeta.call_end * 1000);
     document.getElementById('info-created').textContent = d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
   }
   const statusEl = document.getElementById('info-status');
-  if (statusEl) {
+  if (statusEl && snap.note) {
     statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="font-medium">Reviewed</span>`;
   }
 
-  // Call card
-  const meta = document.getElementById('call-meta');
-  if (meta) {
-    const dur = snap.callMeta?.duration_seconds;
-    const dt  = snap.callMeta?.call_end ? new Date(snap.callMeta.call_end * 1000) : null;
-    const parts = [];
-    if (dur != null) parts.push(`${Math.floor(dur/60)}:${String(dur%60).padStart(2,'0')}`);
-    if (dt) parts.push(dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-    parts.push(`Lily · ${filler.label}`);
-    meta.textContent = parts.filter(Boolean).join(' · ');
-  }
-
-  // Transcript
-  const turnsEl = document.getElementById('transcript-turns');
-  if (turnsEl) {
-    turnsEl.innerHTML = (snap.transcript || []).map(t => {
-      const isAgent = t.role === 'assistant';
-      const labelCls = isAgent ? 'font-medium text-violet-700' : 'font-medium text-gray-900';
-      const label = isAgent ? 'Lily' : (snap.patientName || 'Patient');
-      const ts = t.timestamp ? new Date(t.timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '';
-      return `<div class="flex gap-3">
-        <span class="text-[10px] text-gray-400 w-14 flex-shrink-0 pt-0.5 font-mono tabular-nums">${ts}</span>
-        <div><span class="${labelCls}">${escapeHtml(label)}:</span> <span class="text-gray-700">${escapeHtml(t.text || '')}</span></div>
-      </div>`;
-    }).join('');
-  }
-
-  // Extracted Q&A — always 5 rows in canonical order (server pads)
-  const ext = document.getElementById('extracted-list');
-  if (ext) {
-    const rows = snap.extracted?.extractedResponses || [];
-    if (!rows.length) {
-      ext.innerHTML = `<div class="text-xs text-gray-400 text-center py-3">${snap.status === 'transcribed' ? 'Extracting Q&A from transcript…' : 'No structured Q&A captured for this call.'}</div>`;
-    } else {
-      ext.innerHTML = rows.map(r => {
-        const bg    = r.answerClass === 'bad' ? 'bg-red-50' : r.answerClass === 'good' ? 'bg-green-50' : 'bg-yellow-50';
-        const badge = r.answerClass === 'bad' ? 'bg-red-200 text-red-800' : r.answerClass === 'good' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800';
-        return `<div class="${bg} rounded-lg p-3">
-          <div class="flex items-start justify-between gap-3 mb-1.5">
-            <span class="text-gray-800 font-medium text-sm">${escapeHtml(r.question)}</span>
-            <span class="px-2 py-0.5 ${badge} text-xs font-semibold rounded flex-shrink-0">${escapeHtml(r.answer)}</span>
-          </div>
-          ${r.quote ? `<p class="text-gray-600 text-sm italic">&ldquo;${escapeHtml(r.quote)}&rdquo;</p>` : ''}
+  // AI Summary — render the 13-field note when it's ready
+  if (snap.note) {
+    document.getElementById('note-empty').style.display = 'none';
+    document.getElementById('note-populated').style.display = 'block';
+    Object.entries(snap.note).forEach(([k, v]) => {
+      const el = document.querySelector(`[data-field="${k}"]`);
+      if (el) el.textContent = v;
+    });
+    // Live transcript accordion content
+    const turnsEl = document.getElementById('live-transcript-turns');
+    if (turnsEl) {
+      turnsEl.innerHTML = (snap.transcript || []).map(t => {
+        const isAgent = t.role === 'assistant';
+        const labelCls = isAgent ? 'font-medium text-violet-700' : 'font-medium text-gray-900';
+        const label = isAgent ? 'Lily' : (snap.patientName || 'Patient');
+        return `<div class="flex gap-3">
+          <div><span class="${labelCls}">${escapeHtml(label)}:</span> <span class="text-gray-700">${escapeHtml(t.text || '')}</span></div>
         </div>`;
       }).join('');
     }
+  } else if (snap.noteError) {
+    document.getElementById('note-empty-text').textContent = 'AI summary failed: ' + snap.noteError;
+  } else {
+    document.getElementById('note-empty-text').textContent = snap.status === 'in-progress'
+      ? 'Call still in progress — AI summary will appear when the call ends.'
+      : 'Generating AI summary from the Lily transcript…';
   }
 }
 
 function showError(msg) {
-  const ext = document.getElementById('extracted-list');
-  if (ext) ext.innerHTML = `<div class="text-sm text-red-600 py-3">${escapeHtml(msg)}</div>`;
-  document.getElementById('call-meta').textContent = 'Error';
+  document.getElementById('note-empty-text').textContent = msg;
 }
 
-function toggleTranscript() {
-  const content = document.getElementById('transcript-content');
-  const toggle  = document.getElementById('transcript-toggle');
+function toggleLiveTranscript() {
+  const content = document.getElementById('liveTranscriptContent');
+  const toggle  = document.getElementById('liveTranscriptToggle');
   transcriptExpanded = !transcriptExpanded;
   if (transcriptExpanded) {
     content.style.maxHeight = content.scrollHeight + 'px';

@@ -316,9 +316,12 @@ function lilySnapshot(room) {
     status: e.status,
     flow: e.flow || null,
     patientName: e.patientName || null,
+    phone: e.phone || null,
     callMeta: e.callMeta || null,
     transcript: e.transcript || null,
     extracted: e.extracted || null,
+    note: e.note || null,
+    noteError: e.noteError || null,
     error: e.error || null,
     createdAt: e.createdAt,
     updatedAt: e.updatedAt,
@@ -392,6 +395,30 @@ const QA_EXTRACT_SCHEMA = {
 // question in this list (preserving order) regardless of how Lily phrased
 // each question on the actual call — so the demo ticket has a stable
 // 5-row layout instead of a varying number of rows.
+// Per-flow filler patient context for the Lily-derived CCM note. The patient
+// name comes from the call; everything else is anonymized filler so the
+// resulting note reads like a real ticket without exposing PHI.
+const FLOW_PATIENT_CONTEXT = {
+  ckd_session_1: {
+    patientDob: 'November 14, 1957',
+    pcp: 'Dr. Henderson, Everyday Health Clinic',
+    careManager: 'L. Goldenstein, RN — Survey Health',
+    interactionType: 'Telephonic Care Manager Wellness Check',
+    interventionCategory: 'APCM + RPM',
+    conditionsMonitored: 'Chronic Kidney Disease, Stage 3b (N18.32)',
+    goals: 'Slow CKD progression; prevent ED visits and hospitalizations this calendar year.',
+  },
+  esrd_session_5: {
+    patientDob: 'March 22, 1955',
+    pcp: 'Dr. Henderson, Everyday Health Clinic',
+    careManager: 'L. Goldenstein, RN — Survey Health',
+    interactionType: 'Telephonic Care Manager Wellness Check',
+    interventionCategory: 'APCM + RPM',
+    conditionsMonitored: 'End-Stage Renal Disease (N18.6); on hemodialysis 3x/week.',
+    goals: 'Maintain dialysis adherence; avoid ED visits and hospitalizations this calendar year.',
+  },
+};
+
 const FLOW_QUESTIONS = {
   ckd_session_1: [
     'Are you experiencing any new or worsening muscle cramps or aches, especially at night?',
@@ -430,6 +457,60 @@ function formatLilyTranscriptForLLM(turns) {
     const who = t.role === 'assistant' ? 'AGENT' : 'PATIENT';
     return `[${who}] ${(t.text || '').trim()}`;
   }).filter(s => s.length > 8).join('\n');
+}
+
+// Build the 13-field CCM Care Manager Note from a Lily transcript by reusing
+// the same SYSTEM_PROMPT + NOTE_SCHEMA we use for the Quo summarizer.
+async function summarizeLilyCall(room) {
+  const entry = lilyCalls.get(room);
+  if (!entry || !entry.transcript || !anthropic) return;
+  const patientCtx = {
+    patientName: entry.patientName || 'Demo Patient',
+    ...(FLOW_PATIENT_CONTEXT[entry.flow] || FLOW_PATIENT_CONTEXT.ckd_session_1),
+  };
+  const dur = entry.callMeta?.duration_seconds || 0;
+  const callMeta = {
+    direction: 'outbound',
+    durationSeconds: dur,
+    durationFormatted: secondsToPhrase(dur),
+    createdAt: entry.callMeta?.call_start ? new Date(entry.callMeta.call_start * 1000).toISOString() : null,
+    completedAt: entry.callMeta?.call_end ? new Date(entry.callMeta.call_end * 1000).toISOString() : null,
+  };
+  // Lily turns are {role, text, timestamp(s)} — adapt to the {time, identifier, content}
+  // shape that formatTranscriptForLLM expects (it just takes whatever has text).
+  const dialogue = (entry.transcript || []).map(t => ({
+    start: typeof t.timestamp === 'number' && entry.callMeta?.call_start
+      ? Math.max(0, Math.round(t.timestamp - entry.callMeta.call_start))
+      : null,
+    identifier: t.role === 'assistant' ? 'Lily (AI)' : (entry.patientName || 'Patient'),
+    content: t.text || '',
+  }));
+  const transcriptText = formatTranscriptForLLM(dialogue);
+  try {
+    const response = await anthropic.messages.create({
+      model: 'claude-opus-4-7',
+      max_tokens: 4000,
+      thinking: { type: 'adaptive' },
+      system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+      messages: [{
+        role: 'user',
+        content:
+          `Patient context:\n${JSON.stringify(patientCtx, null, 2)}\n\n` +
+          `Call metadata:\n${JSON.stringify(callMeta, null, 2)}\n\n` +
+          `Transcript:\n${transcriptText}\n\n` +
+          `Produce the note now. Output JSON only, matching the schema.`,
+      }],
+      output_config: { format: { type: 'json_schema', schema: NOTE_SCHEMA } },
+    });
+    const textBlock = (response.content || []).find(b => b.type === 'text');
+    if (!textBlock) throw new Error('summarizer returned no text block');
+    entry.note = JSON.parse(textBlock.text);
+  } catch (err) {
+    console.error('lily summarize failed:', err.message);
+    entry.noteError = err.message;
+  } finally {
+    entry.updatedAt = Date.now();
+  }
 }
 
 async function extractLilyQA(room) {
@@ -692,8 +773,11 @@ http.createServer(async (req, res) => {
       updatedAt: now,
     };
     lilyCalls.set(room, merged);
-    // Fire-and-forget — the UI polls; we don't need to block Lily.
-    extractLilyQA(room).catch(e => console.error('lily extract task error:', e.message));
+    // Fire-and-forget both in parallel — the UI polls; we don't block Lily.
+    Promise.allSettled([
+      extractLilyQA(room),
+      summarizeLilyCall(room),
+    ]).catch(e => console.error('lily post-call tasks error:', e?.message));
     res.writeHead(200, { 'content-type': 'application/json' });
     res.end(JSON.stringify({ ok: true }));
     return;
