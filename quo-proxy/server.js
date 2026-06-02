@@ -719,7 +719,8 @@ http.createServer(async (req, res) => {
   res.writeHead(404, { 'content-type': 'application/json' });
   res.end(JSON.stringify({ error: 'Unknown path. Try /v1/phone-numbers, /summarize/:callId, or /lily/{start,callback,calls/:room}' }));
 }).listen(PORT, '0.0.0.0', () => {
-  console.log(`CCM demo proxy v2.1 listening on 0.0.0.0:${PORT}`);
+  console.log(`CCM demo proxy v2.1.1 listening on 0.0.0.0:${PORT}`);
+  console.log(`  [build marker] lily endpoints present — ${new Date().toISOString()}`);
   console.log(`  Quo passthrough: GET /v1/*`);
   console.log(`  Summarizer:      POST /summarize/:callId (${anthropic ? 'ready' : 'disabled'})`);
   console.log(`  Lily trigger:    POST /lily/start          (auth: ${LILY_TOKEN ? 'bearer' : 'none'} · base: ${LILY_BASE})`);
