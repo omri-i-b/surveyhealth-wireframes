@@ -1906,7 +1906,10 @@ function startListening() {
   if (pollTimer) clearInterval(pollTimer);
   listening = true;
   setListenButton('idle');                  // shows the "Show a sample" CTA
-  suppressedCallIds.clear();
+  // NOTE: do NOT clear suppressedCallIds here. resetTicket() adds the just-
+  // dismissed callId to that set immediately before calling us; wiping it
+  // would re-render the same call on the very next poll. The set is meant
+  // to silence specific dismissed calls until a NEW one arrives.
   lastCallId = null;
   noteGenerated = false;
   lastStatusKind = null;
@@ -1914,8 +1917,11 @@ function startListening() {
   setStatus('waiting', 'listening for next AI call…');
   const s = loadSettings();
   const ms = Math.max(2, s.interval || 5) * 1000;
-  pollNow(true);
-  pollTimer = setInterval(() => pollNow(true), ms);
+  // Use the normal poll (NOT forceRender) so the suppression set the user
+  // just populated via Reset is honored. Without this, the just-dismissed
+  // call would still slip through the freshness gate and re-render.
+  pollNow();
+  pollTimer = setInterval(() => pollNow(), ms);
 }
 
 // "Show a sample" CTA — loads the bundled mock conversation so a presenter
