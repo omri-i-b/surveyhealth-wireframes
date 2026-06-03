@@ -509,10 +509,9 @@ function render(snap) {
       const isAgent  = t.role === 'assistant';
       const labelCls = isAgent ? 'font-medium text-violet-700' : 'font-medium text-gray-900';
       const label    = isAgent ? 'Lily' : (snap.patientName || 'Patient');
-      const ts = t.timestamp ? new Date(t.timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '';
-      return `<div class="flex gap-3">
-        <span class="text-[10px] text-gray-400 w-14 flex-shrink-0 pt-0.5 font-mono tabular-nums">${ts}</span>
-        <div><span class="${labelCls}">${escapeHtml(label)}:</span> <span class="text-gray-700">${escapeHtml(t.text || '')}</span></div>
+      return `<div>
+        <span class="${labelCls}">${escapeHtml(label)}:</span>
+        <span class="text-gray-700">${escapeHtml(t.text || '')}</span>
       </div>`;
     }).join('');
   }
