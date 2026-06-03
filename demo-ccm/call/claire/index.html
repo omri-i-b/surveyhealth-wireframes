@@ -410,10 +410,10 @@
                     View image
                   </button>
                 </div>
-                <!-- Image card (hidden until user clicks View) -->
-                <div id="wound-image" class="hidden border-t border-gray-200">
+                <!-- Image card — open by default, blurred until user clicks the overlay -->
+                <div id="wound-image" class="border-t border-gray-200">
                   <div class="aspect-square sm:aspect-[4/3] max-h-80 mx-auto relative bg-gray-100 overflow-hidden">
-                    <img id="wound-image-photo" src="" alt="" class="w-full h-full object-cover hidden" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="if (!this.dataset.fellBack) { this.dataset.fellBack = '1'; this.src = '../../assets/wound-no-bandage.svg'; } else { this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden'); }" />
+                    <img id="wound-image-photo" src="../../assets/wound-photo.jpg" alt="Patient-submitted clinical image" class="w-full h-full object-cover" style="filter: blur(28px) saturate(0.85); transform: scale(1.08);" onerror="if (!this.dataset.fellBack) { this.dataset.fellBack = '1'; this.src = '../../assets/wound-no-bandage.svg'; } else { this.classList.add('hidden'); document.getElementById('wound-image-hatch')?.classList.remove('hidden'); }" />
                     <div id="wound-image-hatch" class="absolute inset-0 hidden" style="background-image: repeating-linear-gradient(45deg, #e5e7eb, #e5e7eb 12px, #d1d5db 12px, #d1d5db 24px);"></div>
                     <button type="button" id="wound-image-reveal-btn" onclick="revealWoundImage()" class="absolute inset-0 backdrop-blur-md bg-gray-900/45 hover:bg-gray-900/55 transition-colors flex flex-col items-center justify-center text-center px-4 cursor-pointer">
                       <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
