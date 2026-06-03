@@ -446,7 +446,7 @@
                 <span class="text-sm font-semibold text-gray-900">AI Summary</span>
               </div>
               <button id="listen-btn" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
-                <span id="listen-btn-icon">🎬</span>
+                <span id="listen-btn-icon" class="hidden"></span>
                 <span id="listen-btn-label">Show a sample</span>
               </button>
             </div>
@@ -1838,15 +1838,9 @@ async function renderFromMock() {
   setStatus('received', when ? `note ready, based on call at ${when}` : 'note ready');
   const statusEl = document.getElementById('info-status');
   if (statusEl) statusEl.innerHTML = `<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span><span class="text-gray-900 font-medium">Reviewed</span>`;
-  try {
-    localStorage.setItem('demoCcm.claireLastRender', JSON.stringify({
-      callId,
-      callMeta: nurse.callMeta,
-      transcript: nurse.transcript,
-      note: nurse.note,
-      savedAt: new Date().toISOString(),
-    }));
-  } catch (_) {}
+  // Intentionally NOT persisted to localStorage — the sample only shows
+  // when the user explicitly clicks "Show a sample". On reload, the AI
+  // Summary returns to the empty waiting state.
 }
 
 // Listening toggle: by default the AI summary shows the bundled mock
@@ -1874,12 +1868,14 @@ function setListenButton(state) {
   );
   if (state === 'active') {
     icon.textContent = '🔴';
+    icon.classList.remove('hidden');
     label.textContent = 'Active call';
     btn.classList.add('border-green-300', 'bg-green-50', 'text-green-700', 'hover:bg-green-100', 'animate-pulse');
   } else {
-    // 'idle' or 'listening' — both render as the "Show a sample" CTA, because
-    // listening is now an always-on background poll, not a user toggle.
-    icon.textContent = '🎬';
+    // 'idle' or 'listening' — both render as the plain "Show a sample" CTA,
+    // because listening is now an always-on background poll, not a toggle.
+    icon.textContent = '';
+    icon.classList.add('hidden');
     label.textContent = 'Show a sample';
     btn.classList.add('border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50');
   }
