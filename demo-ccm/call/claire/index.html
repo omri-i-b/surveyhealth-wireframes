@@ -446,8 +446,8 @@
                 <span class="text-sm font-semibold text-gray-900">AI Summary</span>
               </div>
               <button id="listen-btn" class="text-xs font-medium px-2.5 py-1 rounded-md border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 flex items-center gap-1.5">
-                <span id="listen-btn-icon">🎧</span>
-                <span id="listen-btn-label">Listen for AI call</span>
+                <span id="listen-btn-icon">🎬</span>
+                <span id="listen-btn-label">Show a sample</span>
               </button>
             </div>
 
@@ -1714,11 +1714,11 @@ function resetTicket() {
   }
 
   closeSettings();
-  // Re-render the default mock so the AI Summary card stays populated after
-  // a reset. The user can click "Listen for AI call" to capture a fresh
-  // live call which will replace it.
-  renderFromMock();
-  toast('Ticket reset — showing default conversation');
+  // Don't auto-load the mock after a reset — go back to listening so the
+  // next real Quo call populates the ticket fresh. The user can click
+  // "Show a sample" at any time to load the bundled mock.
+  startListening();
+  toast('Ticket reset — listening for next AI call');
 }
 // Toasts removed — keep the function as a no-op so existing callers don't break.
 function toast(_text, _durationMs) { /* intentionally silent */ }
@@ -1855,6 +1855,11 @@ async function renderFromMock() {
 // the summary when one arrives. Clicking again stops polling.
 let listening = false;
 
+// The visible header button is now a static "Show a sample" CTA — listening
+// happens automatically in the background. The setListenButton helper still
+// exists so any callers (e.g. pollNow) that flip the button to 'active' when a
+// real Quo call is in progress keep working — those briefly override the CTA
+// label, and we restore the "Show a sample" label whenever we're not active.
 function setListenButton(state) {
   const icon = document.getElementById('listen-btn-icon');
   const label = document.getElementById('listen-btn-label');
@@ -1871,49 +1876,42 @@ function setListenButton(state) {
     icon.textContent = '🔴';
     label.textContent = 'Active call';
     btn.classList.add('border-green-300', 'bg-green-50', 'text-green-700', 'hover:bg-green-100', 'animate-pulse');
-  } else if (state === 'listening') {
-    icon.textContent = '⏹';
-    label.textContent = 'Stop listening';
-    btn.classList.add('border-red-200', 'bg-red-50', 'text-red-700', 'hover:bg-red-100');
   } else {
-    icon.textContent = '🎧';
-    label.textContent = 'Listen for AI call';
+    // 'idle' or 'listening' — both render as the "Show a sample" CTA, because
+    // listening is now an always-on background poll, not a user toggle.
+    icon.textContent = '🎬';
+    label.textContent = 'Show a sample';
     btn.classList.add('border-blue-200', 'bg-white', 'text-blue-700', 'hover:bg-blue-50');
   }
 }
 
+// Listening is now an always-on background poll — it starts on boot, runs
+// silently, and overrides whatever's on screen the moment a real Quo call
+// lands. The user never explicitly stops it.
 function startListening() {
+  if (pollTimer) clearInterval(pollTimer);
   listening = true;
-  setListenButton('listening');
+  setListenButton('idle');                  // shows the "Show a sample" CTA
   suppressedCallIds.clear();
   lastCallId = null;
   noteGenerated = false;
   lastStatusKind = null;
   lastStatusDetail = null;
   setStatus('waiting', 'listening for next AI call…');
-  if (pollTimer) clearInterval(pollTimer);
   const s = loadSettings();
   const ms = Math.max(2, s.interval || 5) * 1000;
   pollNow(true);
   pollTimer = setInterval(() => pollNow(true), ms);
-  toast('Listening for next call…');
 }
 
-function stopListening() {
-  listening = false;
-  setListenButton('idle');
-  if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-  // If no real call landed while listening, restore the mock so the
-  // summary card stays populated. If a real call did populate, leave it.
-  if (!noteGenerated) {
-    renderFromMock();
-  }
-  toast('Stopped listening — showing default conversation');
+// "Show a sample" CTA — loads the bundled mock conversation so a presenter
+// can demo the experience without a live call. Listening stays running in
+// the background; if a real call comes in it'll replace the sample.
+function showSample() {
+  renderFromMock();
 }
 
-document.getElementById('listen-btn').addEventListener('click', () => {
-  if (listening) stopListening(); else startListening();
-});
+document.getElementById('listen-btn').addEventListener('click', showSample);
 
 // Prefill the top section (call recording + transcript + extracted responses)
 // with the AI agent (Lily) biweekly wellness check that flagged this ticket.
@@ -1940,12 +1938,13 @@ async function prefillPreviousTouchpoint() {
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
   // Rehydrate a previously-rendered AI summary so a page reload keeps the
-  // populated state until the user explicitly resets the ticket. If nothing
-  // was previously rendered, fall back to the bundled mock conversation so
-  // the summary card always has content to show by default.
-  if (!restoreLastRender()) {
-    renderFromMock();
-  }
+  // populated state. If nothing was previously rendered, leave the AI Summary
+  // in the empty/waiting state — listening (below) will populate it from the
+  // next real Quo call, or the user can click "Show a sample" to load the
+  // bundled mock conversation on demand.
+  restoreLastRender();
+  // Always start listening for Quo calls in the background.
+  startListening();
   const createdEl = document.getElementById('info-created');
   if (createdEl) createdEl.textContent = todayDateStr();
 
