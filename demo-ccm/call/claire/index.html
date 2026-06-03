@@ -1439,6 +1439,24 @@ async function pollNow(forceRender = false) {
       if (IN_PROGRESS.includes(payload.status)) {
         if (listening) setListenButton('active');
         setStatus('waiting', `call ${payload.status} — awaiting completion`);
+        // A NEW call just started — clear whatever was on screen (prior call
+        // render or the sample mock) so we don't show stale data while the
+        // new transcript is being generated. Drop the persisted last-render
+        // too, otherwise a refresh would resurrect the old call.
+        if (payload.callId && payload.callId !== lastCallId) {
+          lastCallId = payload.callId;
+          noteGenerated = false;
+          try { localStorage.removeItem('demoCcm.claireLastRender'); } catch (_) {}
+          resetNote();
+          const emptyText = document.getElementById('note-empty-text');
+          if (emptyText) emptyText.textContent = `Call in progress — AI summary will appear when the call ends.`;
+          // Clear the prior live transcript inside the AI Summary card
+          const live = document.getElementById('live-transcript-turns');
+          if (live) live.innerHTML = '';
+          // Also blank the duration cell in the Ticket Info grid
+          const d = document.getElementById('info-duration');
+          if (d) d.textContent = '—';
+        }
         return;
       }
       // Call has ended — flip the button back to "Stop listening"
