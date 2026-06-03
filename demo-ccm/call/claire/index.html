@@ -1951,12 +1951,14 @@ async function prefillPreviousTouchpoint() {
   loadPatientContext();
   populateQuoLineDropdown();
   prefillPreviousTouchpoint();
-  // Rehydrate a previously-rendered AI summary so a page reload keeps the
-  // populated state. If nothing was previously rendered, leave the AI Summary
-  // in the empty/waiting state — listening (below) will populate it from the
-  // next real Quo call, or the user can click "Show a sample" to load the
-  // bundled mock conversation on demand.
-  restoreLastRender();
+  // Per spec: AI Summary is blank on every fresh page load. We DO NOT
+  // restore the prior render from localStorage — that was causing the
+  // previous call's note to flash on the page the moment a new call
+  // started, before polling had seen the new call. The page should sit
+  // empty until either:
+  //   1. The user clicks "Show a sample" (loads bundled mock), OR
+  //   2. A real Quo call lands via the listener (populated live).
+  try { localStorage.removeItem('demoCcm.claireLastRender'); } catch (_) {}
   // Always start listening for Quo calls in the background.
   startListening();
   const createdEl = document.getElementById('info-created');
