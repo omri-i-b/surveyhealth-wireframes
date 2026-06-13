@@ -256,7 +256,7 @@
                         <tr>
                             <td><div class="condition-cell"><span class="condition-icon hypertension"></span>Hypertension</div></td>
                             <td>I10</td>
-                            <td>RPM</td>
+                            <td>APCM</td>
                             <td>06/15/2023</td>
                         </tr>
                         <tr>
@@ -274,11 +274,97 @@
                         <tr>
                             <td><div class="condition-cell"><span class="condition-icon diabetes"></span>Type 2 Diabetes Mellitus</div></td>
                             <td>E11.9</td>
-                            <td>RPM</td>
+                            <td>APCM</td>
                             <td>03/22/2021</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Care Plan Goals (moved up — must follow Active Conditions per the Jun 11 review) -->
+        <div class="section">
+            <h2 class="section-title">Care Plan Goals, Objectives, and Outcomes</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Condition</th>
+                            <th>Program</th>
+                            <th>Long-Term Goal</th>
+                            <th>Short-Term Objective</th>
+                            <th>Prior</th>
+                            <th>Current</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="condition-cell">
+                                    <span class="condition-icon hypertension"></span>
+                                    <div>Hypertension<br><small class="text-muted">I10</small></div>
+                                </div>
+                            </td>
+                            <td>APCM</td>
+                            <td>Maintain systolic BP ≤130 mmHg and reduce cardiovascular risk</td>
+                            <td>Reduce average systolic BP by ≥5 mmHg from prior period OR achieve average ≤130 mmHg</td>
+                            <td>145 mmHg</td>
+                            <td>133 mmHg</td>
+                            <td><span class="badge badge-met">Met</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="condition-cell">
+                                    <span class="condition-icon depression"></span>
+                                    <div>Major Depressive Disorder<br><small class="text-muted">F32.1</small></div>
+                                </div>
+                            </td>
+                            <td>APCM</td>
+                            <td>Achieve PHQ-9 score ≤5 (minimal depression) and maintain functional status</td>
+                            <td>No increase in PHQ-9 score compared to prior 30-day period</td>
+                            <td>13</td>
+                            <td>11</td>
+                            <td><span class="badge badge-met">Met</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="condition-cell">
+                                    <span class="condition-icon anxiety"></span>
+                                    <div>Major Anxiety Disorder<br><small class="text-muted">F41.1</small></div>
+                                </div>
+                            </td>
+                            <td>APCM</td>
+                            <td>Achieve GAD-7 score ≤5 (minimal anxiety) and maintain functional status</td>
+                            <td>No increase in GAD-7 score compared to prior 30-day period</td>
+                            <td>9</td>
+                            <td>8</td>
+                            <td><span class="badge badge-met">Met</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="condition-cell">
+                                    <span class="condition-icon diabetes"></span>
+                                    <div>Type 2 Diabetes Mellitus<br><small class="text-muted">E11.9</small></div>
+                                </div>
+                            </td>
+                            <td>APCM</td>
+                            <td>Maintain glycemic control and prevent diabetes-related complications</td>
+                            <td>Zero ED visits or hospitalizations related to diabetes in 30-day period</td>
+                            <td>1 event</td>
+                            <td>1 event</td>
+                            <td><span class="badge badge-ongoing">Ongoing</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="calculations-box">
+                <h4>Objective Calculations</h4>
+                <div class="calculation-row"><strong>Hypertension</strong> (APCM): Decrease: 12 mmHg | ≥5 mmHg reduction achieved</div>
+                <div class="calculation-row"><strong>Major Depressive Disorder</strong> (APCM): Change: -2 | No increase detected</div>
+                <div class="calculation-row"><strong>Major Anxiety Disorder</strong> (APCM): Change: -1 | No increase detected</div>
+                <div class="calculation-row"><strong>Type 2 Diabetes Mellitus</strong> (APCM): Current period events: 1 | Events detected = Ongoing</div>
             </div>
         </div>
 
@@ -287,87 +373,124 @@
             <div class="stat-item"><label>Conditions:</label><span>4</span></div>
             <div class="stat-item"><label>Objectives Met:</label><span>3/4</span></div>
             <div class="stat-item"><label>RPM Minutes:</label><span>40</span></div>
-            <div class="stat-item"><label>APCM Minutes:</label><span>51</span></div>
-            <div class="stat-item"><label>Interactions:</label><span>8</span></div>
+            <div class="stat-item"><label>APCM Minutes:</label><span>91</span></div>
+            <div class="stat-item"><label>Interactions:</label><span>12</span></div>
         </div>
 
-        <!-- Blood Pressure Trend -->
+        <!-- Vitals Trend (60-Day) — consolidated BP + Pulse + Respiratory Rate per Jun 11 review -->
         <div class="section">
-            <h2 class="section-title">Blood Pressure Trend (60-Day) – RPM</h2>
+            <h2 class="section-title">Vitals Trend (60-Day) – RPM</h2>
             <div class="chart-container">
                 <div class="chart-header">
                     <div class="chart-stats">
-                        <div class="stat-item"><label>Avg:</label><span>133/81 mmHg</span></div>
-                        <div class="stat-item"><label>Min:</label><span>126</span></div>
-                        <div class="stat-item"><label>Max:</label><span>142</span></div>
+                        <div class="stat-item"><label>BP avg:</label><span>133/81 mmHg</span></div>
+                        <div class="stat-item"><label>Pulse avg:</label><span>74 bpm</span></div>
+                        <div class="stat-item"><label>Resp avg:</label><span>16 /min</span></div>
                         <div class="stat-item"><label>Readings:</label><span>15</span></div>
                     </div>
                 </div>
-                <div class="chart-placeholder">
-                    <div class="chart-line">
+                <div class="chart-placeholder" style="height: 220px; position: relative;">
+                    <!-- Y-axis scale labels -->
+                    <div style="position:absolute; left:0; top:0; bottom:24px; width:32px; display:flex; flex-direction:column; justify-content:space-between; font-size:9px; color:#94a3b8; text-align:right; padding-right:4px;">
+                        <span>160</span><span>120</span><span>80</span><span>40</span><span>0</span>
+                    </div>
+                    <!-- X-axis date labels -->
+                    <div style="position:absolute; left:32px; right:8px; bottom:0; height:18px; display:flex; justify-content:space-between; font-size:9px; color:#94a3b8;">
+                        <span>Apr&nbsp;1</span><span>Apr&nbsp;15</span><span>May&nbsp;1</span><span>May&nbsp;15</span><span>Jun&nbsp;1</span>
+                    </div>
+                    <div class="chart-line" style="top: 4px; left: 32px; right: 8px; bottom: 24px;">
                         <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+                            <!-- Gridlines -->
+                            <line x1="0" y1="25" x2="400" y2="25" stroke="#e5e7eb" stroke-width="0.5"/>
+                            <line x1="0" y1="50" x2="400" y2="50" stroke="#e5e7eb" stroke-width="0.5"/>
+                            <line x1="0" y1="75" x2="400" y2="75" stroke="#e5e7eb" stroke-width="0.5"/>
+                            <!-- Systolic BP (~126-145, blue) -->
                             <polyline fill="none" stroke="#3b82f6" stroke-width="2"
-                                points="0,30 50,35 100,25 150,28 200,20 250,22 300,18 350,15 400,12" />
+                                points="0,22 50,26 100,18 150,22 200,14 250,16 300,12 350,10 400,8" />
+                            <!-- Diastolic BP (~75-90, green) -->
                             <polyline fill="none" stroke="#22c55e" stroke-width="2"
-                                points="0,70 50,72 100,68 150,70 200,65 250,68 300,62 350,60 400,58" />
-                            <line x1="0" y1="40" x2="400" y2="40" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" />
+                                points="0,52 50,54 100,50 150,52 200,48 250,50 300,46 350,44 400,42" />
+                            <!-- Pulse (~70-78 bpm, purple) -->
+                            <polyline fill="none" stroke="#8b5cf6" stroke-width="2"
+                                points="0,55 50,52 100,57 150,54 200,56 250,53 300,55 350,54 400,52" />
+                            <!-- Respiratory Rate (~14-18 /min, orange) -->
+                            <polyline fill="none" stroke="#f97316" stroke-width="2"
+                                points="0,84 50,86 100,82 150,85 200,83 250,84 300,82 350,84 400,83" />
+                            <!-- BP target line at 130 -->
+                            <line x1="0" y1="22" x2="400" y2="22" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4" />
                         </svg>
                     </div>
                 </div>
                 <div class="chart-legend">
-                    <div class="legend-item"><span class="legend-line" style="background: #3b82f6;"></span>Systolic</div>
-                    <div class="legend-item"><span class="legend-line" style="background: #22c55e;"></span>Diastolic</div>
-                    <div class="legend-item"><span class="legend-line" style="background: #ef4444; height: 1px; border-top: 1px dashed #ef4444;"></span>Target ≤130</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #3b82f6;"></span>Systolic BP (mmHg)</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #22c55e;"></span>Diastolic BP (mmHg)</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #8b5cf6;"></span>Pulse (bpm)</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #f97316;"></span>Respiratory Rate (/min)</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #ef4444; height: 1px; border-top: 1px dashed #ef4444;"></span>BP target ≤130</div>
                 </div>
             </div>
         </div>
 
-        <!-- Behavioral Health Assessments -->
+        <!-- Behavioral Health Trend — PHQ-9 + GAD-7 graphs replace the prior table per Jun 11 review -->
         <div class="section">
-            <h2 class="section-title">Behavioral Health Assessments – APCM</h2>
-            <h3 class="section-subtitle">Assessment Summary</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Assessment Type</th>
-                            <th>Total Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>05/08/2026</td>
-                            <td>GAD-7</td>
-                            <td>7</td>
-                        </tr>
-                        <tr>
-                            <td>05/09/2026</td>
-                            <td>PHQ-9</td>
-                            <td>10</td>
-                        </tr>
-                        <tr>
-                            <td>05/04/2026</td>
-                            <td>GAD-7</td>
-                            <td>8</td>
-                        </tr>
-                        <tr>
-                            <td>05/02/2026</td>
-                            <td>PHQ-9</td>
-                            <td>11</td>
-                        </tr>
-                        <tr>
-                            <td>04/21/2026</td>
-                            <td>GAD-7</td>
-                            <td>8</td>
-                        </tr>
-                        <tr>
-                            <td>04/19/2026</td>
-                            <td>PHQ-9</td>
-                            <td>12</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <h2 class="section-title">Behavioral Health Trend (60-Day) – APCM</h2>
+            <h3 class="section-subtitle">PHQ-9 (Depression) &amp; GAD-7 (Anxiety) Score Trend</h3>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-stats">
+                        <div class="stat-item"><label>PHQ-9 latest:</label><span>10 (Moderate)</span></div>
+                        <div class="stat-item"><label>PHQ-9 trend:</label><span style="color:#16a34a; font-weight:600;">↓ 2</span></div>
+                        <div class="stat-item"><label>GAD-7 latest:</label><span>7 (Mild)</span></div>
+                        <div class="stat-item"><label>GAD-7 trend:</label><span style="color:#16a34a; font-weight:600;">↓ 1</span></div>
+                    </div>
+                </div>
+                <div class="chart-placeholder" style="height: 220px; position: relative;">
+                    <!-- Y-axis: 0–27 (PHQ-9 max is 27, GAD-7 max is 21) -->
+                    <div style="position:absolute; left:0; top:0; bottom:24px; width:32px; display:flex; flex-direction:column; justify-content:space-between; font-size:9px; color:#94a3b8; text-align:right; padding-right:4px;">
+                        <span>27</span><span>20</span><span>14</span><span>7</span><span>0</span>
+                    </div>
+                    <div style="position:absolute; left:32px; right:8px; bottom:0; height:18px; display:flex; justify-content:space-between; font-size:9px; color:#94a3b8;">
+                        <span>Apr&nbsp;15</span><span>Apr&nbsp;21</span><span>May&nbsp;2</span><span>May&nbsp;8</span><span>Jun&nbsp;1</span>
+                    </div>
+                    <div class="chart-line" style="top: 4px; left: 32px; right: 8px; bottom: 24px;">
+                        <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+                            <!-- Gridlines: 7, 14, 20 -->
+                            <line x1="0" y1="74" x2="400" y2="74" stroke="#e5e7eb" stroke-width="0.5"/>
+                            <line x1="0" y1="48" x2="400" y2="48" stroke="#e5e7eb" stroke-width="0.5"/>
+                            <line x1="0" y1="26" x2="400" y2="26" stroke="#e5e7eb" stroke-width="0.5"/>
+
+                            <!-- Severity bands (very subtle background fill, only mild/moderate visible) -->
+                            <rect x="0" y="74" width="400" height="26" fill="#bbf7d0" opacity="0.18"/>   <!-- minimal 0-4 -->
+                            <rect x="0" y="56" width="400" height="18" fill="#fde68a" opacity="0.18"/>   <!-- mild  5-9 -->
+                            <rect x="0" y="37" width="400" height="19" fill="#fdba74" opacity="0.18"/>   <!-- moderate 10-14 -->
+                            <rect x="0" y="0"  width="400" height="37" fill="#fca5a5" opacity="0.18"/>   <!-- severe 15+ -->
+
+                            <!-- PHQ-9 line (12 -> 11 -> 10), purple-blue -->
+                            <polyline fill="none" stroke="#6366f1" stroke-width="2.5"
+                                points="40,56 200,60 360,63" />
+                            <!-- PHQ-9 data points -->
+                            <circle cx="40"  cy="56" r="3.5" fill="#6366f1"/>
+                            <circle cx="200" cy="60" r="3.5" fill="#6366f1"/>
+                            <circle cx="360" cy="63" r="3.5" fill="#6366f1"/>
+
+                            <!-- GAD-7 line (8 -> 8 -> 7), teal -->
+                            <polyline fill="none" stroke="#14b8a6" stroke-width="2.5"
+                                points="60,71 220,71 380,75" />
+                            <circle cx="60"  cy="71" r="3.5" fill="#14b8a6"/>
+                            <circle cx="220" cy="71" r="3.5" fill="#14b8a6"/>
+                            <circle cx="380" cy="75" r="3.5" fill="#14b8a6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="chart-legend">
+                    <div class="legend-item"><span class="legend-line" style="background: #6366f1;"></span>PHQ-9 (Depression) — max 27</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #14b8a6;"></span>GAD-7 (Anxiety) — max 21</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #bbf7d0;"></span>Minimal 0-4</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #fde68a;"></span>Mild 5-9</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #fdba74;"></span>Moderate 10-14</div>
+                    <div class="legend-item"><span class="legend-line" style="background: #fca5a5;"></span>Severe 15+</div>
+                </div>
             </div>
         </div>
 
@@ -428,66 +551,10 @@
             </div>
         </div>
 
-        <!-- Clinical Notes -->
-        <div class="section">
-            <h2 class="section-title">Clinical Notes</h2>
-
-            <div class="clinical-note">
-                <div class="note-header">
-                    <div class="note-meta">
-                        <span class="note-date">05/06/2026</span>
-                        <span class="program-badge rpm">RPM</span>
-                        <span class="note-type">Phone • 12 min</span>
-                    </div>
-                    <span class="note-provider">Ryane Riddle, RN</span>
-                </div>
-                <div class="note-vitals">Vitals Reviewed: <span>BP 126/75 mmHg</span></div>
-                <div class="note-content">Patient reports improved medication adherence. Blood pressure trending toward goal at 126/75. Reinforced importance of low-sodium diet and regular monitoring. Adjusted reminder schedule for BP readings.</div>
-            </div>
-
-            <div class="clinical-note">
-                <div class="note-header">
-                    <div class="note-meta">
-                        <span class="note-date">05/10/2026</span>
-                        <span class="program-badge apcm">APCM</span>
-                        <span class="note-type">Video • 18 min</span>
-                    </div>
-                    <span class="note-provider">Ryane Riddle, RN</span>
-                </div>
-                <div class="note-vitals">Vitals Reviewed: <span>N/A</span></div>
-                <div class="note-content">PHQ-9 completed, score 10 (improved from 12). Patient reports improved sleep and mood. GAD-7 completed, score 7. Continuing current treatment plan. Discussed coping strategies.</div>
-            </div>
-
-            <div class="clinical-note">
-                <div class="note-header">
-                    <div class="note-meta">
-                        <span class="note-date">05/06/2026</span>
-                        <span class="program-badge rpm">RPM</span>
-                        <span class="note-type">Phone • 8 min</span>
-                    </div>
-                    <span class="note-provider">Ryane Riddle, RN</span>
-                </div>
-                <div class="note-vitals">Vitals Reviewed: <span>BP 130/78 mmHg</span></div>
-                <div class="note-content">Weekly RPM device check-in. Patient using BP cuff correctly with consistent readings. No medication side effects reported. Encouraged continued exercise routine.</div>
-            </div>
-
-            <div class="clinical-note">
-                <div class="note-header">
-                    <div class="note-meta">
-                        <span class="note-date">05/02/2026</span>
-                        <span class="program-badge rpm">RPM</span>
-                        <span class="note-type">Phone • 10 min</span>
-                    </div>
-                    <span class="note-provider">Ryane Riddle, RN</span>
-                </div>
-                <div class="note-vitals">Vitals Reviewed: <span>BP 132/80 mmHg</span></div>
-                <div class="note-content">Review of RPM device-generated blood pressure data. Reading 132/80, trending down from prior week. Patient following medication regimen. No adverse symptoms reported.</div>
-            </div>
-        </div>
-
-        <!-- Care Transitions -->
+        <!-- Care Transitions — restricted to ED visits and hospitalizations only, per Jun 11 review -->
         <div class="section">
             <h2 class="section-title">Care Transitions</h2>
+            <p class="text-muted text-small" style="margin-bottom: 12px;">Includes ED visits and hospitalizations only. Outpatient procedures (EKG, surgeries, etc.) are excluded.</p>
             <div class="table-container">
                 <table>
                     <thead>
@@ -517,35 +584,19 @@
                             <td>Admitted 2 days, medications adjusted, stabilized</td>
                             <td><span class="badge badge-required">Required</span></td>
                         </tr>
-                        <tr>
-                            <td>2026-03-15</td>
-                            <td>Surgery</td>
-                            <td>Regional Surgical Center</td>
-                            <td>Cataract extraction, left eye</td>
-                            <td>Outpatient procedure, no complications</td>
-                            <td><span class="badge badge-required">Required</span></td>
-                        </tr>
-                        <tr>
-                            <td>2026-04-12</td>
-                            <td>Care Coordination</td>
-                            <td>N/A</td>
-                            <td>Cardiology referral follow-up</td>
-                            <td>Stress test scheduled, EKG normal</td>
-                            <td><span class="badge badge-complete">Complete</span></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
             <div style="padding: 12px 0;">
                 <div class="follow-up-note"><strong>Follow-up Note (2026-03-28):</strong> Schedule cardiology follow-up within 2 weeks</div>
                 <div class="follow-up-note"><strong>Follow-up Note (2026-04-05):</strong> PCP follow-up within 7 days, daily RPM monitoring</div>
-                <div class="follow-up-note"><strong>Follow-up Note (2026-03-15):</strong> Ophthalmology follow-up 1 week post-op</div>
             </div>
         </div>
 
-        <!-- Care Interactions -->
+        <!-- Care Interactions — Clinical Notes merged in per Jun 11 review; phone-only, no video, Int. column removed -->
         <div class="section">
             <h2 class="section-title">Care Interactions</h2>
+            <p class="text-muted text-small" style="margin-bottom: 12px;">All care interactions are conducted by phone. Data captured per visit: BP, Pulse, Resp Rate (RPM); Wellness check, GAD-7, PHQ-9 (APCM).</p>
             <div class="table-container">
                 <table>
                     <thead>
@@ -554,31 +605,28 @@
                             <th>Program</th>
                             <th>Qualifying Activity</th>
                             <th>Type</th>
-                            <th>Int.</th>
                             <th>Min</th>
-                            <th>Data</th>
+                            <th>Data Captured</th>
                             <th>Staff</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td>05/10/2026</td>
+                            <td>APCM</td>
+                            <td>Behavioral health follow-up</td>
+                            <td>Phone</td>
+                            <td>18</td>
+                            <td>PHQ-9, GAD-7</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
                             <td>05/06/2026</td>
                             <td>RPM</td>
                             <td>Review of device-generated physiologic data</td>
                             <td>Phone</td>
-                            <td>Yes</td>
                             <td>12</td>
-                            <td>BP</td>
-                            <td>Ryane Riddle, RN</td>
-                        </tr>
-                        <tr>
-                            <td>05/10/2026</td>
-                            <td>APCM</td>
-                            <td>Behavioral health follow-up</td>
-                            <td>Video</td>
-                            <td>Yes</td>
-                            <td>18</td>
-                            <td>None</td>
+                            <td>BP, Pulse, Resp</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                         <tr>
@@ -586,9 +634,17 @@
                             <td>RPM</td>
                             <td>Interactive patient communication based on RPM data</td>
                             <td>Phone</td>
-                            <td>Yes</td>
                             <td>8</td>
-                            <td>BP</td>
+                            <td>BP, Pulse</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>05/04/2026</td>
+                            <td>APCM</td>
+                            <td>Behavioral health screening</td>
+                            <td>Phone</td>
+                            <td>10</td>
+                            <td>GAD-7</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                         <tr>
@@ -596,19 +652,26 @@
                             <td>RPM</td>
                             <td>Review of device-generated physiologic data</td>
                             <td>Phone</td>
-                            <td>Yes</td>
                             <td>10</td>
-                            <td>BP</td>
+                            <td>BP, Pulse, Resp</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>05/02/2026</td>
+                            <td>APCM</td>
+                            <td>Behavioral health screening</td>
+                            <td>Phone</td>
+                            <td>9</td>
+                            <td>PHQ-9</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                         <tr>
                             <td>04/28/2026</td>
                             <td>APCM</td>
                             <td>Care plan update</td>
-                            <td>Video</td>
-                            <td>Yes</td>
+                            <td>Phone</td>
                             <td>15</td>
-                            <td>None</td>
+                            <td>Wellness check</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                         <tr>
@@ -616,19 +679,35 @@
                             <td>RPM</td>
                             <td>Alert follow-up and care coordination</td>
                             <td>Phone</td>
-                            <td>Yes</td>
                             <td>5</td>
-                            <td>BP</td>
+                            <td>BP, Pulse</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>04/21/2026</td>
+                            <td>APCM</td>
+                            <td>Behavioral health screening</td>
+                            <td>Phone</td>
+                            <td>9</td>
+                            <td>GAD-7</td>
+                            <td>Ryane Riddle, RN</td>
+                        </tr>
+                        <tr>
+                            <td>04/19/2026</td>
+                            <td>APCM</td>
+                            <td>Behavioral health follow-up</td>
+                            <td>Phone</td>
+                            <td>18</td>
+                            <td>PHQ-9</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                         <tr>
                             <td>04/18/2026</td>
                             <td>APCM</td>
-                            <td>Behavioral health follow-up</td>
-                            <td>Video</td>
-                            <td>Yes</td>
-                            <td>18</td>
-                            <td>None</td>
+                            <td>Wellness check</td>
+                            <td>Phone</td>
+                            <td>12</td>
+                            <td>Wellness check</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                         <tr>
@@ -636,13 +715,80 @@
                             <td>RPM</td>
                             <td>Review of device-generated physiologic data</td>
                             <td>Phone</td>
-                            <td>Yes</td>
                             <td>5</td>
-                            <td>BP</td>
+                            <td>BP, Pulse, Resp</td>
                             <td>Ryane Riddle, RN</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Combined clinical notes — narrative detail for each interaction. -->
+            <h3 class="section-subtitle" style="margin-top: 20px;">Interaction Notes</h3>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">05/10/2026</span>
+                        <span class="program-badge apcm">APCM</span>
+                        <span class="note-type">Phone • 18 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Data Reviewed: <span>PHQ-9 score 10, GAD-7 score 7</span></div>
+                <div class="note-content">PHQ-9 completed, score 10 (improved from 12). Patient reports improved sleep and mood. GAD-7 completed, score 7. Continuing current treatment plan. Discussed coping strategies.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">05/06/2026</span>
+                        <span class="program-badge rpm">RPM</span>
+                        <span class="note-type">Phone • 12 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>BP 126/75 mmHg, Pulse 72 bpm, Resp 16 /min</span></div>
+                <div class="note-content">Patient reports improved medication adherence. Blood pressure trending toward goal at 126/75. Reinforced importance of low-sodium diet and regular monitoring. Adjusted reminder schedule for BP readings.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">05/06/2026</span>
+                        <span class="program-badge rpm">RPM</span>
+                        <span class="note-type">Phone • 8 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>BP 130/78 mmHg, Pulse 74 bpm</span></div>
+                <div class="note-content">Weekly RPM device check-in. Patient using BP cuff correctly with consistent readings. No medication side effects reported. Encouraged continued exercise routine.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">05/02/2026</span>
+                        <span class="program-badge rpm">RPM</span>
+                        <span class="note-type">Phone • 10 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Vitals Reviewed: <span>BP 132/80 mmHg, Pulse 76 bpm, Resp 17 /min</span></div>
+                <div class="note-content">Review of RPM device-generated blood pressure data. Reading 132/80, trending down from prior week. Patient following medication regimen. No adverse symptoms reported.</div>
+            </div>
+
+            <div class="clinical-note">
+                <div class="note-header">
+                    <div class="note-meta">
+                        <span class="note-date">04/28/2026</span>
+                        <span class="program-badge apcm">APCM</span>
+                        <span class="note-type">Phone • 15 min</span>
+                    </div>
+                    <span class="note-provider">Ryane Riddle, RN</span>
+                </div>
+                <div class="note-vitals">Data Reviewed: <span>Wellness check — stable</span></div>
+                <div class="note-content">Monthly APCM wellness check. Patient reports good adherence to medications and care plan. No new symptoms or concerns reported. Confirmed upcoming follow-up appointments.</div>
             </div>
         </div>
 
@@ -673,7 +819,7 @@
             </div>
         </div>
 
-        <!-- Page Break for Appendix -->
+        <!-- Appendix · section 1 of 3: Vitals Log (condensed: Date + Time + 3 vitals per row) -->
         <div class="page-break">
             <div class="page-header">
                 <div class="page-header-left">
@@ -685,8 +831,51 @@
                 </div>
             </div>
 
-            <h2 class="section-title" style="font-size: 18px;">Appendix: Vital Signs and Behavioral Assessments Log</h2>
-            <p class="text-muted text-small" style="margin-bottom: 20px;">Behavioral health assessments conducted via Survey Health APCM module. All responses are patient-reported.</p>
+            <h2 class="section-title" style="font-size: 18px;">Appendix · Vitals Log</h2>
+            <p class="text-muted text-small" style="margin-bottom: 12px;">All RPM device-generated readings for the reporting period. One row per reading; all flagged Valid unless noted in Remarks.</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Blood Pressure</th>
+                            <th>Pulse</th>
+                            <th>Respiratory Rate</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>05/09/2026</td><td>5:09 PM</td><td>128/76 mmHg</td><td>74 bpm</td><td>16 /min</td><td>—</td></tr>
+                        <tr><td>05/08/2026</td><td>5:10 PM</td><td>127/75 mmHg</td><td>73 bpm</td><td>16 /min</td><td>—</td></tr>
+                        <tr><td>05/07/2026</td><td>5:08 PM</td><td>129/77 mmHg</td><td>75 bpm</td><td>17 /min</td><td>—</td></tr>
+                        <tr><td>05/06/2026</td><td>8:20 AM</td><td>130/78 mmHg</td><td>74 bpm</td><td>16 /min</td><td>—</td></tr>
+                        <tr><td>05/06/2026</td><td>8:15 AM</td><td>126/75 mmHg</td><td>72 bpm</td><td>16 /min</td><td>—</td></tr>
+                        <tr><td>05/05/2026</td><td>5:09 PM</td><td>126/75 mmHg</td><td>73 bpm</td><td>15 /min</td><td>—</td></tr>
+                        <tr><td>05/02/2026</td><td>8:30 AM</td><td>132/80 mmHg</td><td>76 bpm</td><td>17 /min</td><td>—</td></tr>
+                        <tr><td>04/28/2026</td><td>5:15 PM</td><td>135/82 mmHg</td><td>78 bpm</td><td>18 /min</td><td>—</td></tr>
+                        <tr><td>04/22/2026</td><td>8:05 AM</td><td>138/85 mmHg</td><td>77 bpm</td><td>17 /min</td><td>—</td></tr>
+                        <tr><td>04/15/2026</td><td>8:00 AM</td><td>140/86 mmHg</td><td>76 bpm</td><td>17 /min</td><td>—</td></tr>
+                        <tr><td>04/08/2026</td><td>5:20 PM</td><td>142/88 mmHg</td><td>78 bpm</td><td>18 /min</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Page Break for Appendix — section 2 of 3: Mental Health detail (Vitals comes before this; Wound Care after) -->
+        <div class="page-break">
+            <div class="page-header">
+                <div class="page-header-left">
+                    <strong>Maria Rodriguez</strong>
+                    <span>EHR: SH-2026-0847</span>
+                </div>
+                <div class="logo">
+                    <span style="font-size: 14px; font-weight: 700; color: #94a3b8; letter-spacing: 2px;">LOGO</span>
+                </div>
+            </div>
+
+            <h2 class="section-title" style="font-size: 18px;">Appendix · Mental Health Detail</h2>
+            <p class="text-muted text-small" style="margin-bottom: 20px;">PHQ-9 and GAD-7 behavioral health assessments administered via the Survey Health APCM module. All responses are patient-reported.</p>
 
             <!-- PHQ-9 Assessment -->
             <div class="assessment-card">
@@ -869,7 +1058,7 @@
             </div>
         </div>
 
-        <!-- Vital Signs Log -->
+        <!-- Appendix · section 3 of 3: Wound Care detail -->
         <div class="page-break">
             <div class="page-header">
                 <div class="page-header-left">
@@ -881,252 +1070,63 @@
                 </div>
             </div>
 
-            <div class="section">
-                <h2 class="section-title">Vital Signs Log – RPM</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Metric</th>
-                                <th>Read</th>
-                                <th>Valid</th>
-                                <th>Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>05/06/2026</td>
-                                <td>8:15AM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>126 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>75 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>05/05/2026</td>
-                                <td>5:09PM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>126 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>75 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>05/08/2026</td>
-                                <td>5:10PM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>127 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>75 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>05/09/2026</td>
-                                <td>5:09PM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>128 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>76 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>05/07/2026</td>
-                                <td>5:08PM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>129 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>77 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>05/06/2026</td>
-                                <td>8:20AM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>130 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>78 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>05/02/2026</td>
-                                <td>8:30AM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>132 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>80 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>04/28/2026</td>
-                                <td>5:15PM</td>
-                                <td>Blood Pressure - Systolic</td>
-                                <td>135 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                            <tr>
-                                <td>—</td>
-                                <td>—</td>
-                                <td>Blood Pressure - Diastolic</td>
-                                <td>82 mmHg</td>
-                                <td><span class="checkmark">Yes</span></td>
-                                <td>—</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <h2 class="section-title" style="font-size: 18px;">Appendix · Wound Care Detail</h2>
+            <p class="text-muted text-small" style="margin-bottom: 12px;">Per-visit wound-care log for the reporting period. Patient-submitted images reviewed by clinical staff.</p>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Finding</th>
+                            <th>Location</th>
+                            <th>Status vs Baseline</th>
+                            <th>Imaging</th>
+                            <th>Provider Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>05/09/2026</td>
+                            <td>Lower-extremity edema</td>
+                            <td>Bilateral ankles</td>
+                            <td><span class="badge badge-ongoing">Worsening</span></td>
+                            <td>2 images submitted</td>
+                            <td>Mild bilateral pitting; advised compression and re-eval in 7 days.</td>
+                        </tr>
+                        <tr>
+                            <td>05/09/2026</td>
+                            <td>Skin integrity</td>
+                            <td>General</td>
+                            <td><span class="badge badge-met">No change</span></td>
+                            <td>—</td>
+                            <td>Intact; no breakdown noted.</td>
+                        </tr>
+                        <tr>
+                            <td>05/09/2026</td>
+                            <td>Pressure injuries / open wounds</td>
+                            <td>—</td>
+                            <td><span class="badge badge-met">No change</span></td>
+                            <td>—</td>
+                            <td>None present.</td>
+                        </tr>
+                        <tr>
+                            <td>04/22/2026</td>
+                            <td>Lower-extremity edema</td>
+                            <td>Bilateral ankles</td>
+                            <td><span class="badge badge-met">Stable</span></td>
+                            <td>1 image submitted</td>
+                            <td>Mild; no progression since prior visit.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
+            <p class="text-muted text-small" style="margin-top: 12px;">Patient-submitted images stored in the Survey Health mobile app and reviewed by the care team. Images not reproduced in this report.</p>
         </div>
 
-        <!-- Care Plan Goals -->
+        <!-- Footer (now lives at the very end, no longer inside the Care Plan Goals page break) -->
         <div class="page-break">
-            <div class="page-header">
-                <div class="page-header-left">
-                    <strong>Maria Rodriguez</strong>
-                    <span>EHR: SH-2026-0847</span>
-                </div>
-                <div class="logo">
-                    <span style="font-size: 14px; font-weight: 700; color: #94a3b8; letter-spacing: 2px;">LOGO</span>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2 class="section-title">Care Plan Goals, Objectives, and Outcomes</h2>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Condition</th>
-                                <th>Program</th>
-                                <th>Long-Term Goal</th>
-                                <th>Short-Term Objective</th>
-                                <th>Prior</th>
-                                <th>Current</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="condition-cell">
-                                        <span class="condition-icon hypertension"></span>
-                                        <div>Hypertension<br><small class="text-muted">I10</small></div>
-                                    </div>
-                                </td>
-                                <td>RPM</td>
-                                <td>Maintain systolic BP ≤130 mmHg and reduce cardiovascular risk</td>
-                                <td>Reduce average systolic BP by ≥5 mmHg from prior period OR achieve average ≤130 mmHg</td>
-                                <td>145 mmHg</td>
-                                <td>133 mmHg</td>
-                                <td><span class="badge badge-met">Met</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="condition-cell">
-                                        <span class="condition-icon depression"></span>
-                                        <div>Major Depressive Disorder<br><small class="text-muted">F32.1</small></div>
-                                    </div>
-                                </td>
-                                <td>APCM</td>
-                                <td>Achieve PHQ-9 score ≤5 (minimal depression) and maintain functional status</td>
-                                <td>No increase in PHQ-9 score compared to prior 30-day period</td>
-                                <td>13</td>
-                                <td>11</td>
-                                <td><span class="badge badge-met">Met</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="condition-cell">
-                                        <span class="condition-icon anxiety"></span>
-                                        <div>Major Anxiety Disorder<br><small class="text-muted">F41.1</small></div>
-                                    </div>
-                                </td>
-                                <td>APCM</td>
-                                <td>Achieve GAD-7 score ≤5 (minimal anxiety) and maintain functional status</td>
-                                <td>No increase in GAD-7 score compared to prior 30-day period</td>
-                                <td>9</td>
-                                <td>8</td>
-                                <td><span class="badge badge-met">Met</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="condition-cell">
-                                        <span class="condition-icon diabetes"></span>
-                                        <div>Type 2 Diabetes Mellitus<br><small class="text-muted">E11.9</small></div>
-                                    </div>
-                                </td>
-                                <td>RPM</td>
-                                <td>Maintain glycemic control and prevent diabetes-related complications</td>
-                                <td>Zero ED visits or hospitalizations related to diabetes in 30-day period</td>
-                                <td>1 event</td>
-                                <td>1 event</td>
-                                <td><span class="badge badge-ongoing">Ongoing</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="calculations-box">
-                    <h4>Objective Calculations</h4>
-                    <div class="calculation-row"><strong>Hypertension</strong> (RPM): Decrease: 12 mmHg | ≥5 mmHg reduction achieved</div>
-                    <div class="calculation-row"><strong>Major Depressive Disorder</strong> (APCM): Change: -2 | No increase detected</div>
-                    <div class="calculation-row"><strong>Major Anxiety Disorder</strong> (APCM): Change: -1 | No increase detected</div>
-                    <div class="calculation-row"><strong>Type 2 Diabetes Mellitus</strong> (RPM): Current period events: 1 | Events detected = Ongoing</div>
-                </div>
-            </div>
-
             <!-- Footer -->
             <div class="report-footer">
                 <p class="disclaimer">RPM and/or APCM services summarized in this report were delivered by qualified clinical staff under the supervision of the billing practitioner, in accordance with CMS guidelines. Medical necessity was reviewed and maintained throughout the billing period.</p>
